@@ -1,3 +1,22 @@
-Hello!
+<div>
+  Number with a sad outcome: {{sad}}
+</div>
+<div>
+  Number with a happy outcome: {{happy}}
+</div>
 
-{{outlet}}
+{{#if amDone}}
+  You're done!
+{{else}}
+  <div>
+    Midpoint: {{midpoint}}
+  </div>
+  <button
+    type="button"
+    {{on "click" (fn this.addDataPoint midpoint true)}}
+  >Midpoint is happy</button>
+  <button
+    type="button"
+    {{on "click" (fn this.addDataPoint midpoint false)}}
+  >Midpoint is sad</button>
+{{/if}}
