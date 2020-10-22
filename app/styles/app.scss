@@ -1,0 +1,26 @@
+
+.animation-wrapper {
+  background-color: red;
+  height: 50px;
+  width: 250px;
+}
+
+.slidein {
+  animation-duration: 1.5s;
+  animation-name: slidein;
+  animation-iteration-count: 3;
+  animation-direction: alternate;
+  height: 50px;
+}
+
+@keyframes slidein {
+  from {
+    margin-left: 0px;
+    width: 50px;
+  }
+
+  to {
+    margin-left: 100px;
+    width: 200px;
+  }
+}
