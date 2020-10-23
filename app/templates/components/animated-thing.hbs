@@ -1,8 +1,7 @@
-<button {{action toggleThing}}>Toggle</button>
-<AnimatedContainer>
-  {{#animated-if showThing use=transition }}
-    <div class="message" {{action "toggleThing"}}>
-      Hello!
-    </div>
-  {{/animated-if}}
-</AnimatedContainer>
+<div class="animation-wrapper">
+  <img src="emoticon-happy-outline.png" id="watchme" />
+</div>
+<button
+  type="button"
+  {{on "click" startAnimation}}
+>Start</button>
