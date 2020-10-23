@@ -10,26 +10,26 @@
   width: 40px;
 }
 
-.face-with-number {
+.smiley-face-with-number {
   position: absolute;
 }
 
-.left {
+.state-left {
   left: 0px;
 }
 
-.right {
+.state-right {
   left: 150px;
 }
 
-.move-left-to-right {
+.transition-left-to-right {
   animation-duration: 600ms;
-  animation-name: move-left-to-right;
+  animation-name: transition-left-to-right;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
 }
 
-@keyframes move-left-to-right {
+@keyframes transition-left-to-right {
   from {
     left: 0px;
   }
