@@ -1,26 +1,36 @@
 
 .animation-wrapper {
+  position: relative;
   background-color: red;
   height: 50px;
   width: 250px;
 }
 
-.slidein {
-  animation-duration: 1.5s;
-  animation-name: slidein;
-  animation-iteration-count: 3;
-  animation-direction: alternate;
-  height: 50px;
+#watchme {
+  position: absolute;
 }
 
-@keyframes slidein {
+.left {
+  left: 0px;
+}
+
+.right {
+  left: 150px;
+}
+
+.move-left-to-right {
+  animation-duration: 600ms;
+  animation-name: move-left-to-right;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes move-left-to-right {
   from {
-    margin-left: 0px;
-    width: 50px;
+    left: 0px;
   }
 
   to {
-    margin-left: 100px;
-    width: 200px;
+    left: 150px;
   }
 }

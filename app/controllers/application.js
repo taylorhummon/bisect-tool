@@ -20,18 +20,6 @@ export default class ApplicationController extends Controller {
     this.chooseMidpoint();
   }
 
-  @action startAnimation() {
-    console.log('STARTING ANIMATION');
-    const element = document.getElementById("watchme")
-    element.addEventListener("animationend", this.listener, false);
-    element.className = "slidein";
-  }
-
-  listener() {
-    const element = document.getElementById("watchme")
-    element.className = "stationary";
-  }
-
   chooseMidpoint() {
     let total = this.sad + this.happy;
     if (total % 2 === 1) {
@@ -43,4 +31,16 @@ export default class ApplicationController extends Controller {
     }
     this.midpoint = total / 2;
   }
+
+  // @action startAnimation() {
+  //   console.log('STARTING ANIMATION');
+  //   const element = document.getElementById("watchme");
+  //   element.addEventListener("animationend", this.listener, false);
+  //   element.className = "slidein";
+  // }
+  //
+  // listener() {
+  //   const element = document.getElementById("watchme");
+  //   element.className = "stationary";
+  // }
 }

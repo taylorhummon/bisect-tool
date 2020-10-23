@@ -1,27 +1,17 @@
 import Component from '@ember/component';
-import move from 'ember-animated/motions/move';
-import { easeOut, easeIn } from 'ember-animated/easings/cosine';
+import { action } from '@ember/object';
 
 export default Component.extend({
-  showThing: false,
-
-  toggleThing() {
-    this.set('showThing', !this.get('showThing'));
+  @action moveLeftToRight() {
+    console.log('IN ACTION');
+    const element = document.getElementById("watchme");
+    element.addEventListener("animationend", this.listener, false);
+    element.className = "move-left-to-right";
   },
 
-  transition: function * ({ insertedSprites, keptSprites, removedSprites }) {
-    for (let sprite of insertedSprites) {
-      sprite.startAtPixel({ x: window.innerWidth });
-      move(sprite, { easing: easeOut });
-    }
-
-    for (let sprite of keptSprites) {
-      move(sprite);
-    }
-
-    for (let sprite of removedSprites) {
-      sprite.endAtPixel({ x: window.innerWidth });
-      move(sprite, { easing: easeIn });
-    }
-  },
+  listener() {
+    console.log('DONE MOVING');
+    const element = document.getElementById("watchme");
+    element.className = "right";
+  }
 });
