@@ -6,35 +6,45 @@
   width: 400px;
 }
 
-.numerical-input {
-  width: 40px;
-}
-
 .smiley-face-with-number {
   position: absolute;
-}
 
-.state-left {
-  left: 0px;
-}
+  .smiley-face {
+    width: 48px;
+    height: 48px;
+  }
 
-.state-right {
-  left: 150px;
-}
+  .numerical-input {
+    box-sizing: border-box;
+    width: 48px;
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    text-align: center;
+  }
 
-.transition-left-to-right {
-  animation-duration: 600ms;
-  animation-name: transition-left-to-right;
-  animation-timing-function: ease-in-out;
-  animation-fill-mode: forwards;
-}
-
-@keyframes transition-left-to-right {
-  from {
+  &.state-left {
     left: 0px;
   }
 
-  to {
+  &.state-right {
     left: 150px;
+  }
+
+  &.transition-left-to-right {
+    animation-duration: 600ms;
+    animation-name: transition-left-to-right;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes transition-left-to-right {
+    from {
+      left: 0px;
+    }
+
+    to {
+      left: 150px;
+    }
   }
 }
