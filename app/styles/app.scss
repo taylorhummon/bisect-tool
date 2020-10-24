@@ -23,6 +23,10 @@
     text-align: center;
   }
 
+  &.state-invisible {
+    opacity: 0%;
+  }
+
   &.state-left {
     left: 0px;
   }
@@ -44,7 +48,7 @@
 
   @keyframes transition-center-to-left {
     from {
-      left: 100px;
+      left: 100px; // !!!!! is this an efficient way to do this?
     }
 
     to {
@@ -66,6 +70,23 @@
 
     to {
       left: 200px;
+    }
+  }
+
+  &.transition-depart {
+    animation-duration: 600ms;
+    animation-name: transition-depart;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes transition-depart {
+    from {
+      opacity: 100%;
+    }
+
+    to {
+      opacity: 0%;
     }
   }
 }
