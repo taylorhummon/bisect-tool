@@ -2,8 +2,8 @@
 .animation-canvas {
   position: relative;
   background-color: red;
-  height: 100px;
-  width: 400px;
+  height: 80px;
+  width: 248px;
 }
 
 .smiley-face-with-number {
@@ -27,24 +27,45 @@
     left: 0px;
   }
 
-  &.state-right {
-    left: 150px;
+  &.state-center {
+    left: 100px;
   }
 
-  &.transition-left-to-right {
+  &.state-right {
+    left: 200px;
+  }
+
+  &.transition-center-to-left {
     animation-duration: 600ms;
-    animation-name: transition-left-to-right;
+    animation-name: transition-center-to-left;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
   }
 
-  @keyframes transition-left-to-right {
+  @keyframes transition-center-to-left {
     from {
-      left: 0px;
+      left: 100px;
     }
 
     to {
-      left: 150px;
+      left: 0px;
+    }
+  }
+
+  &.transition-center-to-right {
+    animation-duration: 600ms;
+    animation-name: transition-center-to-right;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes transition-center-to-right {
+    from {
+      left: 100px;
+    }
+
+    to {
+      left: 200px;
     }
   }
 }

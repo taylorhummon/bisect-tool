@@ -5,21 +5,35 @@ import { action } from '@ember/object';
 export default Component.extend({
   classNames: ['smiley-face-with-number'],
   classNameBindings: ['stateOrTransition'],
-  stateOrTransition: 'state-left',
+  stateOrTransition: 'state-center',
 
   _onAnimationEndBound: null,
 
   @action smileyFaceClicked() {
-    console.log('CLICKED THE SMILEY');
-    if (this.stateOrTransition !== 'state-left') return;
-    this.set('_onAnimationEndBound', this.onAnimationEnd.bind(this));
-    this.element.addEventListener('animationend', this._onAnimationEndBound);
-    this.set('stateOrTransition', 'transition-left-to-right');
+    if (Math.floor(2 * Math.random())) {
+      this._animateCenterToLeft();
+    } else {
+      this._animateCenterToRight();
+    }
   },
 
-  onAnimationEnd() {
-    console.log('DONE MOVING');
-    this.set('stateOrTransition', 'state-right');
-    this.element.removeEventListener('animationend', this._onAnimationEndBound);
+  _animateCenterToLeft() {
+    if (this.stateOrTransition !== 'state-center') return;
+    const onAnimationEnd = () => {
+      this.element.removeEventListener('animationend', onAnimationEnd);
+      this.set('stateOrTransition', 'state-left');
+    };
+    this.element.addEventListener('animationend', onAnimationEnd);
+    this.set('stateOrTransition', 'transition-center-to-left');
+  },
+
+  _animateCenterToRight() {
+    if (this.stateOrTransition !== 'state-center') return;
+    const onAnimationEnd = () => {
+      this.element.removeEventListener('animationend', onAnimationEnd);
+      this.set('stateOrTransition', 'state-right');
+    };
+    this.element.addEventListener('animationend', onAnimationEnd);
+    this.set('stateOrTransition', 'transition-center-to-right');
   },
 });
