@@ -7,17 +7,19 @@ export default Component.extend({
   classNameBindings: ['stateOrTransition'],
   stateOrTransition: 'state-left',
 
+  _onAnimationEndBound: null,
+
   @action smileyFaceClicked() {
     console.log('CLICKED THE SMILEY');
     if (this.stateOrTransition !== 'state-left') return;
-    // !!! should remove this listener at some point, too
-    // !!! what was this false here again?
-    this.element.addEventListener('animationend', this.onAnimationEnd.bind(this), false);
+    this.set('_onAnimationEndBound', this.onAnimationEnd.bind(this));
+    this.element.addEventListener('animationend', this._onAnimationEndBound);
     this.set('stateOrTransition', 'transition-left-to-right');
   },
 
   onAnimationEnd() {
     console.log('DONE MOVING');
     this.set('stateOrTransition', 'state-right');
+    this.element.removeEventListener('animationend', this._onAnimationEndBound);
   },
 });
