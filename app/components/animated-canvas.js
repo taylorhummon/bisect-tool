@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import EmberObject from '@ember/object';
 import { action } from '@ember/object';
+import RSVP from 'rsvp';
 
 function flipCoin() {
   return Math.floor(2 * Math.random());
@@ -37,21 +38,22 @@ export default Component.extend({
 
   @action onSmileyClick(smiley) { // !!! does this need to be an action?
     if (smiley.position !== 'state-center') return;
-    this._removeSmileyByPosition('state-right');
+    this._removeSmileyByPosition('state-right'); // !!! should await
 
     // make the right smiley disappear and remove it from the list of smilies.
     // make the center smiley move to the right.
     // make a new center smiley and make it appear
   },
 
-  _removeSmileyByPosition(smileyPosition) {
+  async _removeSmileyByPosition(smileyPosition) {
     const smiley = this.smilies.find(
       smiley => smiley.position === smileyPosition
     );
     if (! smiley) return;
     const domElement = this.element.querySelector(`.${smiley.id}`);
     if (! domElement) return;
-    this._animateOpaqueToTransparent(smiley, domElement);
+    await this._animateOpaqueToTransparent(smiley, domElement);
+    this._removeSmilies();
   },
 
   _removeSmilies() {
@@ -64,15 +66,16 @@ export default Component.extend({
   },
 
   _animateOpaqueToTransparent(smiley, domElement) {
-    if (smiley.opacity !== 'state-opaque') return;
-    const onAnimationEnd = () => { // !!!! maybe make this promisey?
-      domElement.removeEventListener('animationend', onAnimationEnd);
-      smiley.set('opacity', 'state-transparent');
-      this._removeSmilies();
-      console.log('SMILIES', this.smilies);
-    };
-    domElement.addEventListener('animationend', onAnimationEnd);
-    smiley.set('opacity', 'transition-opaque-to-transparent');
+    if (smiley.opacity !== 'state-opaque') return RSVP.reject('Smiley must be opaque in order to transition from opaque to transparent');
+    return new RSVP.Promise((resolve, reject) => {
+      const onAnimationEnd = () => {
+        domElement.removeEventListener('animationend', onAnimationEnd);
+        smiley.set('opacity', 'state-transparent');
+        resolve();
+      };
+      domElement.addEventListener('animationend', onAnimationEnd);
+      smiley.set('opacity', 'transition-opaque-to-transparent');
+    });
   },
 
   _animateTransparentToOpaque() {
