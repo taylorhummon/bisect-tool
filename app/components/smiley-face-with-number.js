@@ -1,5 +1,7 @@
 import Component from '@ember/component';
 import { action } from '@ember/object';
+import { alias } from '@ember/object/computed';
+import { readOnly } from '@ember/object/computed';
 
 function flipCoin() {
   return Math.floor(2 * Math.random());
@@ -9,27 +11,22 @@ function flipCoin() {
 export default Component.extend({
   classNames: ['smiley-face-with-number'],
   classNameBindings: ['opacity', 'position'],
-  opacity: 'state-opaque',
-  position: 'state-center',
+
+  smiley: null,
+
+  opacity: alias('smiley.opacity'),
+  position: alias('smiley.position'),
+
+  init() {
+    this._super(...arguments);
+    console.log('SMILEY', this.smiley);
+  },
 
   @action smileyFaceClicked() {
-    if (flipCoin()) { // change opacity
-      if (this.opacity === 'state-opaque') {
-        this._animateOpaqueToTransparent();
-      } else {
-        this._animateTransparentToOpaque();
-      }
-    } else { // change position
-      if (this.position === 'state-center') {
-        if (flipCoin()) {
-          this._animateCenterToLeft();
-        } else {
-          this._animateCenterToRight();
-        }
-      } else {
-        console.log('Setting position to center');
-        this.set('position', 'state-center');
-      }
+    if (this.position === 'state-center') {
+      this._animateCenterToRight();
+    } else {
+      this._animateOpaqueToTransparent();
     }
   },
 

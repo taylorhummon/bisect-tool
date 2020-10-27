@@ -1,3 +1,7 @@
 <div class="animation-canvas">
-  {{smiley-face-with-number}}
+  {{#each smilies as |smiley|}}
+    {{smiley-face-with-number
+      smiley=smiley
+    }}
+  {{/each}}
 </div>
