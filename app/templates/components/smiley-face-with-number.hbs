@@ -1,8 +1,16 @@
-<img
-  src="emoticon-happy-outline.png"
-  class="smiley-face"
-  {{on "click" this.smileyFaceClicked}}
-/>
+{{#if (eq smile "state-happy")}}
+  <img
+    src="emoticon-happy-outline.png"
+    class="smiley-face"
+    {{on "click" this.smileyFaceClicked}}
+  />
+{{else}}
+  <img
+    src="emoticon-sad-outline.png"
+    class="smiley-face"
+    {{on "click" this.smileyFaceClicked}}
+  />
+{{/if}}
 <Input
   class="numerical-input"
   @value="20"
