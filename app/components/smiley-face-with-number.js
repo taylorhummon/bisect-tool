@@ -13,6 +13,7 @@ export default Component.extend({
   classNameBindings: ['opacity', 'position'],
 
   smiley: null,
+  smilies: null, // !!! this is gross
 
   opacity: alias('smiley.opacity'),
   position: alias('smiley.position'),
@@ -23,6 +24,7 @@ export default Component.extend({
   },
 
   @action smileyFaceClicked() {
+    console.log('CLICKED', this.smiley);
     if (this.position === 'state-center') {
       this._animateCenterToRight();
     } else {
@@ -35,9 +37,19 @@ export default Component.extend({
     const onAnimationEnd = () => {
       this.element.removeEventListener('animationend', onAnimationEnd);
       this.set('opacity', 'state-transparent');
+      this._removeSmilies();
     };
     this.element.addEventListener('animationend', onAnimationEnd);
     this.set('opacity', 'transition-opaque-to-transparent');
+  },
+
+  _removeSmilies() {
+    for (let i = this.smilies.length - 1; i >= 0; i--) {
+      const smiley = this.smilies.objectAt(i);
+      if (smiley.opacity === 'state-transparent') { // !!!
+        this.smilies.removeAt(i);
+      }
+    }
   },
 
   _animateTransparentToOpaque() {
