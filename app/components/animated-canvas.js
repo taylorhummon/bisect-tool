@@ -6,32 +6,17 @@ import RSVP from 'rsvp';
 
 // !!! consider making this a class
 export default Component.extend({
-  smilies: null,
-
   utils: service(),
 
+  smilies: null,
+
   init() {
-    console.log('IN INIT');
     this._super(...arguments);
-    const initialLeftSmiley = EmberObject.create({
-      id: this.utils.generateUuid(),
-      smile: 'state-sad',
-      opacity: 'state-opaque',
-      position: 'state-left',
-    });
-    const initialCenterSmiley = EmberObject.create({
-      id: this.utils.generateUuid(),
-      smile: 'state-happy',
-      opacity: 'state-opaque',
-      position: 'state-center',
-    });
-    const initialRightSmiley = EmberObject.create({
-      id: this.utils.generateUuid(),
-      smile: 'state-happy',
-      opacity: 'state-opaque',
-      position: 'state-right',
-    });
-    const smilies = [initialLeftSmiley, initialCenterSmiley, initialRightSmiley];
+    const smilies = [
+      this._buildSmiley('state-sad', 'state-opaque', 'state-left'),
+      this._buildSmiley('state-happy', 'state-opaque', 'state-center'),
+      this._buildSmiley('state-happy', 'state-opaque', 'state-right'),
+    ];
     this.set('smilies', smilies);
   },
 
@@ -47,9 +32,7 @@ export default Component.extend({
       smiley => smiley.position === smileyPosition
     );
     if (! smiley) return;
-    const domElement = this.element.querySelector(`.${smiley.id}`);
-    if (! domElement) return;
-    await this._animateOpaqueToTransparent(smiley, domElement);
+    await this._animateOpaqueToTransparent(smiley);
     this._removeSmilies();
   },
 
@@ -62,8 +45,10 @@ export default Component.extend({
     }
   },
 
-  _animateOpaqueToTransparent(smiley, domElement) {
+  _animateOpaqueToTransparent(smiley) {
     if (smiley.opacity !== 'state-opaque') return RSVP.reject('Smiley must be opaque in order to transition from opaque to transparent');
+    const domElement = this._domElementForSmiley(smiley);
+    if (! domElement) return RSVP.reject('Could not find dom element');
     return new RSVP.Promise(resolve => {
       const onAnimationEnd = () => {
         domElement.removeEventListener('animationend', onAnimationEnd);
@@ -80,13 +65,13 @@ export default Component.extend({
       smiley => smiley.position === 'state-center'
     );
     if (! smiley) return;
-    const domElement = this.element.querySelector(`.${smiley.id}`);
-    if (! domElement) return;
-    await this._animateCenterToRight(smiley, domElement);
+    await this._animateCenterToRight(smiley);
   },
 
-  _animateCenterToRight(smiley, domElement) {
+  _animateCenterToRight(smiley) {
     if (smiley.position !== 'state-center') return RSVP.reject('Smiley must be centered in order to transition from center to right');
+    const domElement = this._domElementForSmiley(smiley);
+    if (! domElement) return RSVP.reject('Could not find dom element');
     return new RSVP.Promise(resolve => {
       const onAnimationEnd = () => {
         domElement.removeEventListener('animationend', onAnimationEnd);
@@ -99,24 +84,16 @@ export default Component.extend({
   },
 
   async _createCenterSmiley() {
-    const centerSmiley = EmberObject.create({
-      id: this.utils.generateUuid(),
-      smile: 'state-happy',
-      opacity: 'state-transparent',
-      position: 'state-center',
-    });
-    this.smilies.pushObject(centerSmiley);
-    console.log('SMILY PUSHED', this.smilies);
+    const smiley = this._buildSmiley('state-happy', 'state-transparent', 'state-center');
+    this.smilies.pushObject(smiley);
     await this.utils.delayPromise(0); // !!! ugh
-    const selectorString = `.${centerSmiley.id}`;
-    console.log('SELECTOR STRING', selectorString);
-    const domElement = this.element.querySelector(`.${centerSmiley.id}`); // !!! is the smiley in the dom already?
-    console.log('IS THERE A DOM ELEMENT', domElement);
-    this._animateTransparentToOpaque(centerSmiley, domElement);
+    this._animateTransparentToOpaque(smiley);
   },
 
-  _animateTransparentToOpaque(smiley, domElement) {
+  _animateTransparentToOpaque(smiley) {
     if (smiley.opacity !== 'state-transparent') return RSVP.reject('Smiley must be transparent in order to transition from transparent to opaque');
+    const domElement = this._domElementForSmiley(smiley);
+    if (! domElement) return RSVP.reject('Could not find dom element');
     return new RSVP.Promise(resolve => {
       const onAnimationEnd = () => {
         domElement.removeEventListener('animationend', onAnimationEnd);
@@ -128,13 +105,26 @@ export default Component.extend({
     });
   },
 
-  _animateCenterToLeft(smiley, domElement) {
-    if (smiley.position !== 'state-center') return;
-    const onAnimationEnd = () => {
-      domElement.removeEventListener('animationend', onAnimationEnd);
-      smiley.set('position', 'state-left');
-    };
-    domElement.addEventListener('animationend', onAnimationEnd);
-    smiley.set('position', 'transition-center-to-left');
+  _animateCenterToLeft(smiley) {
+    if (smiley.position !== 'state-center') return RSVP.reject('Smiley must be centered in order to transition from center to left');
+    const domElement = this._domElementForSmiley(smiley);
+    return new RSVP.Promise(resolve => {
+      const onAnimationEnd = () => {
+        domElement.removeEventListener('animationend', onAnimationEnd);
+        smiley.set('position', 'state-left');
+        resolve();
+      };
+      domElement.addEventListener('animationend', onAnimationEnd);
+      smiley.set('position', 'transition-center-to-left');
+    });
+  },
+
+  _buildSmiley(smile, opacity, position) {
+    const id = this.utils.generateUuid();
+    return EmberObject.create({ id, smile, opacity, position });
+  },
+
+  _domElementForSmiley(smiley) {
+    return this.element.querySelector(`.${smiley.id}`); // !!! this is gross
   },
 });
