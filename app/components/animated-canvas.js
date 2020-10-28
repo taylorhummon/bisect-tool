@@ -1,10 +1,17 @@
 import Component from '@ember/component';
 import EmberObject from '@ember/object';
 import { action } from '@ember/object';
+import { later } from '@ember/runloop';
 import RSVP from 'rsvp';
 
 function flipCoin() {
   return Math.floor(2 * Math.random());
+}
+
+function delayPromise(waitTime) {
+  return new RSVP.Promise(resolve => {
+    later(resolve, waitTime)
+  });
 }
 
 // !!! consider making this a class
@@ -39,10 +46,8 @@ export default Component.extend({
   @action async onSmileyClick(smiley) { // !!! does this need to be an action?
     if (smiley.position !== 'state-center') return;
     await this._removeSmileyByPosition('state-right');
-    await this._moveSmileToRight();
-    // make the right smiley disappear and remove it from the list of smilies.
-    // make the center smiley move to the right.
-    // make a new center smiley and make it appear
+    await this._moveSmileyToRight();
+    await this._createCenterSmiley();
   },
 
   async _removeSmileyByPosition(smileyPosition) {
@@ -67,7 +72,7 @@ export default Component.extend({
 
   _animateOpaqueToTransparent(smiley, domElement) {
     if (smiley.opacity !== 'state-opaque') return RSVP.reject('Smiley must be opaque in order to transition from opaque to transparent');
-    return new RSVP.Promise((resolve, reject) => {
+    return new RSVP.Promise(resolve => {
       const onAnimationEnd = () => {
         domElement.removeEventListener('animationend', onAnimationEnd);
         smiley.set('opacity', 'state-transparent');
@@ -78,7 +83,7 @@ export default Component.extend({
     });
   },
 
-  async _moveSmileToRight() {
+  async _moveSmileyToRight() {
     const smiley = this.smilies.find(
       smiley => smiley.position === 'state-center'
     );
@@ -90,7 +95,7 @@ export default Component.extend({
 
   _animateCenterToRight(smiley, domElement) {
     if (smiley.position !== 'state-center') return RSVP.reject('Smiley must be centered in order to transition from center to right');
-    return new RSVP.Promise((resolve, reject) => {
+    return new RSVP.Promise(resolve => {
       const onAnimationEnd = () => {
         domElement.removeEventListener('animationend', onAnimationEnd);
         smiley.set('position', 'state-right');
@@ -101,23 +106,43 @@ export default Component.extend({
     });
   },
 
-  _animateTransparentToOpaque() {
-    if (this.opacity !== 'state-transparent') return;
-    const onAnimationEnd = () => {
-      this.element.removeEventListener('animationend', onAnimationEnd);
-      this.set('opacity', 'state-opaque');
-    };
-    this.element.addEventListener('animationend', onAnimationEnd);
-    this.set('opacity', 'transition-transparent-to-opaque');
+  async _createCenterSmiley() {
+    const centerSmiley = EmberObject.create({
+      id: 'id-4', // !!! need a way to generate ids
+      smile: 'state-happy',
+      opacity: 'state-transparent',
+      position: 'state-center',
+    });
+    this.smilies.pushObject(centerSmiley);
+    console.log('SMILIE PUSHED', this.smilies);
+    await delayPromise(0); // !!! ugh
+    const selectorString = `.${centerSmiley.id}`;
+    console.log('SELECTOR STRING', selectorString);
+    const domElement = this.element.querySelector(`.${centerSmiley.id}`); // !!! is the smiley in the dom already?
+    console.log('IS THERE A DOM ELEMENT', domElement);
+    this._animateTransparentToOpaque(centerSmiley, domElement);
   },
 
-  _animateCenterToLeft() {
-    if (this.position !== 'state-center') return;
+  _animateTransparentToOpaque(smiley, domElement) {
+    if (smiley.opacity !== 'state-transparent') return RSVP.reject('Smiley must be transparent in order to transition from transparent to opaque');
+    return new RSVP.Promise(resolve => {
+      const onAnimationEnd = () => {
+        domElement.removeEventListener('animationend', onAnimationEnd);
+        smiley.set('opacity', 'state-opaque');
+        resolve();
+      };
+      domElement.addEventListener('animationend', onAnimationEnd);
+      smiley.set('opacity', 'transition-transparent-to-opaque');
+    });
+  },
+
+  _animateCenterToLeft(smiley, domElement) {
+    if (smiley.position !== 'state-center') return;
     const onAnimationEnd = () => {
-      this.element.removeEventListener('animationend', onAnimationEnd);
-      this.set('position', 'state-left');
+      domElement.removeEventListener('animationend', onAnimationEnd);
+      smiley.set('position', 'state-left');
     };
-    this.element.addEventListener('animationend', onAnimationEnd);
-    this.set('position', 'transition-center-to-left');
+    domElement.addEventListener('animationend', onAnimationEnd);
+    smiley.set('position', 'transition-center-to-left');
   },
 });
