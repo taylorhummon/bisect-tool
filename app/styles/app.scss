@@ -44,14 +44,14 @@
     transform: translateX(100px);
   }
 
-  &.transition-center-to-left {
+  &.transition-from-center-to-left {
     animation-duration: 600ms;
-    animation-name: transition-center-to-left;
+    animation-name: transition-from-center-to-left;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
   }
 
-  @keyframes transition-center-to-left {
+  @keyframes transition-from-center-to-left {
     from {
       transform: translateX(0px);
     }
@@ -61,14 +61,14 @@
     }
   }
 
-  &.transition-center-to-right {
+  &.transition-from-center-to-right {
     animation-duration: 600ms;
-    animation-name: transition-center-to-right;
+    animation-name: transition-from-center-to-right;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
   }
 
-  @keyframes transition-center-to-right {
+  @keyframes transition-from-center-to-right {
     from {
       transform: translateX(0px);
     }
@@ -78,14 +78,14 @@
     }
   }
 
-  &.transition-opaque-to-transparent {
+  &.transition-from-opaque-to-transparent {
     animation-duration: 600ms;
-    animation-name: transition-opaque-to-transparent;
+    animation-name: transition-from-opaque-to-transparent;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
   }
 
-  @keyframes transition-opaque-to-transparent {
+  @keyframes transition-from-opaque-to-transparent {
     from {
       opacity: 100%;
     }
@@ -95,14 +95,14 @@
     }
   }
 
-  &.transition-transparent-to-opaque {
+  &.transition-from-transparent-to-opaque {
     animation-duration: 600ms;
-    animation-name: transition-transparent-to-opaque;
+    animation-name: transition-from-transparent-to-opaque;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
   }
 
-  @keyframes transition-transparent-to-opaque {
+  @keyframes transition-from-transparent-to-opaque {
     from {
       opacity: 0%;
     }
