@@ -1,40 +1,32 @@
 import Component from '@ember/component';
 import EmberObject from '@ember/object';
+import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import { later } from '@ember/runloop';
 import RSVP from 'rsvp';
-
-function flipCoin() {
-  return Math.floor(2 * Math.random());
-}
-
-function delayPromise(waitTime) {
-  return new RSVP.Promise(resolve => {
-    later(resolve, waitTime)
-  });
-}
 
 // !!! consider making this a class
 export default Component.extend({
   smilies: null,
 
+  utils: service(),
+
   init() {
     console.log('IN INIT');
     this._super(...arguments);
     const initialLeftSmiley = EmberObject.create({
-      id: 'id-1',
+      id: this.utils.generateUuid(),
       smile: 'state-sad',
       opacity: 'state-opaque',
       position: 'state-left',
     });
     const initialCenterSmiley = EmberObject.create({
-      id: 'id-2',
+      id: this.utils.generateUuid(),
       smile: 'state-happy',
       opacity: 'state-opaque',
       position: 'state-center',
     });
     const initialRightSmiley = EmberObject.create({
-      id: 'id-3',
+      id: this.utils.generateUuid(),
       smile: 'state-happy',
       opacity: 'state-opaque',
       position: 'state-right',
@@ -108,14 +100,14 @@ export default Component.extend({
 
   async _createCenterSmiley() {
     const centerSmiley = EmberObject.create({
-      id: 'id-4', // !!! need a way to generate ids
+      id: this.utils.generateUuid(),
       smile: 'state-happy',
       opacity: 'state-transparent',
       position: 'state-center',
     });
     this.smilies.pushObject(centerSmiley);
-    console.log('SMILIE PUSHED', this.smilies);
-    await delayPromise(0); // !!! ugh
+    console.log('SMILY PUSHED', this.smilies);
+    await this.utils.delayPromise(0); // !!! ugh
     const selectorString = `.${centerSmiley.id}`;
     console.log('SELECTOR STRING', selectorString);
     const domElement = this.element.querySelector(`.${centerSmiley.id}`); // !!! is the smiley in the dom already?
