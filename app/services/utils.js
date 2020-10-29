@@ -1,5 +1,5 @@
 import Service from '@ember/service';
-import { later } from '@ember/runloop';
+import { later, next } from '@ember/runloop';
 import RSVP from 'rsvp';
 
 export default class Utils extends Service {
@@ -18,7 +18,13 @@ export default class Utils extends Service {
 
   delayPromise(waitTime) {
     return new RSVP.Promise(resolve => {
-      later(resolve, waitTime)
+      later(resolve, waitTime);
+    });
+  }
+
+  domRenderPromise() {
+    return new RSVP.Promise(resolve => {
+      next(null, resolve);
     });
   }
 }

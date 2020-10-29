@@ -21,43 +21,58 @@ export default Component.extend({
   },
 
   @action async onSmileyClick(smiley) { // !!! does this need to be an action?
-    if (smiley.position !== 'state-center') return;
-    await this._removeSmileyByPosition('state-right');
-    await this._moveSmileyToRight();
-    await this._createCenterSmiley();
+    if (smiley.position !== 'state-center') return; // !!!
+    const oldSmiley = this._oldSmiley('state-right'); // !!!
+    const movingSmiley = this._movingSmiley();
+    const newSmiley = this._newSmiley();
+    await this.utils.domRenderPromise(); // !!! ugh
+    await RSVP.all([
+      this._animateHide(oldSmiley),
+      this._animateMove(movingSmiley),
+      this._animateShow(newSmiley),
+    ]);
+    this._removeSmiley(oldSmiley);
   },
 
-  async _createCenterSmiley() {
-    const smiley = this._buildSmiley('state-happy', 'state-transparent', 'state-center');
-    this.smilies.pushObject(smiley);
-    await this.utils.delayPromise(0); // !!! ugh
-    await this._animate(smiley, 'opacity', 'transparent', 'opaque');
-  },
-
-  async _removeSmileyByPosition(smileyPosition) {
+  _oldSmiley(smileyPosition) {
     const smiley = this.smilies.find(
       smiley => smiley.position === smileyPosition
     );
-    if (! smiley) return;
-    await this._animate(smiley, 'opacity', 'opaque', 'transparent');
-    this._removeSmilies();
+    if (! smiley) throw 'Could not find old smiley';
+    return smiley;
   },
 
-  _removeSmilies() {
-    for (let i = this.smilies.length - 1; i >= 0; i--) {
-      const smiley = this.smilies.objectAt(i);
-      if (smiley.opacity === 'state-transparent') { // !!!
-        this.smilies.removeAt(i);
-      }
-    }
-  },
-
-  async _moveSmileyToRight() {
+  _movingSmiley() {
     const smiley = this.smilies.find(
       smiley => smiley.position === 'state-center'
     );
-    if (! smiley) return;
-    await this._animate(smiley, 'position', 'center', 'right');
+    if (! smiley) throw 'Could not find moving smiley';
+    return smiley;
+  },
+
+  _newSmiley() {
+    const smiley = this._buildSmiley('state-happy', 'state-transparent', 'state-center');
+    this.smilies.pushObject(smiley);
+    return smiley;
+  },
+
+  _buildSmiley(smile, opacity, position) {
+    const id = this.utils.generateUuid();
+    return EmberObject.create({ id, smile, opacity, position });
+  },
+
+  async _animateHide(oldSmiley) {
+    await this._animate(oldSmiley, 'opacity', 'opaque', 'transparent');
+  },
+
+  async _animateMove(movingSmiley) {
+    await this.utils.delayPromise(300);
+    await this._animate(movingSmiley, 'position', 'center', 'right');
+  },
+
+  async _animateShow(newSmiley) {
+    await this.utils.delayPromise(600);
+    await this._animate(newSmiley, 'opacity', 'transparent', 'opaque');
   },
 
   _animate(smiley, attribute, from, to) {
@@ -76,12 +91,14 @@ export default Component.extend({
     });
   },
 
-  _buildSmiley(smile, opacity, position) {
-    const id = this.utils.generateUuid();
-    return EmberObject.create({ id, smile, opacity, position });
-  },
-
   _domElementForSmiley(smiley) {
     return this.element.querySelector(`.${smiley.id}`); // !!! this is gross
+  },
+
+  _removeSmiley(oldSmiley) {
+    for (let i = this.smilies.length - 1; i >= 0; i--) {
+      const smiley = this.smilies.objectAt(i);
+      if (smiley.id === oldSmiley.id) this.smilies.removeAt(i);
+    }
   },
 });
