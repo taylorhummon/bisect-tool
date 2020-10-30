@@ -1,18 +1,33 @@
 
 .animation-canvas {
+  height: 80px;
+  width: 400px;
   position: relative;
   background-color: red;
-  height: 80px;
-  width: 248px;
 }
 
 .smiley-face-with-number {
+  height: 80px;
+  width: 48px;
   position: absolute;
-  left: 100px;
+  top: 0;
+  left: 50%;
+  margin-left: -24px;
 
   .smiley-face {
     width: 48px;
     height: 48px;
+    position: absolute;
+    left: 50%;
+    margin-left: -24px;
+
+    &.choice-left {
+      transform: translateX(-30px);
+    }
+
+    &.choice-right {
+      transform: translateX(30px);
+    }
   }
 
   .numerical-input {
@@ -20,7 +35,8 @@
     width: 48px;
     position: absolute;
     top: 50px;
-    left: 0px;
+    left: 50%;
+    margin-left: -24px;
     text-align: center;
   }
 
@@ -33,7 +49,7 @@
   }
 
   &.state-left {
-    transform: translateX(-100px);
+    transform: translateX(-150px);
   }
 
   &.state-center {
@@ -41,7 +57,7 @@
   }
 
   &.state-right {
-    transform: translateX(100px);
+    transform: translateX(150px);
   }
 
   &.transition-from-center-to-left {
@@ -57,7 +73,7 @@
     }
 
     to {
-      transform: translateX(-100px);
+      transform: translateX(-150px);
     }
   }
 
@@ -74,7 +90,7 @@
     }
 
     to {
-      transform: translateX(100px);
+      transform: translateX(150px);
     }
   }
 
