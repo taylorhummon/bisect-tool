@@ -2,13 +2,23 @@
   <img
     src="emoticon-happy-outline.png"
     class="smiley-face"
-    {{on "click" this.smileyFaceClicked}}
   />
-{{else}}
+{{else if (eq smile "state-sad")}}
   <img
     src="emoticon-sad-outline.png"
     class="smiley-face"
-    {{on "click" this.smileyFaceClicked}}
+  />
+{{else if (eq smile "state-choice")}}
+  <img
+    src="emoticon-sad-outline.png"
+    class="smiley-face"
+    {{on "click" (fn this.smileyFaceClicked "sad")}}
+  />
+  or
+  <img
+    src="emoticon-happy-outline.png"
+    class="smiley-face"
+    {{on "click" (fn this.smileyFaceClicked "happy")}}
   />
 {{/if}}
 <Input

@@ -14,29 +14,34 @@ export default Component.extend({
     this._super(...arguments);
     const smilies = [
       this._buildSmiley('state-sad', 'state-opaque', 'state-left'),
-      this._buildSmiley('state-happy', 'state-opaque', 'state-center'),
+      this._buildSmiley('state-choice', 'state-opaque', 'state-center'),
       this._buildSmiley('state-happy', 'state-opaque', 'state-right'),
     ];
     this.set('smilies', smilies);
   },
 
-  @action async onSmileyClick(smiley) { // !!! does this need to be an action?
-    if (smiley.position !== 'state-center') return; // !!!
-    const oldSmiley = this._oldSmiley('state-right'); // !!!
+  @action async onSmileyClick(decision) { // !!! does this need to be an action?
+    const direction = decision === 'happy' ? 'right' : 'left';
+    await this._rearrangeSmilies(direction);
+  },
+
+  async _rearrangeSmilies(direction) {
+    const oldSmiley = this._oldSmiley(direction);
     const movingSmiley = this._movingSmiley();
     const newSmiley = this._newSmiley();
     await this.utils.domRenderPromise(); // !!! ugh
     await RSVP.all([
       this._animateHide(oldSmiley),
-      this._animateMove(movingSmiley),
+      this._animateMove(movingSmiley, direction),
       this._animateShow(newSmiley),
     ]);
     this._removeSmiley(oldSmiley);
   },
 
-  _oldSmiley(smileyPosition) {
+  _oldSmiley(direction) {
+    const desiredPosition = `state-${direction}`;
     const smiley = this.smilies.find(
-      smiley => smiley.position === smileyPosition
+      smiley => smiley.position === desiredPosition
     );
     if (! smiley) throw 'Could not find old smiley';
     return smiley;
@@ -51,7 +56,7 @@ export default Component.extend({
   },
 
   _newSmiley() {
-    const smiley = this._buildSmiley('state-happy', 'state-transparent', 'state-center');
+    const smiley = this._buildSmiley('state-choice', 'state-transparent', 'state-center');
     this.smilies.pushObject(smiley);
     return smiley;
   },
@@ -65,9 +70,9 @@ export default Component.extend({
     await this._animate(oldSmiley, 'opacity', 'opaque', 'transparent');
   },
 
-  async _animateMove(movingSmiley) {
+  async _animateMove(movingSmiley, direction) {
     await this.utils.delayPromise(300);
-    await this._animate(movingSmiley, 'position', 'center', 'right');
+    await this._animate(movingSmiley, 'position', 'center', direction);
   },
 
   async _animateShow(newSmiley) {

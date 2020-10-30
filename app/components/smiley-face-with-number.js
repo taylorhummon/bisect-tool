@@ -15,8 +15,8 @@ export default Component.extend({
   classNames: ['smiley-face-with-number'],
   classNameBindings: ['smileId', 'opacity', 'position'],
 
-  @action smileyFaceClicked() {
+  @action smileyFaceClicked(decision) {
     if (! this.onSmileyClick) return;
-    this.onSmileyClick(this.smiley);
+    this.onSmileyClick(decision);
   },
 });
