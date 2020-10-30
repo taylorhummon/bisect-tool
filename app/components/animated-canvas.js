@@ -13,56 +13,44 @@ export default Component.extend({
   init() {
     this._super(...arguments);
     const smilies = [
-      this._buildSmiley('state-sad', 'state-opaque', 'state-left'),
-      this._buildSmiley('state-choice', 'state-opaque', 'state-center'),
-      this._buildSmiley('state-happy', 'state-opaque', 'state-right'),
+      this._buildSmiley('sad', 'opaque', 'left'),
+      this._buildSmiley('choice', 'opaque', 'center'),
+      this._buildSmiley('happy', 'opaque', 'right'),
     ];
     this.set('smilies', smilies);
   },
 
   @action async onSmileyClick(decision) { // !!! does this need to be an action?
     await this._animateDecision(decision);
-    const direction = decision === 'happy' ? 'right' : 'left'; !!!!!
+    const direction = decision === 'happy' ? 'right' : 'left'; // !!!!!
     await this._rearrangeSmilies(direction); // !!!!!
   },
 
   async _animateDecision(decision) {
     if (decision === 'sad') {
       const smiley = this.smilies.find(
-        smiley => smiley.position === 'state-center'
+        smiley => smiley.position === 'center'
       );
-      smiley.set('rightChoiceOpacity', 'transition-from-opaque-to-transparent');
-      smiley.set('leftChoicePosition', 'transition-from-left-to-center');
+      smiley.set('rightChoiceOpacity', 'from-opaque-to-transparent');
+      smiley.set('leftChoicePosition', 'from-left-to-center');
       await this.utils.delayPromise(600); // !!!! hacky
-      smiley.set('rightChoiceOpacity', 'state-transparent');
-      smiley.set('leftChoicePosition', 'state-center');
-      smiley.set('smile', 'state-sad');
+      smiley.set('rightChoiceOpacity', 'transparent');
+      smiley.set('leftChoicePosition', 'center');
+      smiley.set('smile', 'sad');
       return;
     }
     if (decision === 'happy') {
       const smiley = this.smilies.find(
-        smiley => smiley.position === 'state-center'
+        smiley => smiley.position === 'center'
       );
-      smiley.set('leftChoiceOpacity', 'transition-from-opaque-to-transparent');
-      smiley.set('rightChoicePosition', 'transition-from-right-to-center');
+      smiley.set('leftChoiceOpacity', 'from-opaque-to-transparent');
+      smiley.set('rightChoicePosition', 'from-right-to-center');
       await this.utils.delayPromise(600); // !!!! hacky
-      smiley.set('leftChoiceOpacity', 'state-transparent');
-      smiley.set('rightChoicePosition', 'state-center');
-      smiley.set('smile', 'state-happy');
+      smiley.set('leftChoiceOpacity', 'transparent');
+      smiley.set('rightChoicePosition', 'center');
+      smiley.set('smile', 'happy');
       return;
     }
-  },
-
-  __animate(smiley, domElement, attribute, from, to) {
-    return new RSVP.Promise(resolve => {
-      const onAnimationEnd = () => {
-        domElement.removeEventListener('animationend', onAnimationEnd);
-        smiley.set(attribute, `state-${to}`);
-        resolve();
-      };
-      domElement.addEventListener('animationend', onAnimationEnd);
-      smiley.set(attribute, `transition-from-${from}-to-${to}`);
-    });
   },
 
   async _rearrangeSmilies(direction) {
@@ -79,7 +67,7 @@ export default Component.extend({
   },
 
   _oldSmiley(direction) {
-    const desiredPosition = `state-${direction}`;
+    const desiredPosition = `${direction}`;
     const smiley = this.smilies.find(
       smiley => smiley.position === desiredPosition
     );
@@ -89,14 +77,14 @@ export default Component.extend({
 
   _movingSmiley() {
     const smiley = this.smilies.find(
-      smiley => smiley.position === 'state-center'
+      smiley => smiley.position === 'center'
     );
     if (! smiley) throw 'Could not find moving smiley';
     return smiley;
   },
 
   _newSmiley() {
-    const smiley = this._buildSmiley('state-choice', 'state-transparent', 'state-center');
+    const smiley = this._buildSmiley('choice', 'transparent', 'center');
     this.smilies.pushObject(smiley);
     return smiley;
   },
@@ -108,10 +96,10 @@ export default Component.extend({
       smile,
       opacity,
       position,
-      leftChoiceOpacity: 'state-opaque',
-      leftChoicePosition: 'state-left',
-      rightChoiceOpacity: 'state-opaque',
-      rightChoicePosition: 'state-right',
+      leftChoiceOpacity: 'opaque',
+      leftChoicePosition: 'left',
+      rightChoiceOpacity: 'opaque',
+      rightChoicePosition: 'right',
     });
   },
 
@@ -130,23 +118,23 @@ export default Component.extend({
   },
 
   _animate(smiley, attribute, from, to) {
-    if (smiley[attribute] !== `state-${from}`) {
-      return RSVP.reject(`Smiley must have ${attribute} be equal to state-${from} in order to transition to state-${to}`);
+    if (smiley[attribute] !== `${from}`) {
+      return RSVP.reject(`Smiley must have ${attribute} be equal to ${from} in order to transition to ${to}`);
     }
     const domElement = this._domElementForSmiley(smiley);
     return new RSVP.Promise(resolve => {
       const onAnimationEnd = () => {
         domElement.removeEventListener('animationend', onAnimationEnd);
-        smiley.set(attribute, `state-${to}`);
+        smiley.set(attribute, `${to}`);
         resolve();
       };
       domElement.addEventListener('animationend', onAnimationEnd);
-      smiley.set(attribute, `transition-from-${from}-to-${to}`);
+      smiley.set(attribute, `from-${from}-to-${to}`);
     });
   },
 
   _domElementForSmiley(smiley) {
-    return this.element.querySelector(`.${smiley.id}`); // !!! this is gross
+    return this.element.querySelector(`.id-${smiley.id}`); // !!! this is gross
   },
 
   _removeSmiley(oldSmiley) {

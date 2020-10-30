@@ -16,34 +16,34 @@
     text-align: center;
   }
 
-  &.state-opaque {
+  &.opacity-opaque {
     opacity: 100%;
   }
 
-  &.state-transparent {
+  &.opacity-transparent {
     opacity: 0%;
   }
 
-  &.state-left {
+  &.position-left {
     transform: translateX(-150px);
   }
 
-  &.state-center {
+  &.position-center {
     transform: translateX(0px);
   }
 
-  &.state-right {
+  &.position-right {
     transform: translateX(150px);
   }
 
-  &.transition-from-center-to-left {
+  &.position-from-center-to-left {
     animation-duration: 600ms;
-    animation-name: transition-from-center-to-left;
+    animation-name: position-from-center-to-left;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
   }
 
-  @keyframes transition-from-center-to-left {
+  @keyframes position-from-center-to-left {
     from {
       transform: translateX(0px);
     }
@@ -53,14 +53,14 @@
     }
   }
 
-  &.transition-from-center-to-right {
+  &.position-from-center-to-right {
     animation-duration: 600ms;
-    animation-name: transition-from-center-to-right;
+    animation-name: position-from-center-to-right;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
   }
 
-  @keyframes transition-from-center-to-right {
+  @keyframes position-from-center-to-right {
     from {
       transform: translateX(0px);
     }
@@ -70,14 +70,14 @@
     }
   }
 
-  &.transition-from-opaque-to-transparent {
+  &.opacity-from-opaque-to-transparent {
     animation-duration: 600ms;
-    animation-name: transition-from-opaque-to-transparent;
+    animation-name: opacity-from-opaque-to-transparent;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
   }
 
-  @keyframes transition-from-opaque-to-transparent {
+  @keyframes opacity-from-opaque-to-transparent {
     from {
       opacity: 100%;
     }
@@ -87,14 +87,14 @@
     }
   }
 
-  &.transition-from-transparent-to-opaque {
+  &.opacity-from-transparent-to-opaque {
     animation-duration: 600ms;
-    animation-name: transition-from-transparent-to-opaque;
+    animation-name: opacity-from-transparent-to-opaque;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
   }
 
-  @keyframes transition-from-transparent-to-opaque {
+  @keyframes opacity-from-transparent-to-opaque {
     from {
       opacity: 0%;
     }

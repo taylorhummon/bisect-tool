@@ -13,34 +13,34 @@
     transform: translateX(30px);
   }
 
-  &.state-opaque {
+  &.position-opaque {
     opacity: 100%;
   }
 
-  &.state-transparent {
+  &.position-transparent {
     opacity: 0%;
   }
 
-  &.state-left {
+  &.position-left {
     transform: translateX(-30px);
   }
 
-  &.state-center {
+  &.position-center {
     transform: translateX(0px);
   }
 
-  &.state-right {
+  &.position-right {
     transform: translateX(30px);
   }
 
-  &.transition-from-left-to-center {
+  &.position-from-left-to-center {
     animation-duration: 600ms;
-    animation-name: transition-from-left-to-center;
+    animation-name: position-from-left-to-center;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
   }
 
-  @keyframes transition-from-left-to-center {
+  @keyframes position-from-left-to-center {
     from {
       transform: translateX(-30px);
     }
@@ -50,14 +50,14 @@
     }
   }
 
-  &.transition-from-right-to-center {
+  &.position-from-right-to-center {
     animation-duration: 600ms;
-    animation-name: transition-from-right-to-center;
+    animation-name: position-from-right-to-center;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
   }
 
-  @keyframes transition-from-right-to-center {
+  @keyframes position-from-right-to-center {
     from {
       transform: translateX(30px);
     }
@@ -67,14 +67,14 @@
     }
   }
 
-  &.transition-from-opaque-to-transparent {
+  &.opacity-from-opaque-to-transparent {
     animation-duration: 600ms;
-    animation-name: transition-from-opaque-to-transparent;
+    animation-name: opacity-from-opaque-to-transparent;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
   }
 
-  @keyframes transition-from-opaque-to-transparent {
+  @keyframes opacity-from-opaque-to-transparent {
     from {
       opacity: 100%;
     }
