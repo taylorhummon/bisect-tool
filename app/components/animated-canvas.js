@@ -21,8 +21,48 @@ export default Component.extend({
   },
 
   @action async onSmileyClick(decision) { // !!! does this need to be an action?
-    const direction = decision === 'happy' ? 'right' : 'left';
-    await this._rearrangeSmilies(direction);
+    await this._animateDecision(decision);
+    const direction = decision === 'happy' ? 'right' : 'left'; !!!!!
+    await this._rearrangeSmilies(direction); // !!!!!
+  },
+
+  async _animateDecision(decision) {
+    if (decision === 'sad') {
+      const smiley = this.smilies.find(
+        smiley => smiley.position === 'state-center'
+      );
+      smiley.set('rightChoiceOpacity', 'transition-from-opaque-to-transparent');
+      smiley.set('leftChoicePosition', 'transition-from-left-to-center');
+      await this.utils.delayPromise(600); // !!!! hacky
+      smiley.set('rightChoiceOpacity', 'state-transparent');
+      smiley.set('leftChoicePosition', 'state-center');
+      smiley.set('smile', 'state-sad');
+      return;
+    }
+    if (decision === 'happy') {
+      const smiley = this.smilies.find(
+        smiley => smiley.position === 'state-center'
+      );
+      smiley.set('leftChoiceOpacity', 'transition-from-opaque-to-transparent');
+      smiley.set('rightChoicePosition', 'transition-from-right-to-center');
+      await this.utils.delayPromise(600); // !!!! hacky
+      smiley.set('leftChoiceOpacity', 'state-transparent');
+      smiley.set('rightChoicePosition', 'state-center');
+      smiley.set('smile', 'state-happy');
+      return;
+    }
+  },
+
+  __animate(smiley, domElement, attribute, from, to) {
+    return new RSVP.Promise(resolve => {
+      const onAnimationEnd = () => {
+        domElement.removeEventListener('animationend', onAnimationEnd);
+        smiley.set(attribute, `state-${to}`);
+        resolve();
+      };
+      domElement.addEventListener('animationend', onAnimationEnd);
+      smiley.set(attribute, `transition-from-${from}-to-${to}`);
+    });
   },
 
   async _rearrangeSmilies(direction) {
@@ -63,7 +103,16 @@ export default Component.extend({
 
   _buildSmiley(smile, opacity, position) {
     const id = this.utils.generateUuid();
-    return EmberObject.create({ id, smile, opacity, position });
+    return EmberObject.create({
+      id,
+      smile,
+      opacity,
+      position,
+      leftChoiceOpacity: 'state-opaque',
+      leftChoicePosition: 'state-left',
+      rightChoiceOpacity: 'state-opaque',
+      rightChoicePosition: 'state-right',
+    });
   },
 
   async _animateHide(oldSmiley) {

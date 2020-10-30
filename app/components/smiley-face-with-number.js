@@ -11,6 +11,10 @@ export default Component.extend({
   smile: readOnly('smiley.smile'),
   opacity: readOnly('smiley.opacity'),
   position: readOnly('smiley.position'),
+  leftChoiceOpacity: readOnly('smiley.leftChoiceOpacity'),
+  leftChoicePosition: readOnly('smiley.leftChoicePosition'),
+  rightChoiceOpacity: readOnly('smiley.rightChoiceOpacity'),
+  rightChoicePosition: readOnly('smiley.rightChoicePosition'),
 
   classNames: ['smiley-face-with-number'],
   classNameBindings: ['smileId', 'opacity', 'position'],
