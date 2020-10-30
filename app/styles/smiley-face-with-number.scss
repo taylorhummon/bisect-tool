@@ -1,0 +1,106 @@
+.smiley-face-with-number {
+  height: 80px;
+  width: 48px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -24px;
+
+  .numerical-input {
+    box-sizing: border-box;
+    width: 48px;
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    margin-left: -24px;
+    text-align: center;
+  }
+
+  &.state-opaque {
+    opacity: 100%;
+  }
+
+  &.state-transparent {
+    opacity: 0%;
+  }
+
+  &.state-left {
+    transform: translateX(-150px);
+  }
+
+  &.state-center {
+    transform: translateX(0px);
+  }
+
+  &.state-right {
+    transform: translateX(150px);
+  }
+
+  &.transition-from-center-to-left {
+    animation-duration: 600ms;
+    animation-name: transition-from-center-to-left;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes transition-from-center-to-left {
+    from {
+      transform: translateX(0px);
+    }
+
+    to {
+      transform: translateX(-150px);
+    }
+  }
+
+  &.transition-from-center-to-right {
+    animation-duration: 600ms;
+    animation-name: transition-from-center-to-right;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes transition-from-center-to-right {
+    from {
+      transform: translateX(0px);
+    }
+
+    to {
+      transform: translateX(150px);
+    }
+  }
+
+  &.transition-from-opaque-to-transparent {
+    animation-duration: 600ms;
+    animation-name: transition-from-opaque-to-transparent;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes transition-from-opaque-to-transparent {
+    from {
+      opacity: 100%;
+    }
+
+    to {
+      opacity: 0%;
+    }
+  }
+
+  &.transition-from-transparent-to-opaque {
+    animation-duration: 600ms;
+    animation-name: transition-from-transparent-to-opaque;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes transition-from-transparent-to-opaque {
+    from {
+      opacity: 0%;
+    }
+
+    to {
+      opacity: 100%;
+    }
+  }
+}
