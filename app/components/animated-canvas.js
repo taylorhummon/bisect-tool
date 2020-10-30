@@ -95,6 +95,7 @@ export default Component.extend({
       smile,
       opacity,
       position,
+      fill: 'filled',
       sadChoiceOpacity: 'opaque',
       sadChoicePosition: 'left',
       happyChoiceOpacity: 'opaque',

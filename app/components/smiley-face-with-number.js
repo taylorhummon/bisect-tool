@@ -32,6 +32,21 @@ export default Component.extend({
     }
   ),
 
+  imageSrc: computed(
+    'smiley.fill',
+    'smiley.smile',
+    function () {
+      if (this.smiley.fill === 'outline') {
+        if (this.smiley.smile === 'happy') return 'emoticon-happy-outline.png';
+        if (this.smiley.smile === 'sad') return 'emoticon-sad-outline.png';
+      }
+      if (this.smiley.fill === 'filled') {
+        if (this.smiley.smile === 'happy') return 'emoticon-happy.png';
+        if (this.smiley.smile === 'sad') return 'emoticon-sad.png';
+      }
+    }
+  ),
+
   opacity: computed(
     'smiley.opacity',
     function () {
