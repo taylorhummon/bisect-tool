@@ -5,20 +5,29 @@
   left: 50%;
   margin-left: -24px;
 
-  &.sad-choice {
-    transform: translateX(-30px);
-  }
-
-  &.happy-choice {
-    transform: translateX(30px);
-  }
-
-  &.position-opaque {
+  &.opacity-opaque {
     opacity: 100%;
   }
 
-  &.position-transparent {
+  &.opacity-transparent {
     opacity: 0%;
+  }
+
+  &.opacity-from-opaque-to-transparent {
+    animation-duration: 600ms;
+    animation-name: opacity-from-opaque-to-transparent;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes opacity-from-opaque-to-transparent {
+    from {
+      opacity: 100%;
+    }
+
+    to {
+      opacity: 0%;
+    }
   }
 
   &.position-left {
@@ -64,23 +73,6 @@
 
     to {
       transform: translateX(0px);
-    }
-  }
-
-  &.opacity-from-opaque-to-transparent {
-    animation-duration: 600ms;
-    animation-name: opacity-from-opaque-to-transparent;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
-  }
-
-  @keyframes opacity-from-opaque-to-transparent {
-    from {
-      opacity: 100%;
-    }
-
-    to {
-      opacity: 0%;
     }
   }
 }

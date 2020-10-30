@@ -24,6 +24,40 @@
     opacity: 0%;
   }
 
+  &.opacity-from-opaque-to-transparent {
+    animation-duration: 600ms;
+    animation-name: opacity-from-opaque-to-transparent;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes opacity-from-opaque-to-transparent {
+    from {
+      opacity: 100%;
+    }
+
+    to {
+      opacity: 0%;
+    }
+  }
+
+  &.opacity-from-transparent-to-opaque {
+    animation-duration: 600ms;
+    animation-name: opacity-from-transparent-to-opaque;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes opacity-from-transparent-to-opaque {
+    from {
+      opacity: 0%;
+    }
+
+    to {
+      opacity: 100%;
+    }
+  }
+
   &.position-left {
     transform: translateX(-150px);
   }
@@ -67,40 +101,6 @@
 
     to {
       transform: translateX(150px);
-    }
-  }
-
-  &.opacity-from-opaque-to-transparent {
-    animation-duration: 600ms;
-    animation-name: opacity-from-opaque-to-transparent;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
-  }
-
-  @keyframes opacity-from-opaque-to-transparent {
-    from {
-      opacity: 100%;
-    }
-
-    to {
-      opacity: 0%;
-    }
-  }
-
-  &.opacity-from-transparent-to-opaque {
-    animation-duration: 600ms;
-    animation-name: opacity-from-transparent-to-opaque;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
-  }
-
-  @keyframes opacity-from-transparent-to-opaque {
-    from {
-      opacity: 0%;
-    }
-
-    to {
-      opacity: 100%;
     }
   }
 }
