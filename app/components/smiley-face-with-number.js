@@ -46,31 +46,31 @@ export default Component.extend({
     }
   ),
 
-  leftChoiceOpacity: computed(
-    'smiley.leftChoiceOpacity',
+  sadChoiceOpacity: computed(
+    'smiley.sadChoiceOpacity',
     function () {
-      return `opacity-${this.smiley.leftChoiceOpacity}`;
+      return `opacity-${this.smiley.sadChoiceOpacity}`;
     }
   ),
 
-  leftChoicePosition: computed(
-    'smiley.leftChoicePosition',
+  sadChoicePosition: computed(
+    'smiley.sadChoicePosition',
     function () {
-      return `position-${this.smiley.leftChoicePosition}`;
+      return `position-${this.smiley.sadChoicePosition}`;
     }
   ),
 
-  rightChoiceOpacity: computed(
-    'smiley.rightChoiceOpacity',
+  happyChoiceOpacity: computed(
+    'smiley.happyChoiceOpacity',
     function () {
-      return `opacity-${this.smiley.rightChoiceOpacity}`;
+      return `opacity-${this.smiley.happyChoiceOpacity}`;
     }
   ),
 
-  rightChoicePosition: computed(
-    'smiley.rightChoicePosition',
+  happyChoicePosition: computed(
+    'smiley.happyChoicePosition',
     function () {
-      return `position-${this.smiley.rightChoicePosition}`;
+      return `position-${this.smiley.happyChoicePosition}`;
     }
   ),
 });

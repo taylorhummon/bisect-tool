@@ -31,11 +31,11 @@ export default Component.extend({
       const smiley = this.smilies.find(
         smiley => smiley.position === 'center'
       );
-      smiley.set('rightChoiceOpacity', 'from-opaque-to-transparent');
-      smiley.set('leftChoicePosition', 'from-left-to-center');
+      smiley.set('happyChoiceOpacity', 'from-opaque-to-transparent');
+      smiley.set('sadChoicePosition', 'from-left-to-center');
       await this.utils.delayPromise(600); // !!!! hacky
-      smiley.set('rightChoiceOpacity', 'transparent');
-      smiley.set('leftChoicePosition', 'center');
+      smiley.set('happyChoiceOpacity', 'transparent');
+      smiley.set('sadChoicePosition', 'center');
       smiley.set('smile', 'sad');
       return;
     }
@@ -43,11 +43,11 @@ export default Component.extend({
       const smiley = this.smilies.find(
         smiley => smiley.position === 'center'
       );
-      smiley.set('leftChoiceOpacity', 'from-opaque-to-transparent');
-      smiley.set('rightChoicePosition', 'from-right-to-center');
+      smiley.set('sadChoiceOpacity', 'from-opaque-to-transparent');
+      smiley.set('happyChoicePosition', 'from-right-to-center');
       await this.utils.delayPromise(600); // !!!! hacky
-      smiley.set('leftChoiceOpacity', 'transparent');
-      smiley.set('rightChoicePosition', 'center');
+      smiley.set('sadChoiceOpacity', 'transparent');
+      smiley.set('happyChoicePosition', 'center');
       smiley.set('smile', 'happy');
       return;
     }
@@ -96,10 +96,10 @@ export default Component.extend({
       smile,
       opacity,
       position,
-      leftChoiceOpacity: 'opaque',
-      leftChoicePosition: 'left',
-      rightChoiceOpacity: 'opaque',
-      rightChoicePosition: 'right',
+      sadChoiceOpacity: 'opaque',
+      sadChoicePosition: 'left',
+      happyChoiceOpacity: 'opaque',
+      happyChoicePosition: 'right',
     });
   },
 

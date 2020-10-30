@@ -11,12 +11,12 @@
 {{else if (eq smile "smile-choice")}}
   <img
     src="emoticon-sad-outline.png"
-    class="smiley-face choice-left {{leftChoiceOpacity}} {{leftChoicePosition}}"
+    class="smiley-face sad-choice {{sadChoiceOpacity}} {{sadChoicePosition}}"
     {{on "click" (fn this.smileyFaceClicked "sad")}}
   />
   <img
     src="emoticon-happy-outline.png"
-    class="smiley-face choice-right {{rightChoiceOpacity}} {{rightChoicePosition}}"
+    class="smiley-face happy-choice {{happyChoiceOpacity}} {{happyChoicePosition}}"
     {{on "click" (fn this.smileyFaceClicked "happy")}}
   />
 {{/if}}

@@ -5,11 +5,11 @@
   left: 50%;
   margin-left: -24px;
 
-  &.choice-left {
+  &.sad-choice {
     transform: translateX(-30px);
   }
 
-  &.choice-right {
+  &.happy-choice {
     transform: translateX(30px);
   }
 
