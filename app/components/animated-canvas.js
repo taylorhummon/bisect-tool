@@ -22,8 +22,7 @@ export default Component.extend({
 
   @action async onSmileyClick(decision) { // !!! does this need to be an action?
     await this._animateDecision(decision);
-    const direction = decision === 'happy' ? 'right' : 'left'; // !!!!!
-    await this._rearrangeSmilies(direction); // !!!!!
+    await this._rearrangeSmilies(decision);
   },
 
   async _animateDecision(decision) {
@@ -53,7 +52,8 @@ export default Component.extend({
     }
   },
 
-  async _rearrangeSmilies(direction) {
+  async _rearrangeSmilies(decision) {
+    const direction = decision === 'happy' ? 'right' : 'left';
     const oldSmiley = this._oldSmiley(direction);
     const movingSmiley = this._movingSmiley();
     const newSmiley = this._newSmiley();
@@ -67,9 +67,8 @@ export default Component.extend({
   },
 
   _oldSmiley(direction) {
-    const desiredPosition = `${direction}`;
     const smiley = this.smilies.find(
-      smiley => smiley.position === desiredPosition
+      smiley => smiley.position === direction
     );
     if (! smiley) throw 'Could not find old smiley';
     return smiley;
@@ -118,7 +117,7 @@ export default Component.extend({
   },
 
   _animate(smiley, attribute, from, to) {
-    if (smiley[attribute] !== `${from}`) {
+    if (smiley[attribute] !== from) {
       return RSVP.reject(`Smiley must have ${attribute} be equal to ${from} in order to transition to ${to}`);
     }
     const domElement = this._domElementForSmiley(smiley);
@@ -134,7 +133,7 @@ export default Component.extend({
   },
 
   _domElementForSmiley(smiley) {
-    return this.element.querySelector(`.id-${smiley.id}`); // !!! this is gross
+    return this.element.querySelector(`.id-${smiley.id}`);
   },
 
   _removeSmiley(oldSmiley) {
