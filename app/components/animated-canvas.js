@@ -8,16 +8,16 @@ import RSVP from 'rsvp';
 export default Component.extend({
   utils: service(),
 
-  smilies: null,
+  smileyGroupings: null,
 
   init() {
     this._super(...arguments);
-    const smilies = [
-      this._buildSmiley('sad', 'opaque', 'left'),
-      this._buildSmiley('choice', 'opaque', 'center'),
-      this._buildSmiley('happy', 'opaque', 'right'),
+    const smileyGroupings = [
+      this._buildSmileyGrouping('sad', 'opaque', 'left'),
+      this._buildSmileyGrouping('choice', 'opaque', 'center'),
+      this._buildSmileyGrouping('happy', 'opaque', 'right'),
     ];
-    this.set('smilies', smilies);
+    this.set('smileyGroupings', smileyGroupings);
   },
 
   @action async onSmileyClick(decision) { // !!! does this need to be an action?
@@ -25,74 +25,47 @@ export default Component.extend({
     await this._rearrangeSmilies(decision);
   },
 
-  async _animateDecision(decision) {
-    if (decision === 'sad') {
-      const smiley = this.smilies.find(
-        smiley => smiley.position === 'center'
-      );
-      smiley.set('happyChoiceOpacity', 'from-opaque-to-transparent');
-      smiley.set('sadChoicePosition', 'from-left-to-center');
-      await this.utils.delayPromise(600); // !!!! hacky
-      smiley.set('happyChoiceOpacity', 'transparent');
-      smiley.set('sadChoicePosition', 'center');
-      smiley.set('smile', 'sad');
-      return;
-    }
-    if (decision === 'happy') {
-      const smiley = this.smilies.find(
-        smiley => smiley.position === 'center'
-      );
-      smiley.set('sadChoiceOpacity', 'from-opaque-to-transparent');
-      smiley.set('happyChoicePosition', 'from-right-to-center');
-      await this.utils.delayPromise(600); // !!!! hacky
-      smiley.set('sadChoiceOpacity', 'transparent');
-      smiley.set('happyChoicePosition', 'center');
-      smiley.set('smile', 'happy');
-      return;
-    }
-  },
-
   async _rearrangeSmilies(decision) {
     const direction = decision === 'happy' ? 'right' : 'left';
-    const oldSmiley = this._oldSmiley(direction);
-    const movingSmiley = this._movingSmiley();
-    const newSmiley = this._newSmiley();
+    const oldSmileyGrouping = this._oldSmileyGrouping(direction);
+    const movingSmileyGrouping = this._movingSmileyGrouping();
+    const newSmileyGrouping = this._newSmileyGrouping();
     await this.utils.domRenderPromise(); // !!! ugh
     await RSVP.all([
-      this._animateHide(oldSmiley),
-      this._animateMove(movingSmiley, direction),
-      this._animateShow(newSmiley),
+      this._animateHide(oldSmileyGrouping),
+      this._animateMove(movingSmileyGrouping, direction),
+      this._animateShow(newSmileyGrouping),
     ]);
-    this._removeSmiley(oldSmiley);
+    this._removeSmileyGrouping(oldSmileyGrouping);
   },
 
-  _oldSmiley(direction) {
-    const smiley = this.smilies.find(
-      smiley => smiley.position === direction
+  _oldSmileyGrouping(direction) {
+    const smileyGrouping = this.smileyGroupings.find(
+      smileyGrouping => smileyGrouping.position === direction
     );
-    if (! smiley) throw 'Could not find old smiley';
-    return smiley;
+    if (! smileyGrouping) throw 'Could not find old smileyGrouping';
+    return smileyGrouping;
   },
 
-  _movingSmiley() {
-    const smiley = this.smilies.find(
-      smiley => smiley.position === 'center'
+  _movingSmileyGrouping() {
+    const smileyGrouping = this.smileyGroupings.find(
+      smileyGrouping => smileyGrouping.position === 'center'
     );
-    if (! smiley) throw 'Could not find moving smiley';
-    return smiley;
+    if (! smileyGrouping) throw 'Could not find moving smiley';
+    return smileyGrouping;
   },
 
-  _newSmiley() {
-    const smiley = this._buildSmiley('choice', 'transparent', 'center');
-    this.smilies.pushObject(smiley);
-    return smiley;
+  _newSmileyGrouping() {
+    const smileyGrouping = this._buildSmileyGrouping('choice', 'transparent', 'center');
+    this.smileyGroupings.pushObject(smileyGrouping);
+    return smileyGrouping;
   },
 
-  _buildSmiley(smile, opacity, position) {
+  _buildSmileyGrouping(type, opacity, position) {
     const id = this.utils.generateUuid();
     return EmberObject.create({
       id,
-      smile,
+      type,
       opacity,
       position,
       fill: 'filled',
@@ -103,44 +76,44 @@ export default Component.extend({
     });
   },
 
-  async _animateHide(oldSmiley) {
-    await this._animate(oldSmiley, 'opacity', 'opaque', 'transparent');
+  async _animateHide(oldSmileyGrouping) {
+    await this._animate(oldSmileyGrouping, 'opacity', 'opaque', 'transparent');
   },
 
-  async _animateMove(movingSmiley, direction) {
+  async _animateMove(movingSmileyGrouping, direction) {
     await this.utils.delayPromise(300);
-    await this._animate(movingSmiley, 'position', 'center', direction);
+    await this._animate(movingSmileyGrouping, 'position', 'center', direction);
   },
 
-  async _animateShow(newSmiley) {
+  async _animateShow(newSmileyGrouping) {
     await this.utils.delayPromise(600);
-    await this._animate(newSmiley, 'opacity', 'transparent', 'opaque');
+    await this._animate(newSmileyGrouping, 'opacity', 'transparent', 'opaque');
   },
 
-  _animate(smiley, attribute, from, to) {
-    if (smiley[attribute] !== from) {
-      return RSVP.reject(`Smiley must have ${attribute} be equal to ${from} in order to transition to ${to}`);
+  _animate(smileyGrouping, attribute, from, to) {
+    if (smileyGrouping[attribute] !== from) {
+      return RSVP.reject(`SmileyGrouping must have ${attribute} be equal to ${from} in order to transition to ${to}`);
     }
-    const domElement = this._domElementForSmiley(smiley);
+    const domElement = this._domElementForSmileyGrouping(smileyGrouping);
     return new RSVP.Promise(resolve => {
       const onAnimationEnd = () => {
         domElement.removeEventListener('animationend', onAnimationEnd);
-        smiley.set(attribute, `${to}`);
+        smileyGrouping.set(attribute, `${to}`);
         resolve();
       };
       domElement.addEventListener('animationend', onAnimationEnd);
-      smiley.set(attribute, `from-${from}-to-${to}`);
+      smileyGrouping.set(attribute, `from-${from}-to-${to}`);
     });
   },
 
-  _domElementForSmiley(smiley) {
-    return this.element.querySelector(`.id-${smiley.id}`);
+  _domElementForSmiley(smileyGrouping) {
+    return this.element.querySelector(`.id-${smileyGrouping.id}`);
   },
 
-  _removeSmiley(oldSmiley) {
-    for (let i = this.smilies.length - 1; i >= 0; i--) {
-      const smiley = this.smilies.objectAt(i);
-      if (smiley.id === oldSmiley.id) this.smilies.removeAt(i);
+  _removeSmileyGrouping(oldSmileyGrouping) {
+    for (let i = this.smileyGroupings.length - 1; i >= 0; i--) {
+      const smileyGrouping = this.smileyGroupings.objectAt(i);
+      if (smileyGrouping.id === oldSmileyGrouping.id) this.smileyGroupings.removeAt(i);
     }
   },
 });
