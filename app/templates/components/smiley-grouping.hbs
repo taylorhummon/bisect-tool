@@ -1,23 +1,9 @@
-{{#if (eq smileyGrouping.type "choice")}}
+{{#each smileyGrouping.smileyFaces as |smileyFace|}}
   {{smiley-face
-    smileyFace=sadChoice
+    smileyFace=smileyFace
     onSmileyClick=(action "smileyFaceClicked")
   }}
-  {{smiley-face
-    smileyFace=happyChoice
-    onSmileyClick=(action "smileyFaceClicked")
-  }}
-{{/if}}
-{{#if (eq smileyGrouping.type "sad")}}
-  {{smiley-face
-    smileyFace=sadSmileyFace
-  }}
-{{/if}}
-{{#if (eq smileyGrouping.type "happy")}}
-  {{smiley-face
-    smileyFace=happySmileyFace
-  }}
-{{/if}}
+{{/each}}
 <Input
   class="numerical-input"
   @value="20"
