@@ -16,92 +16,6 @@ export default Service.extend({
     this.set('_smileyFaceComponents', new Map());
   },
 
-  async animate(decision) {
-    if (decision === 'sad') {
-      await this._animateSad();
-    }
-    if (decision === 'happy') {
-      await this._animateHappy();
-    }
-  },
-
-  async _animateSad() {
-    const sadSmileyGrouping = this.smileyGroupings.find(
-      smileyGrouping => smileyGrouping.type === 'single-sad'
-    );
-    const sadGroupingComponent = this._smileyGroupingComponents.get(sadSmileyGrouping.id);
-    const happySmileyGrouping = this.smileyGroupings.find(
-      smileyGrouping => smileyGrouping.type === 'single-happy'
-    );
-    const happyGroupingComponent = this._smileyGroupingComponents.get(happySmileyGrouping.id);
-    const choiceSmileyGrouping = this.smileyGroupings.find(
-      smileyGrouping => smileyGrouping.type === 'choice'
-    );
-    const choiceGroupingComponent = this._smileyGroupingComponents.get(choiceSmileyGrouping.id);
-    const sadSmileyChoice = choiceSmileyGrouping.smileyFaces.find(
-      smileyFace => smileyFace.type === 'sad'
-    );
-    const sadSmileyChoiceComponent = this._smileyFaceComponents.get(sadSmileyChoice.id);
-    const happySmileyChoice = choiceSmileyGrouping.smileyFaces.find(
-      smileyFace => smileyFace.type === 'happy'
-    );
-    const happySmileyChoiceComponent = this._smileyFaceComponents.get(happySmileyChoice.id);
-
-    await happySmileyChoiceComponent.fadeFromOpaqueToTransparent();
-    await sadSmileyChoiceComponent.moveFromLeftToCenter();
-    await sadGroupingComponent.fadeFromOpaqueToTransparent();
-    await choiceGroupingComponent.moveFromCenterToLeft();
-  },
-
-  async _animateHappy() {
-    const sadSmileyGrouping = this.smileyGroupings.find(
-      smileyGrouping => smileyGrouping.type === 'single-sad'
-    );
-    const sadGroupingComponent = this._smileyGroupingComponents.get(sadSmileyGrouping.id);
-    const happySmileyGrouping = this.smileyGroupings.find(
-      smileyGrouping => smileyGrouping.type === 'single-happy'
-    );
-    const happyGroupingComponent = this._smileyGroupingComponents.get(happySmileyGrouping.id);
-    const choiceSmileyGrouping = this.smileyGroupings.find(
-      smileyGrouping => smileyGrouping.type === 'choice'
-    );
-    const choiceGroupingComponent = this._smileyGroupingComponents.get(choiceSmileyGrouping.id);
-    const sadSmileyChoice = choiceSmileyGrouping.smileyFaces.find(
-      smileyFace => smileyFace.type === 'sad'
-    );
-    const sadSmileyChoiceComponent = this._smileyFaceComponents.get(sadSmileyChoice.id);
-    const happySmileyChoice = choiceSmileyGrouping.smileyFaces.find(
-      smileyFace => smileyFace.type === 'happy'
-    );
-    const happySmileyChoiceComponent = this._smileyFaceComponents.get(happySmileyChoice.id);
-
-    await sadSmileyChoiceComponent.fadeFromOpaqueToTransparent();
-    await happySmileyChoiceComponent.moveFromRightToCenter();
-    await happyGroupingComponent.fadeFromOpaqueToTransparent();
-    await choiceGroupingComponent.moveFromCenterToRight();
-  },
-
-  registerSmileyGroupingComponent(id, component) {
-    this._smileyGroupingComponents.set(id, component);
-  },
-
-  unregisterSmileyGroupingComponent() {
-  },
-
-  registerSmileyFaceComponent(id, component) {
-    this._smileyFaceComponents.set(id, component);
-  },
-
-  unregisterSmileyFaceComponent() {
-  },
-
-  // _removeSmileyGrouping(oldSmileyGrouping) {
-  //   for (let i = this.smileyGroupings.length - 1; i >= 0; i--) {
-  //     const smileyGrouping = this.smileyGroupings.objectAt(i);
-  //     if (smileyGrouping.id === oldSmileyGrouping.id) this.smileyGroupings.removeAt(i);
-  //   }
-  // },
-
   setupAnimatedCanvas() {
     // !!!! do I need to be using ember objects?
     this.smileyGroupings = [
@@ -158,5 +72,101 @@ export default Service.extend({
         ]
       }),
     ];
+  },
+
+  registerSmileyGroupingComponent(id, component) {
+    this._smileyGroupingComponents.set(id, component);
+  },
+
+  unregisterSmileyGroupingComponent() {
+  },
+
+  registerSmileyFaceComponent(id, component) {
+    this._smileyFaceComponents.set(id, component);
+  },
+
+  unregisterSmileyFaceComponent() {
+  },
+
+  async animate(decision) {
+    if (decision === 'sad') {
+      await this._animateSad();
+    }
+    if (decision === 'happy') {
+      await this._animateHappy();
+    }
+  },
+
+  async _animateSad() {
+    const sadSmileyGrouping = this._sadSmileyGrouping();
+    const happySmileyGrouping = this._happySmileyGrouping();
+    const choiceSmileyGrouping = this._choiceSmileyGrouping();
+    const sadSmileyChoice = this._sadSmileyChoice()
+    const happySmileyChoice = this._happySmileyChoice();
+
+    await this._componentFor(happySmileyChoice).fadeFromOpaqueToTransparent();
+    await this._componentFor(sadSmileyChoice).moveFromLeftToCenter();
+    await this._componentFor(sadSmileyGrouping).fadeFromOpaqueToTransparent();
+    await this._componentFor(choiceSmileyGrouping).moveFromCenterToLeft();
+  },
+
+  async _animateHappy() {
+    const sadSmileyGrouping = this._sadSmileyGrouping();
+    const happySmileyGrouping = this._happySmileyGrouping();
+    const choiceSmileyGrouping = this._choiceSmileyGrouping();
+    const sadSmileyChoice = this._sadSmileyChoice()
+    const happySmileyChoice = this._happySmileyChoice();
+
+    await this._componentFor(sadSmileyChoice).fadeFromOpaqueToTransparent();
+    await this._componentFor(happySmileyChoice).moveFromRightToCenter();
+    await this._componentFor(happySmileyGrouping).fadeFromOpaqueToTransparent();
+    await this._componentFor(choiceSmileyGrouping).moveFromCenterToRight();
+  },
+
+  // _removeSmileyGrouping(oldSmileyGrouping) {
+  //   for (let i = this.smileyGroupings.length - 1; i >= 0; i--) {
+  //     const smileyGrouping = this.smileyGroupings.objectAt(i);
+  //     if (smileyGrouping.id === oldSmileyGrouping.id) this.smileyGroupings.removeAt(i);
+  //   }
+  // },
+
+  _sadSmileyGrouping() {
+    return this.smileyGroupings.find(
+      smileyGrouping => smileyGrouping.type === 'single-sad'
+    );
+  },
+
+  _happySmileyGrouping() {
+    return this.smileyGroupings.find(
+      smileyGrouping => smileyGrouping.type === 'single-happy'
+    );
+  },
+
+  _choiceSmileyGrouping() {
+    return this.smileyGroupings.find(
+      smileyGrouping => smileyGrouping.type === 'choice'
+    );
+  },
+
+  _sadSmileyChoice() {
+    return this._choiceSmileyGrouping().smileyFaces.find(
+      smileyFace => smileyFace.type === 'sad'
+    );
+  },
+
+  _happySmileyChoice() {
+    return this._choiceSmileyGrouping().smileyFaces.find(
+      smileyFace => smileyFace.type === 'happy'
+    );
+  },
+
+  _componentFor(object) {
+    if (['single-sad', 'single-happy', 'choice'].includes(object.type)) {
+      return this._smileyGroupingComponents.get(object.id);
+    }
+    if (['sad', 'happy'].includes(object.type)) {
+      return this._smileyFaceComponents.get(object.id);
+    }
+    return null;
   },
 });
