@@ -69,23 +69,6 @@ export default Component.extend({
     await this._animate('position', 'right', 'center');
   },
 
-  moveToCenter() {
-    return new RSVP.Promise((resolve, reject) => {
-      const initialPosition = this.smileyFace.position;
-      if (! ['left', 'right'].includes(initialPosition)) {
-        reject('Smiley must have left or right position to move to center');
-        return;
-      }
-      const onAnimationEnd = () => {
-        this.element.removeEventListener('animationend', onAnimationEnd);
-        this.smileyFace.set('position', 'center');
-        resolve();
-      };
-      this.element.addEventListener('animationend', onAnimationEnd);
-      this.smileyFace.set('position', `from-${initialPosition}-to-center`);
-    });
-  },
-
   _animate(attribute, from, to) {
     return new RSVP.Promise((resolve, reject) => {
       if (this.smileyFace[attribute] !== from) {

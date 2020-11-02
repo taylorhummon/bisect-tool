@@ -1,4 +1,5 @@
 import Service from '@ember/service';
+import EmberObject from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default Service.extend({
@@ -26,11 +27,11 @@ export default Service.extend({
 
   async _animateSad() {
     const sadSmileyGrouping = this.smileyGroupings.find(
-      smileyGrouping => smileyGrouping.type === 'sad'
+      smileyGrouping => smileyGrouping.type === 'single-sad'
     );
     const sadGroupingComponent = this._smileyGroupingComponents.get(sadSmileyGrouping.id);
     const happySmileyGrouping = this.smileyGroupings.find(
-      smileyGrouping => smileyGrouping.type === 'happy'
+      smileyGrouping => smileyGrouping.type === 'single-happy'
     );
     const happyGroupingComponent = this._smileyGroupingComponents.get(happySmileyGrouping.id);
     const choiceSmileyGrouping = this.smileyGroupings.find(
@@ -54,11 +55,11 @@ export default Service.extend({
 
   async _animateHappy() {
     const sadSmileyGrouping = this.smileyGroupings.find(
-      smileyGrouping => smileyGrouping.type === 'sad'
+      smileyGrouping => smileyGrouping.type === 'single-sad'
     );
     const sadGroupingComponent = this._smileyGroupingComponents.get(sadSmileyGrouping.id);
     const happySmileyGrouping = this.smileyGroupings.find(
-      smileyGrouping => smileyGrouping.type === 'happy'
+      smileyGrouping => smileyGrouping.type === 'single-happy'
     );
     const happyGroupingComponent = this._smileyGroupingComponents.get(happySmileyGrouping.id);
     const choiceSmileyGrouping = this.smileyGroupings.find(
@@ -100,4 +101,62 @@ export default Service.extend({
   //     if (smileyGrouping.id === oldSmileyGrouping.id) this.smileyGroupings.removeAt(i);
   //   }
   // },
+
+  setupAnimatedCanvas() {
+    // !!!! do I need to be using ember objects?
+    this.smileyGroupings = [
+      EmberObject.create({
+        id: this.utils.generateUuid(),
+        type: 'single-sad',
+        opacity: 'opaque',
+        position: 'left',
+        smileyFaces: [
+          EmberObject.create({
+            id: this.utils.generateUuid(),
+            type: 'sad',
+            opacity: 'opaque',
+            position: 'center',
+            fill: 'filled'
+          })
+        ]
+      }),
+      EmberObject.create({
+        id: this.utils.generateUuid(),
+        type: 'single-happy',
+        opacity: 'opaque',
+        position: 'right',
+        smileyFaces: [
+          EmberObject.create({
+            id: this.utils.generateUuid(),
+            type: 'happy',
+            opacity: 'opaque',
+            position: 'center',
+            fill: 'filled'
+          })
+        ]
+      }),
+      EmberObject.create({
+        id: this.utils.generateUuid(),
+        type: 'choice',
+        opacity: 'opaque',
+        position: 'center',
+        smileyFaces: [
+          EmberObject.create({
+            id: this.utils.generateUuid(),
+            type: 'sad',
+            opacity: 'opaque',
+            position: 'left',
+            fill: 'outline'
+          }),
+          EmberObject.create({
+            id: this.utils.generateUuid(),
+            type: 'happy',
+            opacity: 'opaque',
+            position: 'right',
+            fill: 'outline'
+          })
+        ]
+      }),
+    ];
+  },
 });
