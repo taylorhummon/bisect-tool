@@ -17,7 +17,6 @@ export default Service.extend({
   },
 
   setupAnimatedCanvas() {
-    // !!!! do I need to be using ember objects?
     this.smileyGroupings = [
       this._buildSadSmileyGrouping(),
       this._buildHappySmileyGrouping(),
