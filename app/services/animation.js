@@ -19,73 +19,112 @@ export default Service.extend({
   setupAnimatedCanvas() {
     // !!!! do I need to be using ember objects?
     this.smileyGroupings = [
-      EmberObject.create({
-        id: this.utils.generateUuid(),
-        type: 'single-sad',
-        opacity: 'opaque',
-        position: 'left',
-        smileyFaces: [
-          EmberObject.create({
-            id: this.utils.generateUuid(),
-            type: 'sad',
-            opacity: 'opaque',
-            position: 'center',
-            fill: 'filled'
-          })
-        ]
-      }),
-      EmberObject.create({
-        id: this.utils.generateUuid(),
-        type: 'single-happy',
-        opacity: 'opaque',
-        position: 'right',
-        smileyFaces: [
-          EmberObject.create({
-            id: this.utils.generateUuid(),
-            type: 'happy',
-            opacity: 'opaque',
-            position: 'center',
-            fill: 'filled'
-          })
-        ]
-      }),
-      EmberObject.create({
-        id: this.utils.generateUuid(),
-        type: 'choice',
-        opacity: 'opaque',
-        position: 'center',
-        smileyFaces: [
-          EmberObject.create({
-            id: this.utils.generateUuid(),
-            type: 'sad',
-            opacity: 'opaque',
-            position: 'left',
-            fill: 'outline'
-          }),
-          EmberObject.create({
-            id: this.utils.generateUuid(),
-            type: 'happy',
-            opacity: 'opaque',
-            position: 'right',
-            fill: 'outline'
-          })
-        ]
-      }),
+      this._buildSadSmileyGrouping(),
+      this._buildHappySmileyGrouping(),
+      this._buildCenterSmileyGrouping(),
     ];
+  },
+
+  _buildSadSmileyGrouping() {
+    return EmberObject.create({
+      id: this.utils.generateUuid(),
+      type: 'grouping',
+      opacity: 'opaque',
+      position: 'left',
+      smileyFaces: [
+        EmberObject.create({
+          id: this.utils.generateUuid(),
+          type: 'sad',
+          opacity: 'opaque',
+          position: 'center',
+          fill: 'outline'
+        })
+      ]
+    });
+  },
+
+  _buildHappySmileyGrouping() {
+    return EmberObject.create({
+      id: this.utils.generateUuid(),
+      type: 'grouping',
+      opacity: 'opaque',
+      position: 'right',
+      smileyFaces: [
+        EmberObject.create({
+          id: this.utils.generateUuid(),
+          type: 'happy',
+          opacity: 'opaque',
+          position: 'center',
+          fill: 'outline'
+        })
+      ]
+    });
+  },
+
+  _buildCenterSmileyGrouping() {
+    return EmberObject.create({
+      id: this.utils.generateUuid(),
+      type: 'grouping',
+      opacity: 'opaque',
+      position: 'center',
+      smileyFaces: [
+        EmberObject.create({
+          id: this.utils.generateUuid(),
+          type: 'sad',
+          opacity: 'opaque',
+          position: 'left',
+          fill: 'outline'
+        }),
+        EmberObject.create({
+          id: this.utils.generateUuid(),
+          type: 'happy',
+          opacity: 'opaque',
+          position: 'right',
+          fill: 'outline'
+        })
+      ]
+    });
+  },
+
+  _buildTransparentCenterSmileyGrouping() {
+    return EmberObject.create({
+      id: this.utils.generateUuid(),
+      type: 'grouping',
+      opacity: 'transparent',
+      position: 'center',
+      smileyFaces: [
+        EmberObject.create({
+          id: this.utils.generateUuid(),
+          type: 'sad',
+          opacity: 'opaque',
+          position: 'left',
+          fill: 'outline'
+        }),
+        EmberObject.create({
+          id: this.utils.generateUuid(),
+          type: 'happy',
+          opacity: 'opaque',
+          position: 'right',
+          fill: 'outline'
+        })
+      ]
+    });
   },
 
   registerSmileyGroupingComponent(id, component) {
     this._smileyGroupingComponents.set(id, component);
   },
 
-  unregisterSmileyGroupingComponent() {
+  unregisterSmileyGroupingComponent(id) {
+    this._smileyGroupingComponents.delete(id);
   },
 
   registerSmileyFaceComponent(id, component) {
     this._smileyFaceComponents.set(id, component);
   },
 
-  unregisterSmileyFaceComponent() {
+  unregisterSmileyFaceComponent(id) {
+    this._smileyFaceComponents.delete(id);
   },
 
   async animate(decision) {
@@ -98,70 +137,89 @@ export default Service.extend({
   },
 
   async _animateSad() {
-    const sadSmileyGrouping = this._sadSmileyGrouping();
-    const happySmileyGrouping = this._happySmileyGrouping();
-    const choiceSmileyGrouping = this._choiceSmileyGrouping();
     const sadSmileyChoice = this._sadSmileyChoice()
     const happySmileyChoice = this._happySmileyChoice();
-
+    const sadSmileyGrouping = this._sadSmileyGrouping();
+    const oldCenterSmileyGrouping = this._centerSmileyGrouping();
+    const newCenterSmileyGrouping = this._buildTransparentCenterSmileyGrouping();
+    this.smileyGroupings.pushObject(newCenterSmileyGrouping);
+    await this.utils.domRenderPromise(); // allow the new central grouping to be inserted into the DOM
     await this._componentFor(happySmileyChoice).fadeFromOpaqueToTransparent();
     await this._componentFor(sadSmileyChoice).moveFromLeftToCenter();
     await this._componentFor(sadSmileyGrouping).fadeFromOpaqueToTransparent();
-    await this._componentFor(choiceSmileyGrouping).moveFromCenterToLeft();
+    await this._componentFor(oldCenterSmileyGrouping).moveFromCenterToLeft();
+    await this._componentFor(newCenterSmileyGrouping).fadeFromTransparentToOpaque();
+    this._removeSmileyFace(oldCenterSmileyGrouping, happySmileyChoice);
+    this._removeSmileyGrouping(sadSmileyGrouping);
   },
 
   async _animateHappy() {
-    const sadSmileyGrouping = this._sadSmileyGrouping();
-    const happySmileyGrouping = this._happySmileyGrouping();
-    const choiceSmileyGrouping = this._choiceSmileyGrouping();
     const sadSmileyChoice = this._sadSmileyChoice()
     const happySmileyChoice = this._happySmileyChoice();
-
+    const happySmileyGrouping = this._happySmileyGrouping();
+    const oldCenterSmileyGrouping = this._centerSmileyGrouping();
+    const newCenterSmileyGrouping = this._buildTransparentCenterSmileyGrouping();
+    this.smileyGroupings.pushObject(newCenterSmileyGrouping);
+    await this.utils.domRenderPromise(); // allow the new central grouping to be inserted into the DOM
     await this._componentFor(sadSmileyChoice).fadeFromOpaqueToTransparent();
     await this._componentFor(happySmileyChoice).moveFromRightToCenter();
     await this._componentFor(happySmileyGrouping).fadeFromOpaqueToTransparent();
-    await this._componentFor(choiceSmileyGrouping).moveFromCenterToRight();
+    await this._componentFor(oldCenterSmileyGrouping).moveFromCenterToRight();
+    await this._componentFor(newCenterSmileyGrouping).fadeFromTransparentToOpaque();
+    this._removeSmileyFace(oldCenterSmileyGrouping, sadSmileyChoice);
+    this._removeSmileyGrouping(happySmileyGrouping);
   },
-
-  // _removeSmileyGrouping(oldSmileyGrouping) {
-  //   for (let i = this.smileyGroupings.length - 1; i >= 0; i--) {
-  //     const smileyGrouping = this.smileyGroupings.objectAt(i);
-  //     if (smileyGrouping.id === oldSmileyGrouping.id) this.smileyGroupings.removeAt(i);
-  //   }
-  // },
 
   _sadSmileyGrouping() {
     return this.smileyGroupings.find(
-      smileyGrouping => smileyGrouping.type === 'single-sad'
+      smileyGrouping => smileyGrouping.position === 'left'
     );
   },
 
   _happySmileyGrouping() {
     return this.smileyGroupings.find(
-      smileyGrouping => smileyGrouping.type === 'single-happy'
+      smileyGrouping => smileyGrouping.position === 'right'
     );
   },
 
-  _choiceSmileyGrouping() {
+  _centerSmileyGrouping() {
     return this.smileyGroupings.find(
-      smileyGrouping => smileyGrouping.type === 'choice'
+      smileyGrouping => smileyGrouping.position === 'center'
     );
   },
 
   _sadSmileyChoice() {
-    return this._choiceSmileyGrouping().smileyFaces.find(
+    return this._centerSmileyGrouping().smileyFaces.find(
       smileyFace => smileyFace.type === 'sad'
     );
   },
 
   _happySmileyChoice() {
-    return this._choiceSmileyGrouping().smileyFaces.find(
+    return this._centerSmileyGrouping().smileyFaces.find(
       smileyFace => smileyFace.type === 'happy'
     );
   },
 
+  _removeSmileyFace(smileyGrouping, smileyFace) {
+    const smileyFaces = smileyGrouping.smileyFaces;
+    for (let i = smileyFaces.length - 1; i >= 0; i--) {
+      if (smileyFaces.objectAt(i).id === smileyFace.id) {
+        smileyFaces.removeAt(i);
+      }
+    }
+  },
+
+  _removeSmileyGrouping(smileyGrouping) {
+    const smileyGroupings = this.smileyGroupings;
+    for (let i = smileyGroupings.length - 1; i >= 0; i--) {
+      if (smileyGroupings.objectAt(i).id === smileyGrouping.id) {
+        smileyGroupings.removeAt(i);
+      }
+    }
+  },
+
   _componentFor(object) {
-    if (['single-sad', 'single-happy', 'choice'].includes(object.type)) {
+    if (object.type === 'grouping') {
       return this._smileyGroupingComponents.get(object.id);
     }
     if (['sad', 'happy'].includes(object.type)) {

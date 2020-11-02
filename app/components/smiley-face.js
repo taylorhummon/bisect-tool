@@ -23,7 +23,9 @@ export default Component.extend({
     this.animation.registerSmileyFaceComponent(this.smileyFace.id, this);
   },
 
-  // !!!! should unregister the component when being removed
+  willDestroyElement() {
+    this.animation.unregisterSmileyFaceComponent(this.smileyFace.id);
+  },
 
   smileyFace: null,
   onSmileyClick: null, // closure action

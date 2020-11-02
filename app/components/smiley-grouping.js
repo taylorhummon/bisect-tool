@@ -12,7 +12,7 @@ export default Component.extend({
   animation: service(),
 
   @action smileyFaceClicked(decision) {
-    if (this.smileyGrouping.type !== 'choice') return;
+    if (this.smileyGrouping.position !== 'center') return;
     this.animation.animate(decision); // not awaiting
   },
 
@@ -21,6 +21,10 @@ export default Component.extend({
 
   didInsertElement() {
     this.animation.registerSmileyGroupingComponent(this.smileyGrouping.id, this);
+  },
+
+  willDestroyElement() {
+    this.animation.unregisterSmileyGroupingComponent(this.smileyGrouping.id);
   },
 
   smileyGrouping: null,
