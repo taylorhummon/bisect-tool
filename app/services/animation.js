@@ -22,7 +22,7 @@ export default Service.extend({
   setupAnimatedCanvas() {
     const initialSadInteger = this.initialSadInteger;
     const initialHappyInteger = this.initialHappyInteger;
-    const initialMiddleInteger = Math.floor((initialSadInteger + initialHappyInteger) / 2); // !!!
+    const initialMiddleInteger = this.utils.chooseIntegralMidpoint(initialSadInteger, initialHappyInteger);
     this.smileyGroupings = [
       this._buildSadSmileyGrouping(initialSadInteger),
       this._buildHappySmileyGrouping(initialHappyInteger),
@@ -151,7 +151,7 @@ export default Service.extend({
     const sadSmileyGrouping = this._sadSmileyGrouping();
     const happySmileyGrouping = this._happySmileyGrouping();
     const oldCenterSmileyGrouping = this._centerSmileyGrouping();
-    const integer = Math.floor((oldCenterSmileyGrouping.integer + happySmileyGrouping.integer) / 2);
+    const integer = this.utils.chooseIntegralMidpoint(oldCenterSmileyGrouping.integer, happySmileyGrouping.integer);
     const newCenterSmileyGrouping = this._buildTransparentCenterSmileyGrouping(integer);
     this.smileyGroupings.pushObject(newCenterSmileyGrouping);
     await this.utils.domRenderPromise();
@@ -170,7 +170,7 @@ export default Service.extend({
     const sadSmileyGrouping = this._sadSmileyGrouping();
     const happySmileyGrouping = this._happySmileyGrouping();
     const oldCenterSmileyGrouping = this._centerSmileyGrouping();
-    const integer = Math.floor((oldCenterSmileyGrouping.integer + sadSmileyGrouping.integer) / 2);
+    const integer = this.utils.chooseIntegralMidpoint(oldCenterSmileyGrouping.integer, sadSmileyGrouping.integer);
     const newCenterSmileyGrouping = this._buildTransparentCenterSmileyGrouping(integer);
     this.smileyGroupings.pushObject(newCenterSmileyGrouping);
     await this.utils.domRenderPromise();

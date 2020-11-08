@@ -3,16 +3,37 @@ import { later, next } from '@ember/runloop';
 import RSVP from 'rsvp';
 
 export default class Utils extends Service {
-  flipCoin() {
-    return Math.floor(2 * Math.random());
-  }
-
   integerFromString(string) {
     if (! /^[-+]?\d+$/.test(string)) return null;
     const parsed = Number(string);
     if (isNaN(parsed) || typeof parsed !== 'number') return null;
     return parsed;
   }
+
+  chooseIntegralMidpoint(a, b) {
+    let total = a + b;
+    if (this._isOdd(total)) {
+      if (this._flipCoin()) {
+        total += 1;
+      } else {
+        total -= 1;
+      }
+    }
+    return total / 2;
+  }
+
+  _isOdd(integer) {
+    return integer % 2 === 1;
+  }
+
+  _flipCoin() {
+    return Math.floor(2 * Math.random());
+  }
+
+  // get amDone() {
+  //   return Math.abs(this.sad - this.happy) <= 1;
+  // }
+  //
 
   generateUuid() {
     let result = '';
