@@ -7,6 +7,13 @@ export default class Utils extends Service {
     return Math.floor(2 * Math.random());
   }
 
+  integerFromString(string) {
+    if (! /^[-+]?\d+$/.test(string)) return null;
+    const parsed = Number(string);
+    if (isNaN(parsed) || typeof parsed !== 'number') return null;
+    return parsed;
+  }
+
   generateUuid() {
     let result = '';
     for (let j = 0; j < 32; j++) {

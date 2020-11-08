@@ -1,13 +1,18 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
-// import { action } from '@ember/object';
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default class ApplicationController extends Controller {
-  // @tracked sad = 0;
-  // @tracked happy = 50;
-  // @tracked midpoint = 25;
+  @service animation;
 
   @tracked inIntro = true;
+
+  @action begin(initialHappyInteger, initialSadInteger) {
+    this.animation.set('initialSadInteger', initialSadInteger);
+    this.animation.set('initialHappyInteger', initialHappyInteger);
+    this.set('inIntro', false);
+  }
 
   // get amDone() {
   //   return Math.abs(this.sad - this.happy) <= 1;

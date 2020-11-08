@@ -7,7 +7,9 @@
   {{/if}}
 </p>
 {{#if inIntro}}
-  {{intro-gather-inputs}}
+  {{intro-gather-inputs
+    begin=(action "begin")
+  }}
 {{else}}
   {{animated-canvas}}
 {{/if}}

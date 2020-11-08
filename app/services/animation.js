@@ -5,6 +5,9 @@ import { inject as service } from '@ember/service';
 export default Service.extend({
   utils: service(),
 
+  initialSadInteger: null,
+  initialHappyInteger: null,
+
   smileyGroupings: null,
   _smileyGroupingComponents: null,
   _smileyFaceComponents: null,
@@ -17,8 +20,8 @@ export default Service.extend({
   },
 
   setupAnimatedCanvas() {
-    const initialSadInteger = 0;
-    const initialHappyInteger = 50;
+    const initialSadInteger = this.initialSadInteger;
+    const initialHappyInteger = this.initialHappyInteger;
     const initialMiddleInteger = Math.floor((initialSadInteger + initialHappyInteger) / 2); // !!!
     this.smileyGroupings = [
       this._buildSadSmileyGrouping(initialSadInteger),
