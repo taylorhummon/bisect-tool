@@ -1,25 +1,13 @@
-{{!--
-<div>
-  Number with a sad outcome: {{sad}}
-</div>
-<div>
-  Number with a happy outcome: {{happy}}
-</div>
-
-{{#if amDone}}
-  You're done!
+<h1>The bisect tool</h1>
+<p>
+  Welcome to the bisect tool!
+  This tool will help you track down when things went from good to bad.
+  {{#if inIntro}}
+    Get started by entering a number when things were good and entering another number when things were bad.
+  {{/if}}
+</p>
+{{#if inIntro}}
+  {{intro-gather-inputs}}
 {{else}}
-  <div>
-    Midpoint: {{midpoint}}
-  </div>
-  <button
-    type="button"
-    {{on "click" (fn this.addDataPoint midpoint true)}}
-  >Midpoint is happy</button>
-  <button
-    type="button"
-    {{on "click" (fn this.addDataPoint midpoint false)}}
-  >Midpoint is sad</button>
+  {{animated-canvas}}
 {{/if}}
---}}
-{{animated-canvas}}

@@ -1,0 +1,28 @@
+<div class="intro-gather-inputs">
+  {{#if showError}}
+    <div class="error">
+      Please enter a number for when things were good.
+    </div>
+    <div class="error">
+      Please enter a number for when things were bad.
+    </div>
+    <div class="error">
+      Please enter different numbers for when things were good and bad.
+    </div>
+  {{/if}}
+  <div>
+    <img src="emoticon-happy-outline.png" />
+    <Input
+      class="numerical-input"
+      @value={{happyValueString}}
+    />
+  </div>
+  <div>
+    <img src="emoticon-sad-outline.png" />
+    <Input
+      class="numerical-input"
+      @value={{sadValueString}}
+    />
+  </div>
+  <button type="button">Begin</button>
+</div>
