@@ -17,17 +17,21 @@ export default Service.extend({
   },
 
   setupAnimatedCanvas() {
+    const initialSadInteger = 0;
+    const initialHappyInteger = 50;
+    const initialMiddleInteger = Math.floor((initialSadInteger + initialHappyInteger) / 2); // !!!
     this.smileyGroupings = [
-      this._buildSadSmileyGrouping(),
-      this._buildHappySmileyGrouping(),
-      this._buildCenterSmileyGrouping(),
+      this._buildSadSmileyGrouping(initialSadInteger),
+      this._buildHappySmileyGrouping(initialHappyInteger),
+      this._buildCenterSmileyGrouping(initialMiddleInteger),
     ];
   },
 
-  _buildSadSmileyGrouping() {
+  _buildSadSmileyGrouping(integer) {
     return EmberObject.create({
       id: this.utils.generateUuid(),
       type: 'grouping',
+      integer,
       opacity: 'opaque',
       position: 'left',
       smileyFaces: [
@@ -42,10 +46,11 @@ export default Service.extend({
     });
   },
 
-  _buildHappySmileyGrouping() {
+  _buildHappySmileyGrouping(integer) {
     return EmberObject.create({
       id: this.utils.generateUuid(),
       type: 'grouping',
+      integer,
       opacity: 'opaque',
       position: 'right',
       smileyFaces: [
@@ -60,10 +65,11 @@ export default Service.extend({
     });
   },
 
-  _buildCenterSmileyGrouping() {
+  _buildCenterSmileyGrouping(integer) {
     return EmberObject.create({
       id: this.utils.generateUuid(),
       type: 'grouping',
+      integer,
       opacity: 'opaque',
       position: 'center',
       smileyFaces: [
@@ -85,10 +91,11 @@ export default Service.extend({
     });
   },
 
-  _buildTransparentCenterSmileyGrouping() {
+  _buildTransparentCenterSmileyGrouping(integer) {
     return EmberObject.create({
       id: this.utils.generateUuid(),
       type: 'grouping',
+      integer,
       opacity: 'transparent',
       position: 'center',
       smileyFaces: [
@@ -136,13 +143,15 @@ export default Service.extend({
   },
 
   async _animateSad() {
-    const sadSmileyChoice = this._sadSmileyChoice()
+    const sadSmileyChoice = this._sadSmileyChoice();
     const happySmileyChoice = this._happySmileyChoice();
     const sadSmileyGrouping = this._sadSmileyGrouping();
+    const happySmileyGrouping = this._happySmileyGrouping();
     const oldCenterSmileyGrouping = this._centerSmileyGrouping();
-    const newCenterSmileyGrouping = this._buildTransparentCenterSmileyGrouping();
+    const integer = Math.floor((oldCenterSmileyGrouping.integer + happySmileyGrouping.integer) / 2);
+    const newCenterSmileyGrouping = this._buildTransparentCenterSmileyGrouping(integer);
     this.smileyGroupings.pushObject(newCenterSmileyGrouping);
-    await this.utils.domRenderPromise(); // allow the new central grouping to be inserted into the DOM
+    await this.utils.domRenderPromise();
     await this._componentFor(happySmileyChoice).fadeFromOpaqueToTransparent();
     await this._componentFor(sadSmileyChoice).moveFromLeftToCenter();
     await this._componentFor(sadSmileyGrouping).fadeFromOpaqueToTransparent();
@@ -153,13 +162,15 @@ export default Service.extend({
   },
 
   async _animateHappy() {
-    const sadSmileyChoice = this._sadSmileyChoice()
+    const sadSmileyChoice = this._sadSmileyChoice();
     const happySmileyChoice = this._happySmileyChoice();
+    const sadSmileyGrouping = this._sadSmileyGrouping();
     const happySmileyGrouping = this._happySmileyGrouping();
     const oldCenterSmileyGrouping = this._centerSmileyGrouping();
-    const newCenterSmileyGrouping = this._buildTransparentCenterSmileyGrouping();
+    const integer = Math.floor((oldCenterSmileyGrouping.integer + sadSmileyGrouping.integer) / 2);
+    const newCenterSmileyGrouping = this._buildTransparentCenterSmileyGrouping(integer);
     this.smileyGroupings.pushObject(newCenterSmileyGrouping);
-    await this.utils.domRenderPromise(); // allow the new central grouping to be inserted into the DOM
+    await this.utils.domRenderPromise();
     await this._componentFor(sadSmileyChoice).fadeFromOpaqueToTransparent();
     await this._componentFor(happySmileyChoice).moveFromRightToCenter();
     await this._componentFor(happySmileyGrouping).fadeFromOpaqueToTransparent();

@@ -11,6 +11,35 @@ import RSVP from 'rsvp';
 export default Component.extend({
   animation: service(),
 
+  smileyGrouping: null,
+  onSmileyClick: null, // closure action
+
+  init() {
+    this._super(...arguments);
+    this.set('valueString', this.smileyGrouping.integer.toString());
+  },
+
+  valueString: null,
+
+  valueInteger: computed(
+    'valueString',
+    function () {
+      if (! /^[-+]?\d+$/.test(this.valueString)) return null;
+      const value = Number(this.valueString);
+      if (isNaN(value) || typeof value !== 'number') return null;
+      return value;
+    }
+  ),
+
+  doesValueStringParse: computed(
+    'valueInteger',
+    function () {
+      return this.valueInteger !== null;
+    }
+  ),
+
+  isValueReadOnly: true,
+
   @action smileyFaceClicked(decision) {
     if (this.smileyGrouping.position !== 'center') return;
     this.animation.animate(decision); // not awaiting
@@ -26,9 +55,6 @@ export default Component.extend({
   willDestroyElement() {
     this.animation.unregisterSmileyGroupingComponent(this.smileyGrouping.id);
   },
-
-  smileyGrouping: null,
-  onSmileyClick: null, // closure action
 
   opacity: computed(
     'smileyGrouping.opacity',
