@@ -46,7 +46,7 @@ export default Component.extend({
 
   @action smileyFaceClicked(decision) {
     if (this.smileyGrouping.position !== 'center') return;
-    this.animation.animate(decision); // not awaiting
+    this.animation.animateDecision(decision); // not awaiting
   },
 
   classNames: ['smiley-grouping'],

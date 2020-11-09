@@ -19,15 +19,14 @@ export default Service.extend({
     this.set('_smileyFaceComponents', new Map());
   },
 
-  setupAnimatedCanvas() {
-    const initialSadInteger = this.initialSadInteger;
-    const initialHappyInteger = this.initialHappyInteger;
-    const initialMiddleInteger = this.utils.chooseIntegralMidpoint(initialSadInteger, initialHappyInteger);
+  async setupAnimatedCanvas() {
     this.smileyGroupings = [
-      this._buildSadSmileyGrouping(initialSadInteger),
-      this._buildHappySmileyGrouping(initialHappyInteger),
-      this._buildCenterSmileyGrouping(initialMiddleInteger),
+      this._buildSadSmileyGrouping(this.initialSadInteger),
+      this._buildHappySmileyGrouping(this.initialHappyInteger),
     ];
+    await this.utils.domRenderPromise();
+    await this.utils.delayPromise(300);
+    await this.animateInit();
   },
 
   _buildSadSmileyGrouping(integer) {
@@ -146,13 +145,25 @@ export default Service.extend({
     this._smileyFaceComponents.delete(id);
   },
 
-  async animate(decision) {
-    if (decision === 'sad') {
-      await this._animateSad();
+  async animateDecision(decision) {
+    if (decision === 'sad')   await this._animateSad();
+    if (decision === 'happy') await this._animateHappy();
+    await this.animateInit();
+  },
+
+  async animateInit() {
+    const sadSmileyGrouping = this._sadSmileyGrouping();
+    const happySmileyGrouping = this._happySmileyGrouping();
+    let centerSmileyGrouping = null;
+    if (this.utils.amDone(sadSmileyGrouping.integer, happySmileyGrouping.integer)) {
+      centerSmileyGrouping = this._buildTransparentDoneSmileyGrouping();
+    } else {
+      const integer = this.utils.chooseIntegralMidpoint(sadSmileyGrouping.integer, happySmileyGrouping.integer);
+      centerSmileyGrouping = this._buildTransparentSmileyGrouping(integer);
     }
-    if (decision === 'happy') {
-      await this._animateHappy();
-    }
+    this.smileyGroupings.pushObject(centerSmileyGrouping);
+    await this.utils.domRenderPromise();
+    await this._componentFor(centerSmileyGrouping).fadeFromTransparentToOpaque();
   },
 
   async _animateSad() {
@@ -160,22 +171,12 @@ export default Service.extend({
     const happySmileyChoice = this._happySmileyChoice();
     const sadSmileyGrouping = this._sadSmileyGrouping();
     const happySmileyGrouping = this._happySmileyGrouping();
-    const oldCenterSmileyGrouping = this._centerSmileyGrouping();
-    let newCenterSmileyGrouping = null;
-    if (this.utils.amDone(oldCenterSmileyGrouping.integer, happySmileyGrouping.integer)) {
-      newCenterSmileyGrouping = this._buildTransparentDoneSmileyGrouping();
-    } else {
-      const integer = this.utils.chooseIntegralMidpoint(oldCenterSmileyGrouping.integer, happySmileyGrouping.integer);
-      newCenterSmileyGrouping = this._buildTransparentSmileyGrouping(integer);
-    }
-    this.smileyGroupings.pushObject(newCenterSmileyGrouping);
-    await this.utils.domRenderPromise();
+    const centerSmileyGrouping = this._centerSmileyGrouping();
     await this._componentFor(happySmileyChoice).fadeFromOpaqueToTransparent();
     await this._componentFor(sadSmileyChoice).moveFromLeftToCenter();
     await this._componentFor(sadSmileyGrouping).fadeFromOpaqueToTransparent();
-    await this._componentFor(oldCenterSmileyGrouping).moveFromCenterToLeft();
-    await this._componentFor(newCenterSmileyGrouping).fadeFromTransparentToOpaque();
-    this._removeSmileyFace(oldCenterSmileyGrouping, happySmileyChoice);
+    await this._componentFor(centerSmileyGrouping).moveFromCenterToLeft();
+    this._removeSmileyFace(centerSmileyGrouping, happySmileyChoice);
     this._removeSmileyGrouping(sadSmileyGrouping);
   },
 
@@ -184,22 +185,12 @@ export default Service.extend({
     const happySmileyChoice = this._happySmileyChoice();
     const sadSmileyGrouping = this._sadSmileyGrouping();
     const happySmileyGrouping = this._happySmileyGrouping();
-    const oldCenterSmileyGrouping = this._centerSmileyGrouping();
-    let newCenterSmileyGrouping = null;
-    if (this.utils.amDone(oldCenterSmileyGrouping.integer, sadSmileyGrouping.integer)) {
-      newCenterSmileyGrouping = this._buildTransparentDoneSmileyGrouping();
-    } else {
-      const integer = this.utils.chooseIntegralMidpoint(oldCenterSmileyGrouping.integer, sadSmileyGrouping.integer);
-      newCenterSmileyGrouping = this._buildTransparentSmileyGrouping(integer);
-    }
-    this.smileyGroupings.pushObject(newCenterSmileyGrouping);
-    await this.utils.domRenderPromise();
+    const centerSmileyGrouping = this._centerSmileyGrouping();
     await this._componentFor(sadSmileyChoice).fadeFromOpaqueToTransparent();
     await this._componentFor(happySmileyChoice).moveFromRightToCenter();
     await this._componentFor(happySmileyGrouping).fadeFromOpaqueToTransparent();
-    await this._componentFor(oldCenterSmileyGrouping).moveFromCenterToRight();
-    await this._componentFor(newCenterSmileyGrouping).fadeFromTransparentToOpaque();
-    this._removeSmileyFace(oldCenterSmileyGrouping, sadSmileyChoice);
+    await this._componentFor(centerSmileyGrouping).moveFromCenterToRight();
+    this._removeSmileyFace(centerSmileyGrouping, sadSmileyChoice);
     this._removeSmileyGrouping(happySmileyGrouping);
   },
 
