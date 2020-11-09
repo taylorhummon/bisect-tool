@@ -13,12 +13,12 @@ export default Component.extend({
   animation: service(),
   utils: service(),
 
-  smileyGrouping: null,
+  grouping: null,
   onSmileyClick: null, // closure action
 
   init() {
     this._super(...arguments);
-    const integer = this.smileyGrouping.integer;
+    const integer = this.grouping.integer;
     if (! this.utils.isNullOrUndefined(integer)) {
       this.set('valueString', integer.toString());
     }
@@ -46,7 +46,7 @@ export default Component.extend({
   isValueReadOnly: true,
 
   @action smileyFaceClicked(decision) {
-    if (this.smileyGrouping.position !== 'center') return;
+    if (this.grouping.position !== 'center') return;
     this.animation.animateDecision(decision); // not awaiting
   },
 
@@ -54,17 +54,17 @@ export default Component.extend({
   classNameBindings: ['opacity', 'position'],
 
   didInsertElement() {
-    this.componentRegistry.registerSmileyGroupingComponent(this.smileyGrouping.id, this);
+    this.componentRegistry.registerSmileyGroupingComponent(this.grouping.id, this);
   },
 
   willDestroyElement() {
-    this.componentRegistry.unregisterSmileyGroupingComponent(this.smileyGrouping.id);
+    this.componentRegistry.unregisterSmileyGroupingComponent(this.grouping.id);
   },
 
   opacity: computed(
-    'smileyGrouping.opacity',
+    'grouping.opacity',
     function () {
-      return `opacity-${this.smileyGrouping.opacity}`;
+      return `opacity-${this.grouping.opacity}`;
     }
   ),
 
@@ -77,9 +77,9 @@ export default Component.extend({
   },
 
   position: computed(
-    'smileyGrouping.position',
+    'grouping.position',
     function () {
-      return `position-${this.smileyGrouping.position}`;
+      return `position-${this.grouping.position}`;
     }
   ),
 
@@ -93,17 +93,17 @@ export default Component.extend({
 
   _animate(attribute, from, to) {
     return new RSVP.Promise((resolve, reject) => {
-      if (this.smileyGrouping[attribute] !== from) {
+      if (this.grouping[attribute] !== from) {
         reject(`SmileyGrouping must have ${attribute} be equal to ${from} in order to transition to ${to}`);
         return;
       }
       const onAnimationEnd = () => {
         this.element.removeEventListener('animationend', onAnimationEnd);
-        this.smileyGrouping.set(attribute, to);
+        this.grouping.set(attribute, to);
         resolve();
       };
       this.element.addEventListener('animationend', onAnimationEnd);
-      this.smileyGrouping.set(attribute, `from-${from}-to-${to}`);
+      this.grouping.set(attribute, `from-${from}-to-${to}`);
     });
   },
 });

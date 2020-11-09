@@ -1,9 +1,9 @@
-{{#if (eq smileyGrouping.smileyFaces.length 0)}}
+{{#if (eq grouping.faces.length 0)}}
   Done!
 {{else}}
-  {{#each smileyGrouping.smileyFaces as |smileyFace|}}
+  {{#each grouping.faces as |face|}}
     {{smiley-face
-      smileyFace=smileyFace
+      face=face
       onSmileyClick=(action "smileyFaceClicked")
     }}
   {{/each}}

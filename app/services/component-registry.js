@@ -31,11 +31,13 @@ export default Service.extend({
   // !!! this type code is a little gross
   componentFor(object) {
     if (object.type === 'grouping') {
-      return this._smileyGroupingComponents.get(object.id);
+      const found = this._smileyGroupingComponents.get(object.id);
+      if (found) return found;
     }
     if (['sad', 'happy'].includes(object.type)) {
-      return this._smileyFaceComponents.get(object.id);
+      const found = this._smileyFaceComponents.get(object.id);
+      if (found) return found;
     }
-    return null;
+    throw `could not find component for object ${object}`;
   },
 });

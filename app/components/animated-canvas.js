@@ -11,5 +11,5 @@ export default Component.extend({
     this.animation.animateSetup(); // not awaiting
   },
 
-  smileyGroupings: readOnly('animation.smileyGroupings'),
+  groupings: readOnly('animation.groupings'), // !!!
 });

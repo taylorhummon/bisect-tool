@@ -13,42 +13,42 @@ export default Component.extend({
   classNames: ['smiley-face'],
   classNameBindings: ['opacity', 'position'],
 
-  @action smileyFaceClicked() {
+  @action smileyFaceClicked() { // !!! consider renaming
     if (! this.onSmileyClick) return;
-    this.onSmileyClick(this.smileyFace.type);
+    this.onSmileyClick(this.face.type);
   },
 
   didInsertElement() {
     // !!! do I need to super?
-    this.componentRegistry.registerSmileyFaceComponent(this.smileyFace.id, this);
+    this.componentRegistry.registerSmileyFaceComponent(this.face.id, this);
   },
 
   willDestroyElement() {
-    this.componentRegistry.unregisterSmileyFaceComponent(this.smileyFace.id);
+    this.componentRegistry.unregisterSmileyFaceComponent(this.face.id);
   },
 
-  smileyFace: null,
+  face: null,
   onSmileyClick: null, // closure action
 
   imageSrc: computed(
-    'smileyFace.fill',
-    'smileyFace.type',
+    'face.fill',
+    'face.type',
     function () {
-      if (this.smileyFace.fill === 'outline') {
-        if (this.smileyFace.type === 'happy') return 'emoticon-happy-outline.png';
-        if (this.smileyFace.type === 'sad') return 'emoticon-sad-outline.png';
+      if (this.face.fill === 'outline') {
+        if (this.face.type === 'happy') return 'emoticon-happy-outline.png';
+        if (this.face.type === 'sad') return 'emoticon-sad-outline.png';
       }
-      if (this.smileyFace.fill === 'filled') {
-        if (this.smileyFace.type === 'happy') return 'emoticon-happy.png';
-        if (this.smileyFace.type === 'sad') return 'emoticon-sad.png';
+      if (this.face.fill === 'filled') {
+        if (this.face.type === 'happy') return 'emoticon-happy.png';
+        if (this.face.type === 'sad') return 'emoticon-sad.png';
       }
     }
   ),
 
   opacity: computed(
-    'smileyFace.opacity',
+    'face.opacity',
     function () {
-      return `opacity-${this.smileyFace.opacity}`;
+      return `opacity-${this.face.opacity}`;
     }
   ),
 
@@ -57,9 +57,9 @@ export default Component.extend({
   },
 
   position: computed(
-    'smileyFace.position',
+    'face.position',
     function () {
-      return `position-${this.smileyFace.position}`;
+      return `position-${this.face.position}`;
     }
   ),
 
@@ -73,17 +73,17 @@ export default Component.extend({
 
   _animate(attribute, from, to) {
     return new RSVP.Promise((resolve, reject) => {
-      if (this.smileyFace[attribute] !== from) {
+      if (this.face[attribute] !== from) {
         reject(`SmileyFace must have ${attribute} be equal to ${from} in order to transition to ${to}`);
         return;
       }
       const onAnimationEnd = () => {
         this.element.removeEventListener('animationend', onAnimationEnd);
-        this.smileyFace.set(attribute, to);
+        this.face.set(attribute, to);
         resolve();
       };
       this.element.addEventListener('animationend', onAnimationEnd);
-      this.smileyFace.set(attribute, `from-${from}-to-${to}`);
+      this.face.set(attribute, `from-${from}-to-${to}`);
     });
   },
 });
