@@ -9,6 +9,7 @@ import RSVP from 'rsvp';
 // !!! consider replacing these computed properties
 
 export default Component.extend({
+  componentRegistry: service(),
   animation: service(),
   utils: service(),
 
@@ -53,11 +54,11 @@ export default Component.extend({
   classNameBindings: ['opacity', 'position'],
 
   didInsertElement() {
-    this.animation.registerSmileyGroupingComponent(this.smileyGrouping.id, this);
+    this.componentRegistry.registerSmileyGroupingComponent(this.smileyGrouping.id, this);
   },
 
   willDestroyElement() {
-    this.animation.unregisterSmileyGroupingComponent(this.smileyGrouping.id);
+    this.componentRegistry.unregisterSmileyGroupingComponent(this.smileyGrouping.id);
   },
 
   opacity: computed(

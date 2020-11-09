@@ -8,7 +8,7 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    this.animation.setupAnimatedCanvas(); // not awaiting
+    this.animation.animateSetup(); // not awaiting
   },
 
   smileyGroupings: readOnly('animation.smileyGroupings'),

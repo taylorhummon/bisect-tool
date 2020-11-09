@@ -8,7 +8,7 @@ import RSVP from 'rsvp';
 // !!! consider replacing these computed properties
 
 export default Component.extend({
-  animation: service(),
+  componentRegistry: service(),
 
   classNames: ['smiley-face'],
   classNameBindings: ['opacity', 'position'],
@@ -20,11 +20,11 @@ export default Component.extend({
 
   didInsertElement() {
     // !!! do I need to super?
-    this.animation.registerSmileyFaceComponent(this.smileyFace.id, this);
+    this.componentRegistry.registerSmileyFaceComponent(this.smileyFace.id, this);
   },
 
   willDestroyElement() {
-    this.animation.unregisterSmileyFaceComponent(this.smileyFace.id);
+    this.componentRegistry.unregisterSmileyFaceComponent(this.smileyFace.id);
   },
 
   smileyFace: null,
