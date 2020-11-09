@@ -225,21 +225,17 @@ export default Service.extend({
   },
 
   _removeSmileyFace(smileyGrouping, smileyFace) {
-    const smileyFaces = smileyGrouping.smileyFaces;
-    for (let i = smileyFaces.length - 1; i >= 0; i--) {
-      if (smileyFaces.objectAt(i).id === smileyFace.id) {
-        smileyFaces.removeAt(i);
-      }
-    }
+    this.utils.removeMatching(
+      smileyGrouping.smileyFaces,
+      element => element.id === smileyFace.id
+    );
   },
 
   _removeSmileyGrouping(smileyGrouping) {
-    const smileyGroupings = this.smileyGroupings;
-    for (let i = smileyGroupings.length - 1; i >= 0; i--) {
-      if (smileyGroupings.objectAt(i).id === smileyGrouping.id) {
-        smileyGroupings.removeAt(i);
-      }
-    }
+    this.utils.removeMatching(
+      this.smileyGroupings,
+      element => element.id === smileyGrouping.id
+    );
   },
 
   _componentFor(object) {

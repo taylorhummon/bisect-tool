@@ -58,4 +58,12 @@ export default class Utils extends Service {
       next(null, resolve);
     });
   }
+
+  removeMatching(array, predicate) {
+    for (let i = array.length - 1; i >= 0; i--) {
+      if (predicate(array.objectAt(i))) {
+        array.removeAt(i);
+      }
+    }
+  }
 }
