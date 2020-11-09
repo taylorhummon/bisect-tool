@@ -14,7 +14,7 @@ export default Component.extend({
   utils: service(),
 
   grouping: null,
-  onSmileyClick: null, // closure action
+  onSmileyClick: null,
 
   init() {
     this._super(...arguments);

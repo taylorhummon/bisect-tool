@@ -19,7 +19,6 @@ export default Component.extend({
   },
 
   didInsertElement() {
-    // !!! do I need to super?
     this.componentRegistry.registerSmileyFaceComponent(this.face.id, this);
   },
 
@@ -28,7 +27,7 @@ export default Component.extend({
   },
 
   face: null,
-  onSmileyClick: null, // closure action
+  onSmileyClick: null,
 
   imageSrc: computed(
     'face.fill',

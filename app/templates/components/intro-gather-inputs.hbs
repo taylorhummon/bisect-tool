@@ -1,15 +1,13 @@
 <div class="intro-gather-inputs">
-  {{#if showError}}
-    <div class="error">
-      Please enter a number for when things were good.
+  {{#unless (eq errors.length 0)}}
+    <div class="errors">
+      {{#each errors as |error|}}
+        <div class="error">
+          {{error}}
+        </div>
+      {{/each}}
     </div>
-    <div class="error">
-      Please enter a number for when things were bad.
-    </div>
-    <div class="error">
-      Please enter different numbers for when things were good and bad.
-    </div>
-  {{/if}}
+  {{/unless}}
   <div>
     <img src="emoticon-happy-outline.png" />
     <Input
