@@ -10,6 +10,7 @@ import RSVP from 'rsvp';
 
 export default Component.extend({
   animation: service(),
+  utils: service(),
 
   smileyGrouping: null,
   onSmileyClick: null, // closure action
@@ -17,7 +18,9 @@ export default Component.extend({
   init() {
     this._super(...arguments);
     const integer = this.smileyGrouping.integer;
-    if (typeof integer === 'number') this.set('valueString', integer.toString()); // !!!! probably simpler to have a null/undefined check
+    if (! this.utils.isNullOrUndefined(integer)) {
+      this.set('valueString', integer.toString());
+    }
   },
 
   valueString: null,

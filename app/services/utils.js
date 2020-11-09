@@ -34,6 +34,9 @@ export default class Utils extends Service {
     return Math.abs(a - b) <= 1;
   }
 
+  isNullOrUndefined(a) {
+    return a === null || typeof a === 'undefined';
+  }
 
   generateUuid() {
     let result = '';
