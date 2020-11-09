@@ -1,13 +1,31 @@
 import Service from '@ember/service';
 import EmberObject from '@ember/object';
 import { inject as service } from '@ember/service';
+import { computed } from '@ember/object';
 
 export default Service.extend({
   componentRegistry: service(),
   utils: service(),
 
-  initialSadInteger: null, // !!! do I need these?
+  initialSadInteger: null,
   initialHappyInteger: null,
+
+  sadSide: computed(
+    'initialSadInteger',
+    'initialHappyInteger',
+    function () {
+      if (this.initialSadInteger > this.initialHappyInteger) return 'right';
+      if (this.initialSadInteger < this.initialHappyInteger) return 'left';
+    }
+  ),
+  happySide: computed(
+    'initialHappyInteger',
+    'initialSadInteger',
+    function () {
+      if (this.initialHappyInteger > this.initialSadInteger) return 'right';
+      if (this.initialHappyInteger < this.initialSadInteger) return 'left';
+    }
+  ),
 
   groupings: null,
 
@@ -17,16 +35,16 @@ export default Service.extend({
   },
 
   async animateSetup() {
-    this._addSadGrouping(this.initialSadInteger);
-    this._addHappyGrouping(this.initialHappyInteger);
+    this._addSadGrouping();
+    this._addHappyGrouping();
     await this.utils.domRenderPromise();
     await this.utils.delayPromise(300);
     await this._animateAddCenterGrouping();
   },
 
   async animateDecision(decision) {
-    if (decision === 'sad')   await this._animateSad();
-    if (decision === 'happy') await this._animateHappy();
+    if (decision === 'left')  await this._animateLeft();
+    if (decision === 'right') await this._animateRight();
     await this._animateAddCenterGrouping();
   },
 
@@ -38,43 +56,41 @@ export default Service.extend({
     await this.componentRegistry.componentFor(centerGrouping).fadeFromTransparentToOpaque();
   },
 
-  async _animateSad() {
-    const sadChoice = this._sadChoice();
-    const happyChoice = this._happyChoice();
-    const sadGrouping = this._sadGrouping();
-    const happyGrouping = this._happyGrouping();
+  async _animateLeft() {
+    const leftChoice = this._leftChoice();
+    const rightChoice = this._rightChoice();
+    const leftGrouping = this._leftGrouping();
     const centerGrouping = this._centerGrouping();
-    await this.componentRegistry.componentFor(happyChoice).fadeFromOpaqueToTransparent();
-    await this.componentRegistry.componentFor(sadChoice).moveFromLeftToCenter();
-    await this.componentRegistry.componentFor(sadGrouping).fadeFromOpaqueToTransparent();
+    await this.componentRegistry.componentFor(rightChoice).fadeFromOpaqueToTransparent();
+    await this.componentRegistry.componentFor(leftChoice).moveFromLeftToCenter();
+    await this.componentRegistry.componentFor(leftGrouping).fadeFromOpaqueToTransparent();
     await this.componentRegistry.componentFor(centerGrouping).moveFromCenterToLeft();
-    this._removeFace(centerGrouping, happyChoice);
-    this._removeGrouping(sadGrouping);
+    this._removeFace(centerGrouping, rightChoice);
+    this._removeGrouping(leftGrouping);
   },
 
-  async _animateHappy() {
-    const sadChoice = this._sadChoice();
-    const happyChoice = this._happyChoice();
-    const sadGrouping = this._sadGrouping();
-    const happyGrouping = this._happyGrouping();
+  async _animateRight() {
+    const leftChoice = this._leftChoice();
+    const rightChoice = this._rightChoice();
+    const rightGrouping = this._rightGrouping();
     const centerGrouping = this._centerGrouping();
-    await this.componentRegistry.componentFor(sadChoice).fadeFromOpaqueToTransparent();
-    await this.componentRegistry.componentFor(happyChoice).moveFromRightToCenter();
-    await this.componentRegistry.componentFor(happyGrouping).fadeFromOpaqueToTransparent();
+    await this.componentRegistry.componentFor(leftChoice).fadeFromOpaqueToTransparent();
+    await this.componentRegistry.componentFor(rightChoice).moveFromRightToCenter();
+    await this.componentRegistry.componentFor(rightGrouping).fadeFromOpaqueToTransparent();
     await this.componentRegistry.componentFor(centerGrouping).moveFromCenterToRight();
-    this._removeFace(centerGrouping, sadChoice);
-    this._removeGrouping(happyGrouping);
+    this._removeFace(centerGrouping, leftChoice);
+    this._removeGrouping(rightGrouping);
   },
 
   // ### FINDERS ###
 
-  _sadGrouping() {
+  _leftGrouping() {
     return this.groupings.find(
       grouping => grouping.position === 'left'
     );
   },
 
-  _happyGrouping() {
+  _rightGrouping() {
     return this.groupings.find(
       grouping => grouping.position === 'right'
     );
@@ -86,27 +102,27 @@ export default Service.extend({
     );
   },
 
-  _sadChoice() {
+  _leftChoice() {
     return this._centerGrouping().faces.find(
-      face => face.type === 'sad'
+      face => face.position === 'left'
     );
   },
 
-  _happyChoice() {
+  _rightChoice() {
     return this._centerGrouping().faces.find(
-      face => face.type === 'happy'
+      face => face.position === 'right'
     );
   },
 
   // ### ADDERS ###
 
-  _addSadGrouping(integer) {
+  _addSadGrouping() {
     const grouping = EmberObject.create({
       id: this.utils.generateUuid(),
       type: 'grouping',
-      integer,
+      integer: this.initialSadInteger,
       opacity: 'opaque',
-      position: 'left',
+      position: this.sadSide,
       faces: [
         EmberObject.create({
           id: this.utils.generateUuid(),
@@ -121,13 +137,13 @@ export default Service.extend({
     return grouping;
   },
 
-  _addHappyGrouping(integer) {
+  _addHappyGrouping() {
     const grouping = EmberObject.create({
       id: this.utils.generateUuid(),
       type: 'grouping',
-      integer,
+      integer: this.initialHappyInteger,
       opacity: 'opaque',
-      position: 'right',
+      position: this.happySide,
       faces: [
         EmberObject.create({
           id: this.utils.generateUuid(),
@@ -143,8 +159,8 @@ export default Service.extend({
   },
 
   _addCenterGrouping() {
-    const integerA = this._sadGrouping().integer;
-    const integerB = this._happyGrouping().integer;
+    const integerA = this._leftGrouping().integer;
+    const integerB = this._rightGrouping().integer;
     if (this.utils.amDone(integerA, integerB)) {
       return this._addDoneCenterGrouping();
     } else {
@@ -176,14 +192,14 @@ export default Service.extend({
           id: this.utils.generateUuid(),
           type: 'sad',
           opacity: 'opaque',
-          position: 'left',
+          position: this.sadSide,
           fill: 'outline'
         }),
         EmberObject.create({
           id: this.utils.generateUuid(),
           type: 'happy',
           opacity: 'opaque',
-          position: 'right',
+          position: this.happySide,
           fill: 'outline'
         })
       ]

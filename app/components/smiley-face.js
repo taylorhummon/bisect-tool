@@ -15,7 +15,7 @@ export default Component.extend({
 
   @action smileyFaceClicked() { // !!! consider renaming
     if (! this.onSmileyClick) return;
-    this.onSmileyClick(this.face.type);
+    this.onSmileyClick(this.face.position);
   },
 
   didInsertElement() {
