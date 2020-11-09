@@ -16,7 +16,8 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    this.set('valueString', this.smileyGrouping.integer.toString());
+    const integer = this.smileyGrouping.integer;
+    if (typeof integer === 'number') this.set('valueString', integer.toString()); // !!!! probably simpler to have a null/undefined check
   },
 
   valueString: null,

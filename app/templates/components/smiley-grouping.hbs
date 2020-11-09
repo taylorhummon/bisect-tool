@@ -1,11 +1,15 @@
-{{#each smileyGrouping.smileyFaces as |smileyFace|}}
-  {{smiley-face
-    smileyFace=smileyFace
-    onSmileyClick=(action "smileyFaceClicked")
-  }}
-{{/each}}
-<Input
-  class="numerical-input"
-  @value={{valueString}}
-  @readonly={{isValueReadOnly}}
-/>
+{{#if (eq smileyGrouping.smileyFaces.length 0)}}
+  Done!
+{{else}}
+  {{#each smileyGrouping.smileyFaces as |smileyFace|}}
+    {{smiley-face
+      smileyFace=smileyFace
+      onSmileyClick=(action "smileyFaceClicked")
+    }}
+  {{/each}}
+  <Input
+    class="numerical-input"
+    @value={{valueString}}
+    @readonly={{isValueReadOnly}}
+  />
+{{/if}}

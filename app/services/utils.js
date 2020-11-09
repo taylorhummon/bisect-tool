@@ -30,10 +30,10 @@ export default class Utils extends Service {
     return Math.floor(2 * Math.random());
   }
 
-  // get amDone() {
-  //   return Math.abs(this.sad - this.happy) <= 1;
-  // }
-  //
+  amDone(a, b) {
+    return Math.abs(a - b) <= 1;
+  }
+
 
   generateUuid() {
     let result = '';
