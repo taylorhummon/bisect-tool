@@ -10,8 +10,8 @@ export default class Utils extends Service {
     return parsed;
   }
 
-  chooseIntegralMidpoint(a, b) {
-    const total = a + b;
+  chooseIntegralMidpoint(integerA, integerB) {
+    const total = integerA + integerB;
     if (this._isEven(total)) return total / 2;
     if (this._flipCoin()) {
       return (total + 1) / 2;
@@ -28,8 +28,8 @@ export default class Utils extends Service {
     return Math.floor(2 * Math.random()) === 0;
   }
 
-  amDone(a, b) {
-    return Math.abs(a - b) <= 1;
+  amDone(integerA, integerB) {
+    return Math.abs(integerA - integerB) <= 1;
   }
 
   isNullOrUndefined(a) {

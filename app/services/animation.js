@@ -20,10 +20,10 @@ export default Service.extend({
   },
 
   async setupAnimatedCanvas() {
-    this.smileyGroupings = [
-      this._buildSadSmileyGrouping(this.initialSadInteger),
-      this._buildHappySmileyGrouping(this.initialHappyInteger),
-    ];
+    const sadSmileyGrouping = this._buildSadSmileyGrouping(this.initialSadInteger);
+    const happySmileyGrouping = this._buildHappySmileyGrouping(this.initialHappyInteger);
+    this.smileyGroupings.pushObject(sadSmileyGrouping);
+    this.smileyGroupings.pushObject(happySmileyGrouping);
     await this.utils.domRenderPromise();
     await this.utils.delayPromise(300);
     await this.animateInit();
@@ -67,65 +67,49 @@ export default Service.extend({
     });
   },
 
-  _buildCenterSmileyGrouping(integer) {
-    return EmberObject.create({
-      id: this.utils.generateUuid(),
-      type: 'grouping',
-      integer,
-      opacity: 'opaque',
-      position: 'center',
-      smileyFaces: [
-        EmberObject.create({
-          id: this.utils.generateUuid(),
-          type: 'sad',
-          opacity: 'opaque',
-          position: 'left',
-          fill: 'outline'
-        }),
-        EmberObject.create({
-          id: this.utils.generateUuid(),
-          type: 'happy',
-          opacity: 'opaque',
-          position: 'right',
-          fill: 'outline'
-        })
-      ]
-    });
+  _buildCenterSmileyGrouping() {
+    const integerA = this._sadSmileyGrouping().integer;
+    const integerB = this._happySmileyGrouping().integer;
+    if (this.utils.amDone(integerA, integerB)) {`
+      return this._buildDoneCenterSmileyGrouping();
+    } else {
+      return this._buildChoiceCenterSmileyGrouping(integerA, integerB);
+    }
   },
 
-  _buildTransparentSmileyGrouping(integer) {
-    return EmberObject.create({
-      id: this.utils.generateUuid(),
-      type: 'grouping',
-      integer,
-      opacity: 'transparent',
-      position: 'center',
-      smileyFaces: [
-        EmberObject.create({
-          id: this.utils.generateUuid(),
-          type: 'sad',
-          opacity: 'opaque',
-          position: 'left',
-          fill: 'outline'
-        }),
-        EmberObject.create({
-          id: this.utils.generateUuid(),
-          type: 'happy',
-          opacity: 'opaque',
-          position: 'right',
-          fill: 'outline'
-        })
-      ]
-    });
-  },
-
-  _buildTransparentDoneSmileyGrouping() {
+  _buildDoneCenterSmileyGrouping() {
     return EmberObject.create({
       id: this.utils.generateUuid(),
       type: 'grouping',
       opacity: 'transparent',
       position: 'center',
       smileyFaces: []
+    });
+  },
+
+  _buildChoiceCenterSmileyGrouping(integerA, integerB) {
+    return EmberObject.create({
+      id: this.utils.generateUuid(),
+      type: 'grouping',
+      integer: this.utils.chooseIntegralMidpoint(integerA, integerB),
+      opacity: 'transparent',
+      position: 'center',
+      smileyFaces: [
+        EmberObject.create({
+          id: this.utils.generateUuid(),
+          type: 'sad',
+          opacity: 'opaque',
+          position: 'left',
+          fill: 'outline'
+        }),
+        EmberObject.create({
+          id: this.utils.generateUuid(),
+          type: 'happy',
+          opacity: 'opaque',
+          position: 'right',
+          fill: 'outline'
+        })
+      ]
     });
   },
 
@@ -152,15 +136,7 @@ export default Service.extend({
   },
 
   async animateInit() {
-    const sadSmileyGrouping = this._sadSmileyGrouping();
-    const happySmileyGrouping = this._happySmileyGrouping();
-    let centerSmileyGrouping = null;
-    if (this.utils.amDone(sadSmileyGrouping.integer, happySmileyGrouping.integer)) {
-      centerSmileyGrouping = this._buildTransparentDoneSmileyGrouping();
-    } else {
-      const integer = this.utils.chooseIntegralMidpoint(sadSmileyGrouping.integer, happySmileyGrouping.integer);
-      centerSmileyGrouping = this._buildTransparentSmileyGrouping(integer);
-    }
+    const centerSmileyGrouping = this._buildCenterSmileyGrouping();
     this.smileyGroupings.pushObject(centerSmileyGrouping);
     await this.utils.domRenderPromise();
     await this._componentFor(centerSmileyGrouping).fadeFromTransparentToOpaque();
