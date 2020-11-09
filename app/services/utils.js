@@ -11,23 +11,21 @@ export default class Utils extends Service {
   }
 
   chooseIntegralMidpoint(a, b) {
-    let total = a + b;
-    if (this._isOdd(total)) {
-      if (this._flipCoin()) {
-        total += 1;
-      } else {
-        total -= 1;
-      }
+    const total = a + b;
+    if (this._isEven(total)) return total / 2;
+    if (this._flipCoin()) {
+      return (total + 1) / 2;
+    } else {
+      return (total - 1) / 2;
     }
-    return total / 2;
   }
 
-  _isOdd(integer) {
-    return integer % 2 === 1;
+  _isEven(integer) {
+    return integer % 2 === 0;
   }
 
   _flipCoin() {
-    return Math.floor(2 * Math.random());
+    return Math.floor(2 * Math.random()) === 0;
   }
 
   amDone(a, b) {
@@ -39,12 +37,20 @@ export default class Utils extends Service {
   }
 
   generateUuid() {
-    let result = '';
-    for (let j = 0; j < 32; j++) {
-      if (j == 8 || j == 12 || j == 16 || j == 20) result += '-';
-      result += Math.floor(Math.random() * 16).toString(16).toUpperCase();
-    }
-    return result;
+    const template = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
+    const chars = template.split('');
+    const digits = chars.map(char => {
+      if (char === '-') {
+        return '-';
+      } else {
+        return this._randomHexDigit();
+      }
+    });
+    return digits.join('');
+  }
+
+  _randomHexDigit() {
+    return Math.floor(Math.random() * 16).toString(16).toUpperCase();
   }
 
   delayPromise(waitTime) {
