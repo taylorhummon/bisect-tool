@@ -1,10 +1,11 @@
 Now
 
+* Better staggered animations
+* Consider controling animation duration from JS
+
 
 Sooner
 
-* Better staggered animations
-* Consider controling animation duration from JS
 * Reset button
 * Tests
 * Turn on linter

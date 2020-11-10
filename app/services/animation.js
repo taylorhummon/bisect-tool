@@ -76,7 +76,6 @@ export default Service.extend({
   async _animateAddCenterGrouping() {
     const centerGrouping = this._addCenterGrouping();
     await this.utils.domRenderPromise();
-    await this.utils.delayPromise(10);
     await this.componentRegistry.componentFor(centerGrouping).fadeFromTransparentToOpaque();
   },
 
@@ -86,10 +85,15 @@ export default Service.extend({
     const leftGrouping = this._leftGrouping();
     const centerGrouping = this._centerGrouping();
     leftChoice.set('fill', 'yellow');
-    await this.componentRegistry.componentFor(rightChoice).fadeFromOpaqueToTransparent();
-    await this.componentRegistry.componentFor(leftChoice).moveFromLeftToCenter();
-    await this.componentRegistry.componentFor(leftGrouping).moveFromLeftToFarLeft();
-    await this.componentRegistry.componentFor(centerGrouping).moveFromCenterToLeft();
+    await RSVP.all([
+      this.componentRegistry.componentFor(rightChoice).fadeFromOpaqueToTransparent(),
+      this.utils.delayPromise(200).then(() => this.componentRegistry.componentFor(leftChoice).moveFromLeftToCenter())
+    ]);
+    await this.utils.domRenderPromise();
+    await RSVP.all([
+      this.componentRegistry.componentFor(leftGrouping).moveFromLeftToFarLeft(),
+      this.componentRegistry.componentFor(centerGrouping).moveFromCenterToLeft(),
+    ]);
     this._removeFace(centerGrouping, rightChoice);
     this._removeGrouping(leftGrouping);
   },
@@ -100,10 +104,15 @@ export default Service.extend({
     const rightGrouping = this._rightGrouping();
     const centerGrouping = this._centerGrouping();
     rightChoice.set('fill', 'yellow');
-    await this.componentRegistry.componentFor(leftChoice).fadeFromOpaqueToTransparent();
-    await this.componentRegistry.componentFor(rightChoice).moveFromRightToCenter();
-    await this.componentRegistry.componentFor(rightGrouping).moveFromRightToFarRight();
-    await this.componentRegistry.componentFor(centerGrouping).moveFromCenterToRight();
+    await RSVP.all([
+      this.componentRegistry.componentFor(leftChoice).fadeFromOpaqueToTransparent(),
+      this.utils.delayPromise(200).then(() => this.componentRegistry.componentFor(rightChoice).moveFromRightToCenter())
+    ]);
+    await this.utils.domRenderPromise();
+    await RSVP.all([
+      this.componentRegistry.componentFor(rightGrouping).moveFromRightToFarRight(),
+      this.componentRegistry.componentFor(centerGrouping).moveFromCenterToRight()
+    ]);
     this._removeFace(centerGrouping, leftChoice);
     this._removeGrouping(rightGrouping);
   },
