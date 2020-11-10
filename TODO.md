@@ -4,7 +4,6 @@ Now
 
 Sooner
 
-* Update gitignore to ignore OS X junk files
 * Prevent user actions while animation is happening
 * Better staggered animations
 * Consider controling animation duration from JS
