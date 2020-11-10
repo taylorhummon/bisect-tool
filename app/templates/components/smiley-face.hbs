@@ -1,5 +1,7 @@
-<img
-  src="{{imageSrc}}"
-  class="smiley-face"
-  {{on "click" this.smileyFaceClicked}}
-/>
+<div class="smiley-face" {{on "click" this.smileyFaceClicked}}>
+  {{#if (eq face.type "happy")}}
+    {{smiley-face-happy}}
+  {{else if (eq face.type "sad")}}
+    {{smiley-face-sad}}
+  {{/if}}
+</div>

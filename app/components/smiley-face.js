@@ -29,21 +29,6 @@ export default Component.extend({
   face: null,
   onSmileyClick: null,
 
-  imageSrc: computed(
-    'face.{fill,type}',
-    function () {
-      if (this.face.fill === 'outline') {
-        if (this.face.type === 'happy') return 'smiley-face-happy.svg';
-        if (this.face.type === 'sad') return 'smiley-face-sad.svg';
-      }
-      if (this.face.fill === 'filled') { // !!! remove this
-        if (this.face.type === 'happy') return 'smiley-face-happy.svg';
-        if (this.face.type === 'sad') return 'smiley-face-sad.svg';
-      }
-      throw 'could not find image for smiley';
-    }
-  ),
-
   opacity: computed(
     'face.opacity',
     function () {
