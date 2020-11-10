@@ -1,20 +1,30 @@
 .smiley-face {
-  width: 48px;
-  height: 48px;
+  $width: 48px;
+  $height: 48px;
+  $position-right: 30px;
+  $position-center: 0px;
+  $position-left: - $position-right;
+  $movement-duration: 600ms;
+  $opacity-full: 100%;
+  $opacity-none: 0%;
+  $fading-duration: 600ms;
+
+  width: $width;
+  height: $height;
   position: absolute;
   left: 50%;
-  margin-left: -24px;
+  margin-left: - $width / 2;
 
   &.opacity-opaque {
-    opacity: 100%;
+    opacity: $opacity-full;
   }
 
   &.opacity-transparent {
-    opacity: 0%;
+    opacity: $opacity-none;
   }
 
   &.opacity-from-opaque-to-transparent {
-    animation-duration: 600ms;
+    animation-duration: $fading-duration;
     animation-name: opacity-from-opaque-to-transparent;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
@@ -22,28 +32,28 @@
 
   @keyframes opacity-from-opaque-to-transparent {
     from {
-      opacity: 100%;
+      opacity: $opacity-full;
     }
 
     to {
-      opacity: 0%;
+      opacity: $opacity-none;
     }
   }
 
   &.position-left {
-    transform: translateX(-30px);
+    transform: translateX($position-left);
   }
 
   &.position-center {
-    transform: translateX(0px);
+    transform: translateX($position-center);
   }
 
   &.position-right {
-    transform: translateX(30px);
+    transform: translateX($position-right);
   }
 
   &.position-from-left-to-center {
-    animation-duration: 600ms;
+    animation-duration: $movement-duration;
     animation-name: position-from-left-to-center;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
@@ -51,16 +61,16 @@
 
   @keyframes position-from-left-to-center {
     from {
-      transform: translateX(-30px);
+      transform: translateX($position-left);
     }
 
     to {
-      transform: translateX(0px);
+      transform: translateX($position-center);
     }
   }
 
   &.position-from-right-to-center {
-    animation-duration: 600ms;
+    animation-duration: $movement-duration;
     animation-name: position-from-right-to-center;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
@@ -68,11 +78,11 @@
 
   @keyframes position-from-right-to-center {
     from {
-      transform: translateX(30px);
+      transform: translateX($position-right);
     }
 
     to {
-      transform: translateX(0px);
+      transform: translateX($position-center);
     }
   }
 }

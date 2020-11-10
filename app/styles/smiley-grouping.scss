@@ -1,30 +1,44 @@
 .smiley-grouping {
-  height: 80px;
-  width: 48px;
+  $width: 48px;
+  $height: 80px;
+  $position-far-right: 300px;
+  $position-right: 150px;
+  $position-center: 0px;
+  $position-left: - $position-right;
+  $position-far-left: - $position-far-right;
+  $movement-duration: 600ms;
+  $opacity-full: 100%;
+  $opacity-none: 0%;
+  $fading-duration: 600ms;
+
+  width: $width;
+  height: $height;
   position: absolute;
   top: 0;
   left: 50%;
-  margin-left: -24px;
+  margin-left: - $width / 2;
 
   .number {
-    width: 100px;
+    $width: 100px;
+
+    width: $width;
     position: absolute;
     top: 50px;
     left: 50%;
-    margin-left: -50px;
+    margin-left: - $width / 2;
     text-align: center;
   }
 
   &.opacity-opaque {
-    opacity: 100%;
+    opacity: $opacity-full;
   }
 
   &.opacity-transparent {
-    opacity: 0%;
+    opacity: $opacity-none;
   }
 
   &.opacity-from-transparent-to-opaque {
-    animation-duration: 600ms;
+    animation-duration: $fading-duration;
     animation-name: opacity-from-transparent-to-opaque;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
@@ -32,87 +46,36 @@
 
   @keyframes opacity-from-transparent-to-opaque {
     from {
-      opacity: 0%;
+      opacity: $opacity-none;
     }
 
     to {
-      opacity: 100%;
+      opacity: $opacity-full;
     }
-  }
-
-  &.position-far-left {
-    transform: translateX(-300px);
-  }
-
-  &.position-left {
-    transform: translateX(-150px);
-  }
-
-  &.position-center {
-    transform: translateX(0px);
-  }
-
-  &.position-right {
-    transform: translateX(150px);
   }
 
   &.position-far-right {
-    transform: translateX(300px);
+    transform: translateX($position-far-right);
   }
 
-  &.position-from-center-to-left {
-    animation-duration: 600ms;
-    animation-name: position-from-center-to-left;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
+  &.position-right {
+    transform: translateX($position-right);
   }
 
-  @keyframes position-from-center-to-left {
-    from {
-      transform: translateX(0px);
-    }
-
-    to {
-      transform: translateX(-150px);
-    }
+  &.position-center {
+    transform: translateX($position-center);
   }
 
-  &.position-from-left-to-far-left {
-    animation-duration: 600ms;
-    animation-name: position-from-left-to-far-left;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
+  &.position-left {
+    transform: translateX($position-left);
   }
 
-  @keyframes position-from-left-to-far-left {
-    from {
-      transform: translateX(-150px);
-    }
-
-    to {
-      transform: translateX(-300px);
-    }
-  }
-
-  &.position-from-center-to-right {
-    animation-duration: 600ms;
-    animation-name: position-from-center-to-right;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
-  }
-
-  @keyframes position-from-center-to-right {
-    from {
-      transform: translateX(0px);
-    }
-
-    to {
-      transform: translateX(150px);
-    }
+  &.position-far-left {
+    transform: translateX($position-far-left);
   }
 
   &.position-from-right-to-far-right {
-    animation-duration: 600ms;
+    animation-duration: $movement-duration;
     animation-name: position-from-right-to-far-right;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
@@ -120,11 +83,62 @@
 
   @keyframes position-from-right-to-far-right {
     from {
-      transform: translateX(150px);
+      transform: translateX($position-right);
     }
 
     to {
-      transform: translateX(300px);
+      transform: translateX($position-far-right);
+    }
+  }
+
+  &.position-from-center-to-right {
+    animation-duration: $movement-duration;
+    animation-name: position-from-center-to-right;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes position-from-center-to-right {
+    from {
+      transform: translateX($position-center);
+    }
+
+    to {
+      transform: translateX($position-right);
+    }
+  }
+
+  &.position-from-center-to-left {
+    animation-duration: $movement-duration;
+    animation-name: position-from-center-to-left;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes position-from-center-to-left {
+    from {
+      transform: translateX($position-center);
+    }
+
+    to {
+      transform: translateX($position-left);
+    }
+  }
+
+  &.position-from-left-to-far-left {
+    animation-duration: $movement-duration;
+    animation-name: position-from-left-to-far-left;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes position-from-left-to-far-left {
+    from {
+      transform: translateX($position-left);
+    }
+
+    to {
+      transform: translateX($position-far-left);
     }
   }
 }
