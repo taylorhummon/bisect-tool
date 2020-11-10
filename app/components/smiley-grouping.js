@@ -37,10 +37,6 @@ export default Component.extend({
     }
   ),
 
-  async fadeFromOpaqueToTransparent() {
-    await this._animate('opacity', 'opaque', 'transparent');
-  },
-
   async fadeFromTransparentToOpaque() {
     await this._animate('opacity', 'transparent', 'opaque');
   },
@@ -56,8 +52,16 @@ export default Component.extend({
     await this._animate('position', 'center', 'right');
   },
 
+  async moveFromRightToFarRight() {
+    await this._animate('position', 'right', 'far-right');
+  },
+
   async moveFromCenterToLeft() {
     await this._animate('position', 'center', 'left');
+  },
+
+  async moveFromLeftToFarLeft() {
+    await this._animate('position', 'left', 'far-left');
   },
 
   _animate(attribute, from, to) {

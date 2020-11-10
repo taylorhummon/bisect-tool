@@ -64,7 +64,7 @@ export default Service.extend({
     const centerGrouping = this._centerGrouping();
     await this.componentRegistry.componentFor(rightChoice).fadeFromOpaqueToTransparent();
     await this.componentRegistry.componentFor(leftChoice).moveFromLeftToCenter();
-    await this.componentRegistry.componentFor(leftGrouping).fadeFromOpaqueToTransparent();
+    await this.componentRegistry.componentFor(leftGrouping).moveFromLeftToFarLeft();
     await this.componentRegistry.componentFor(centerGrouping).moveFromCenterToLeft();
     this._removeFace(centerGrouping, rightChoice);
     this._removeGrouping(leftGrouping);
@@ -77,7 +77,7 @@ export default Service.extend({
     const centerGrouping = this._centerGrouping();
     await this.componentRegistry.componentFor(leftChoice).fadeFromOpaqueToTransparent();
     await this.componentRegistry.componentFor(rightChoice).moveFromRightToCenter();
-    await this.componentRegistry.componentFor(rightGrouping).fadeFromOpaqueToTransparent();
+    await this.componentRegistry.componentFor(rightGrouping).moveFromRightToFarRight();
     await this.componentRegistry.componentFor(centerGrouping).moveFromCenterToRight();
     this._removeFace(centerGrouping, leftChoice);
     this._removeGrouping(rightGrouping);

@@ -1,6 +1,7 @@
-* Fewer "fade away" animations
 * Better staggered animations
 * Colored smilies (on hover and when selected)
+* Remove fill option
+* DRY animation code in SCSS files
 * SVG for smileys
 * Better "Done!" grouping
 * Tests
@@ -10,3 +11,4 @@
 * Use JS classes
 * Use Ember octane techniques to replace computed properties
 * Turn on linter
+* Prevent user actions while animation is happening

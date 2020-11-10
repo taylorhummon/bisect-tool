@@ -23,23 +23,6 @@
     opacity: 0%;
   }
 
-  &.opacity-from-opaque-to-transparent {
-    animation-duration: 600ms;
-    animation-name: opacity-from-opaque-to-transparent;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
-  }
-
-  @keyframes opacity-from-opaque-to-transparent {
-    from {
-      opacity: 100%;
-    }
-
-    to {
-      opacity: 0%;
-    }
-  }
-
   &.opacity-from-transparent-to-opaque {
     animation-duration: 600ms;
     animation-name: opacity-from-transparent-to-opaque;
@@ -57,6 +40,10 @@
     }
   }
 
+  &.position-far-left {
+    transform: translateX(-300px);
+  }
+
   &.position-left {
     transform: translateX(-150px);
   }
@@ -67,6 +54,10 @@
 
   &.position-right {
     transform: translateX(150px);
+  }
+
+  &.position-far-right {
+    transform: translateX(300px);
   }
 
   &.position-from-center-to-left {
@@ -86,6 +77,23 @@
     }
   }
 
+  &.position-from-left-to-far-left {
+    animation-duration: 600ms;
+    animation-name: position-from-left-to-far-left;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes position-from-left-to-far-left {
+    from {
+      transform: translateX(-150px);
+    }
+
+    to {
+      transform: translateX(-300px);
+    }
+  }
+
   &.position-from-center-to-right {
     animation-duration: 600ms;
     animation-name: position-from-center-to-right;
@@ -100,6 +108,23 @@
 
     to {
       transform: translateX(150px);
+    }
+  }
+
+  &.position-from-right-to-far-right {
+    animation-duration: 600ms;
+    animation-name: position-from-right-to-far-right;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes position-from-right-to-far-right {
+    from {
+      transform: translateX(150px);
+    }
+
+    to {
+      transform: translateX(300px);
     }
   }
 }
