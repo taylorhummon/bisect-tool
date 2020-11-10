@@ -11,39 +11,9 @@ import RSVP from 'rsvp';
 export default Component.extend({
   componentRegistry: service(),
   animation: service(),
-  utils: service(),
 
   grouping: null,
   onSmileyClick: null,
-
-  init() {
-    this._super(...arguments);
-    const integer = this.grouping.integer;
-    if (! this.utils.isNullOrUndefined(integer)) {
-      this.set('valueString', integer.toString());
-    }
-  },
-
-  valueString: null,
-
-  valueInteger: computed(
-    'valueString',
-    function () {
-      if (! /^[-+]?\d+$/.test(this.valueString)) return null;
-      const value = Number(this.valueString);
-      if (isNaN(value) || typeof value !== 'number') return null;
-      return value;
-    }
-  ),
-
-  doesValueStringParse: computed(
-    'valueInteger',
-    function () {
-      return this.valueInteger !== null;
-    }
-  ),
-
-  isValueReadOnly: true,
 
   @action smileyFaceClicked(decision) {
     if (this.grouping.position !== 'center') return;

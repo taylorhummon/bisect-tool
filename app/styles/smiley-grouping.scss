@@ -6,13 +6,12 @@
   left: 50%;
   margin-left: -24px;
 
-  .numerical-input {
-    box-sizing: border-box;
-    width: 48px;
+  .number {
+    width: 100px;
     position: absolute;
     top: 50px;
     left: 50%;
-    margin-left: -24px;
+    margin-left: -50px;
     text-align: center;
   }
 
