@@ -1,6 +1,5 @@
 Now
 
-* SVG for smileys
 * Colored smilies (on hover and when selected)
 * Remove fill option
 

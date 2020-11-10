@@ -33,12 +33,12 @@ export default Component.extend({
     'face.{fill,type}',
     function () {
       if (this.face.fill === 'outline') {
-        if (this.face.type === 'happy') return 'emoticon-happy-outline.png';
-        if (this.face.type === 'sad') return 'emoticon-sad-outline.png';
+        if (this.face.type === 'happy') return 'smiley-face-happy.svg';
+        if (this.face.type === 'sad') return 'smiley-face-sad.svg';
       }
-      if (this.face.fill === 'filled') {
-        if (this.face.type === 'happy') return 'emoticon-happy.png';
-        if (this.face.type === 'sad') return 'emoticon-sad.png';
+      if (this.face.fill === 'filled') { // !!! remove this
+        if (this.face.type === 'happy') return 'smiley-face-happy.svg';
+        if (this.face.type === 'sad') return 'smiley-face-sad.svg';
       }
       throw 'could not find image for smiley';
     }
