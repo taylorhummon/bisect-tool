@@ -2,7 +2,6 @@ import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { computed } from '@ember/object';
-import { readOnly } from '@ember/object/computed';
 import RSVP from 'rsvp';
 
 // !!! consider making this a class

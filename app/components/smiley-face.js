@@ -30,8 +30,7 @@ export default Component.extend({
   onSmileyClick: null,
 
   imageSrc: computed(
-    'face.fill',
-    'face.type',
+    'face.{fill,type}',
     function () {
       if (this.face.fill === 'outline') {
         if (this.face.type === 'happy') return 'emoticon-happy-outline.png';
@@ -41,6 +40,7 @@ export default Component.extend({
         if (this.face.type === 'happy') return 'emoticon-happy.png';
         if (this.face.type === 'sad') return 'emoticon-sad.png';
       }
+      throw 'could not find image for smiley';
     }
   ),
 

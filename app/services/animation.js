@@ -16,6 +16,7 @@ export default Service.extend({
     function () {
       if (this.initialSadInteger > this.initialHappyInteger) return 'right';
       if (this.initialSadInteger < this.initialHappyInteger) return 'left';
+      throw 'could not compute sad side';
     }
   ),
   happySide: computed(
@@ -24,6 +25,7 @@ export default Service.extend({
     function () {
       if (this.initialHappyInteger > this.initialSadInteger) return 'right';
       if (this.initialHappyInteger < this.initialSadInteger) return 'left';
+      throw 'could not compute happy side';
     }
   ),
 
@@ -52,7 +54,6 @@ export default Service.extend({
     const centerGrouping = this._addCenterGrouping();
     await this.utils.domRenderPromise();
     await this.utils.delayPromise(10);
-    const component = this.componentRegistry.componentFor(centerGrouping);
     await this.componentRegistry.componentFor(centerGrouping).fadeFromTransparentToOpaque();
   },
 
