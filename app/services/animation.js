@@ -2,6 +2,7 @@ import Service from '@ember/service';
 import EmberObject from '@ember/object';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
+import RSVP from 'rsvp';
 
 export default Service.extend({
   componentRegistry: service(),
@@ -36,7 +37,29 @@ export default Service.extend({
     this.set('groupings', []);
   },
 
-  async animateSetup() {
+  _areAnimationsActive: false,
+
+  animateSetup() {
+    if (this.areAnimationsActive) return;
+    this.set('_areAnimationsActive', true);
+    return RSVP.resolve().then(() => {
+      return this._animateSetup()
+    }).finally(() => {
+      this.set('_areAnimationsActive', false);
+    });
+  },
+
+  animateDecision(decision) {
+    if (this.areAnimationsActive) return;
+    this.set('_areAnimationsActive', true);
+    return RSVP.resolve().then(() => {
+      return this._animateDecision(decision);
+    }).finally(() => {
+      this.set('_areAnimationsActive', false);
+    });
+  },
+
+  async _animateSetup() {
     this._addSadGrouping();
     this._addHappyGrouping();
     await this.utils.domRenderPromise();
@@ -44,7 +67,7 @@ export default Service.extend({
     await this._animateAddCenterGrouping();
   },
 
-  async animateDecision(decision) {
+  async _animateDecision(decision) {
     if (decision === 'left')  await this._animateLeft();
     if (decision === 'right') await this._animateRight();
     await this._animateAddCenterGrouping();

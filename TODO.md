@@ -1,10 +1,8 @@
 Now
 
 
-
 Sooner
 
-* Prevent user actions while animation is happening
 * Better staggered animations
 * Consider controling animation duration from JS
 * Reset button
