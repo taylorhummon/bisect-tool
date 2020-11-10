@@ -11,7 +11,7 @@ export default Component.extend({
   componentRegistry: service(),
 
   classNames: ['smiley-face'],
-  classNameBindings: ['opacity', 'position'],
+  classNameBindings: ['fill', 'opacity', 'position'],
 
   @action smileyFaceClicked() { // !!! consider renaming
     if (! this.onSmileyClick) return;
@@ -28,6 +28,13 @@ export default Component.extend({
 
   face: null,
   onSmileyClick: null,
+
+  fill: computed(
+    'face.fill',
+    function () {
+      return `fill-${this.face.fill}`;
+    }
+  ),
 
   opacity: computed(
     'face.opacity',

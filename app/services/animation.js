@@ -62,6 +62,7 @@ export default Service.extend({
     const rightChoice = this._rightChoice();
     const leftGrouping = this._leftGrouping();
     const centerGrouping = this._centerGrouping();
+    leftChoice.set('fill', 'yellow');
     await this.componentRegistry.componentFor(rightChoice).fadeFromOpaqueToTransparent();
     await this.componentRegistry.componentFor(leftChoice).moveFromLeftToCenter();
     await this.componentRegistry.componentFor(leftGrouping).moveFromLeftToFarLeft();
@@ -75,6 +76,7 @@ export default Service.extend({
     const rightChoice = this._rightChoice();
     const rightGrouping = this._rightGrouping();
     const centerGrouping = this._centerGrouping();
+    rightChoice.set('fill', 'yellow');
     await this.componentRegistry.componentFor(leftChoice).fadeFromOpaqueToTransparent();
     await this.componentRegistry.componentFor(rightChoice).moveFromRightToCenter();
     await this.componentRegistry.componentFor(rightGrouping).moveFromRightToFarRight();
@@ -130,7 +132,7 @@ export default Service.extend({
           type: 'sad',
           opacity: 'opaque',
           position: 'center',
-          fill: 'outline'
+          fill: 'yellow'
         })
       ]
     });
@@ -151,7 +153,7 @@ export default Service.extend({
           type: 'happy',
           opacity: 'opaque',
           position: 'center',
-          fill: 'outline'
+          fill: 'yellow'
         })
       ]
     });
@@ -194,14 +196,14 @@ export default Service.extend({
           type: 'sad',
           opacity: 'opaque',
           position: this.sadSide,
-          fill: 'outline'
+          fill: 'none'
         }),
         EmberObject.create({
           id: this.utils.generateUuid(),
           type: 'happy',
           opacity: 'opaque',
           position: this.happySide,
-          fill: 'outline'
+          fill: 'none'
         })
       ]
     });

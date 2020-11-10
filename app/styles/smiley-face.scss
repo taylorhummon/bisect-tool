@@ -15,6 +15,18 @@
   left: 50%;
   margin-left: - $width / 2;
 
+  &.fill-yellow {
+    .face-circle {
+      fill: #ffc500 !important;
+    }
+  }
+
+  &.fill-none {
+    .face-circle {
+      fill: none !important;
+    }
+  }
+
   &.opacity-opaque {
     opacity: $opacity-full;
   }
