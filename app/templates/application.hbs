@@ -12,4 +12,10 @@
   }}
 {{else}}
   {{animated-canvas}}
+  {{#if isDone}}
+    <button
+      type="button"
+      {{on "click" this.startOverClicked}}
+    >Start over</button>
+  {{/if}}
 {{/if}}

@@ -8,8 +8,22 @@ export default Service.extend({
   componentRegistry: service(),
   utils: service(),
 
+  init() {
+    this._super(...arguments);
+    this.reset();
+  },
+
+  isDone: null,
   initialSadInteger: null,
   initialHappyInteger: null,
+  groupings: null,
+
+  reset() {
+    this.set('isDone', false);
+    this.set('initialSadInteger', null);
+    this.set('initialHappyInteger', null);
+    this.set('groupings', []);
+  },
 
   sadSide: computed(
     'initialSadInteger',
@@ -30,20 +44,13 @@ export default Service.extend({
     }
   ),
 
-  groupings: null,
-
-  init() {
-    this._super(...arguments);
-    this.set('groupings', []);
-  },
-
   _areAnimationsActive: false,
 
   animateSetup() {
     if (this.areAnimationsActive) return;
     this.set('_areAnimationsActive', true);
     return RSVP.resolve().then(() => {
-      return this._animateSetup()
+      return this._animateSetup();
     }).finally(() => {
       this.set('_areAnimationsActive', false);
     });
@@ -74,9 +81,13 @@ export default Service.extend({
   },
 
   async _animateAddCenterGrouping() {
-    const centerGrouping = this._addCenterGrouping();
+    const integerA = this._leftGrouping().integer;
+    const integerB = this._rightGrouping().integer;
+    const isDone = this.utils.amDone(integerA, integerB);
+    const centerGrouping = this._addCenterGrouping(isDone, integerA, integerB);
     await this.utils.domRenderPromise();
     await this.componentRegistry.componentFor(centerGrouping).fadeFromTransparentToOpaque();
+    if (isDone) this.set('isDone', true);
   },
 
   async _animateLeft() {
@@ -193,10 +204,8 @@ export default Service.extend({
     return grouping;
   },
 
-  _addCenterGrouping() {
-    const integerA = this._leftGrouping().integer;
-    const integerB = this._rightGrouping().integer;
-    if (this.utils.amDone(integerA, integerB)) {
+  _addCenterGrouping(isDone, integerA, integerB) {
+    if (isDone) {
       return this._addDoneCenterGrouping();
     } else {
       return this._addChoiceCenterGrouping(integerA, integerB);

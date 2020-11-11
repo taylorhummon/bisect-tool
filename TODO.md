@@ -1,10 +1,8 @@
 Now
 
 
-
 Sooner
 
-* Reset button
 * Tests
 * Turn on linter
 
