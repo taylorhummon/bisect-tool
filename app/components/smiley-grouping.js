@@ -20,11 +20,11 @@ export default Component.extend({
   classNameBindings: ['opacity', 'position'],
 
   didInsertElement() {
-    this.componentRegistry.registerSmileyGroupingComponent(this.grouping.id, this);
+    this.componentRegistry.registerComponent('grouping', this.grouping.id, this);
   },
 
   willDestroyElement() {
-    this.componentRegistry.unregisterSmileyGroupingComponent(this.grouping.id);
+    this.componentRegistry.unregisterComponent('grouping', this.grouping.id);
   },
 
   opacity: computed(

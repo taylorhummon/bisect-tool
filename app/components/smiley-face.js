@@ -16,11 +16,11 @@ export default Component.extend({
   },
 
   didInsertElement() {
-    this.componentRegistry.registerSmileyFaceComponent(this.face.id, this);
+    this.componentRegistry.registerComponent('face', this.face.id, this);
   },
 
   willDestroyElement() {
-    this.componentRegistry.unregisterSmileyFaceComponent(this.face.id);
+    this.componentRegistry.unregisterComponent('face', this.face.id);
   },
 
   face: null,

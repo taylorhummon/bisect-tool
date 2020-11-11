@@ -172,7 +172,8 @@ export default Service.extend({
       faces: [
         EmberObject.create({
           id: this.utils.generateUuid(),
-          type: 'sad',
+          type: 'face',
+          smile: 'sad',
           opacity: 'opaque',
           position: 'center',
           fill: 'yellow'
@@ -193,7 +194,8 @@ export default Service.extend({
       faces: [
         EmberObject.create({
           id: this.utils.generateUuid(),
-          type: 'happy',
+          type: 'face',
+          smile: 'happy',
           opacity: 'opaque',
           position: 'center',
           fill: 'yellow'
@@ -234,14 +236,16 @@ export default Service.extend({
       faces: [
         EmberObject.create({
           id: this.utils.generateUuid(),
-          type: 'sad',
+          type: 'face',
+          smile: 'sad',
           opacity: 'opaque',
           position: this.sadSide,
           fill: 'none'
         }),
         EmberObject.create({
           id: this.utils.generateUuid(),
-          type: 'happy',
+          type: 'face',
+          smile: 'happy',
           opacity: 'opaque',
           position: this.happySide,
           fill: 'none'

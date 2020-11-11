@@ -1,7 +1,7 @@
 <div {{on "click" this.smileyFaceClicked}}>
-  {{#if (eq this.face.type "happy")}}
+  {{#if (eq this.face.smile "happy")}}
     <SmileyFaceHappy />
-  {{else if (eq this.face.type "sad")}}
+  {{else if (eq this.face.smile "sad")}}
     <SmileyFaceSad />
   {{/if}}
 </div>
