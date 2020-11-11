@@ -1,25 +1,22 @@
 import Controller from '@ember/controller';
-import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 
-export default class ApplicationController extends Controller {
-  @service animation;
-  @service utils;
+export default Controller.extend({
+  animation: service(),
 
-  @tracked inIntro = true;
+  isIntroDone: false,
+  isBisectingDone: readOnly('animation.isBisectingDone'),
 
   @action begin(initialHappyInteger, initialSadInteger) {
     this.animation.set('initialSadInteger', initialSadInteger);
     this.animation.set('initialHappyInteger', initialHappyInteger);
-    this.set('inIntro', false);
-  }
-
-  @readOnly('animation.isDone') isDone;
+    this.set('isIntroDone', true);
+  },
 
   @action startOverClicked() {
-    this.set('inIntro', true);
+    this.set('isIntroDone', false);
     this.animation.reset();
-  }
-}
+  },
+});

@@ -1,8 +1,5 @@
 Now
 
-* Use Ember octane techniques to replace computed properties
-* Use JS classes
-
 
 Sooner
 
@@ -12,10 +9,11 @@ Sooner
 * Update README
 * Something that better tells the user what she needs to be doing
 * Review the names of actions and how their handled
-
+* Better "Done!" grouping
+* Better styling
 
 Later
 
 * Consider coloring smiley on mouse hover
-* Better "Done!" grouping
-* Better styling
+* Use Ember octane techniques to replace computed properties
+* Use JS classes

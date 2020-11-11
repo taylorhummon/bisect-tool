@@ -13,13 +13,13 @@ export default Service.extend({
     this.reset();
   },
 
-  isDone: null,
+  isBisectingDone: null,
   initialSadInteger: null,
   initialHappyInteger: null,
   groupings: null,
 
   reset() {
-    this.set('isDone', false);
+    this.set('isBisectingDone', false);
     this.set('initialSadInteger', null);
     this.set('initialHappyInteger', null);
     this.set('groupings', []);
@@ -83,11 +83,11 @@ export default Service.extend({
   async _animateAddCenterGrouping() {
     const integerA = this._leftGrouping().integer;
     const integerB = this._rightGrouping().integer;
-    const isDone = this.utils.amDone(integerA, integerB);
-    const centerGrouping = this._addCenterGrouping(isDone, integerA, integerB);
+    const isBisectingDone = this.utils.amDone(integerA, integerB);
+    const centerGrouping = this._addCenterGrouping(isBisectingDone, integerA, integerB);
     await this.utils.domRenderPromise();
     await this.componentRegistry.componentFor(centerGrouping).fadeFromTransparentToOpaque();
-    if (isDone) this.set('isDone', true);
+    if (isBisectingDone) this.set('isBisectingDone', true);
   },
 
   async _animateLeft() {
@@ -204,8 +204,8 @@ export default Service.extend({
     return grouping;
   },
 
-  _addCenterGrouping(isDone, integerA, integerB) {
-    if (isDone) {
+  _addCenterGrouping(isBisectingDone, integerA, integerB) {
+    if (isBisectingDone) {
       return this._addDoneCenterGrouping();
     } else {
       return this._addChoiceCenterGrouping(integerA, integerB);

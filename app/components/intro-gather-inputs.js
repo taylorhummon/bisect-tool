@@ -9,17 +9,17 @@ const EQUAL_NUMBERS = 'Please enter different numbers for when things were good 
 export default Component.extend({
   utils: service(),
 
-  begin: null,
+  begin: null, // closure action parameter
 
-  happyValueString: null,
-  sadValueString: null,
-
-  errors: null,
+  errors: null, // initialized in init
 
   init() {
     this._super(...arguments);
     this.set('errors', []);
   },
+
+  happyValueString: null,
+  sadValueString: null,
 
   @action beginClicked() {
     this._resetErrors();

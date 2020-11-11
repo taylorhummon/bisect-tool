@@ -4,9 +4,6 @@ import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import RSVP from 'rsvp';
 
-// !!! consider making this a class
-// !!! consider replacing these computed properties
-
 export default Component.extend({
   componentRegistry: service(),
 

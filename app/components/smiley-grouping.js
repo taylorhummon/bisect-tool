@@ -4,9 +4,6 @@ import { action } from '@ember/object';
 import { computed } from '@ember/object';
 import RSVP from 'rsvp';
 
-// !!! consider making this a class
-// !!! consider replacing these computed properties
-
 export default Component.extend({
   componentRegistry: service(),
   animation: service(),
