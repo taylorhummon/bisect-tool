@@ -1,13 +1,13 @@
-{{#if (eq grouping.faces.length 0)}}
+{{#if (eq this.grouping.faces.length 0)}}
   Done!
 {{else}}
-  {{#each grouping.faces as |face|}}
+  {{#each this.grouping.faces as |face|}}
     <SmileyFace
       @face={{face}}
       @onSmileyClick={{action "smileyFaceClicked"}}
     />
   {{/each}}
   <div class="number">
-    {{grouping.integer}}
+    {{this.grouping.integer}}
   </div>
 {{/if}}

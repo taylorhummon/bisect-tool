@@ -1,7 +1,5 @@
 Now
 
-* Turn on linter
-
 
 Sooner
 
@@ -18,3 +16,4 @@ Later
 * Better styling
 * Use Ember octane techniques to replace computed properties
 * Use JS classes
+* Finish template linting

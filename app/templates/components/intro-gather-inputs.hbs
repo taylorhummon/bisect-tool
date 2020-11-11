@@ -1,25 +1,25 @@
 <div class="intro-gather-inputs">
-  {{#unless (eq errors.length 0)}}
+  {{#if (gt this.errors.length 0)}}
     <div class="errors">
-      {{#each errors as |error|}}
+      {{#each this.errors as |error|}}
         <div class="error">
           {{error}}
         </div>
       {{/each}}
     </div>
-  {{/unless}}
+  {{/if}}
   <div>
     <SmileyFaceHappy />
     <Input
       class="numerical-input"
-      @value={{happyValueString}}
+      @value={{this.happyValueString}}
     />
   </div>
   <div>
     <SmileyFaceSad />
     <Input
       class="numerical-input"
-      @value={{sadValueString}}
+      @value={{this.sadValueString}}
     />
   </div>
   <button

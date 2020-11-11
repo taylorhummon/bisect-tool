@@ -2,17 +2,17 @@
 <p>
   Welcome to the bisect tool!
   This tool will help you track down when things went from good to bad.
-  {{#if inIntro}}
+  {{#if this.inIntro}}
     Get started by entering a number when things were good and entering another number when things were bad.
   {{/if}}
 </p>
-{{#if inIntro}}
+{{#if this.inIntro}}
   <IntroGatherInputs
     @begin={{action "begin"}}
   />
 {{else}}
   <AnimatedCanvas />
-  {{#if isDone}}
+  {{#if this.isDone}}
     <button
       type="button"
       {{on "click" this.startOverClicked}}
