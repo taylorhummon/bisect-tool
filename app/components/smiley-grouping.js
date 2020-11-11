@@ -12,9 +12,8 @@ export default Component.extend({
   classNameBindings: ['opacity', 'position'],
 
   grouping: null,
-  onSmileyClick: null,
 
-  @action smileyFaceClicked(decision) {
+  @action onSmileyFaceClickPrime(decision) {
     if (this.grouping.position !== 'center') return;
     this.animation.animateDecision(decision); // not awaiting
   },

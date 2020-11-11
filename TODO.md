@@ -1,7 +1,6 @@
 Now
 
-* Review the names of actions and how they're handled
-* Reduce number of wrapping divs and add actions to components in consistent way
+* Add labels to input form
 
 
 Sooner

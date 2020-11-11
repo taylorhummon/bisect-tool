@@ -10,9 +10,9 @@ export default Component.extend({
   classNames: ['smiley-face'],
   classNameBindings: ['fill', 'opacity', 'position'],
 
-  @action smileyFaceClicked() { // !!! consider renaming
-    if (! this.onSmileyClick) return;
-    this.onSmileyClick(this.face.position);
+  @action onSmileyFaceClick() {
+    if (! this.onSmileyFaceClickPrime) return;
+    this.onSmileyFaceClickPrime(this.face.position);
   },
 
   didInsertElement() {
@@ -24,7 +24,7 @@ export default Component.extend({
   },
 
   face: null,
-  onSmileyClick: null,
+  onSmileyFaceClickPrime: null,
 
   fill: computed(
     'face.fill',

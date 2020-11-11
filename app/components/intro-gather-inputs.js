@@ -23,7 +23,7 @@ export default Component.extend({
   happyValueString: null,
   sadValueString: null,
 
-  @action beginClicked() {
+  @action onBeginClick() {
     this._resetErrors();
     const happyValueInteger = this.utils.integerFromString(this.happyValueString);
     const sadValueInteger = this.utils.integerFromString(this.sadValueString);
