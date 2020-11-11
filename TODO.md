@@ -1,7 +1,6 @@
 Now
 
 * Review the names of actions and how they're handled
-* Finish template linting
 * Reduce number of wrapping divs and add actions to components in consistent way
 
 
@@ -19,3 +18,4 @@ Later
 * Consider coloring smiley on mouse hover
 * Use Ember octane techniques to replace computed properties
 * Use JS classes
+* Consider using ember-modifiers to replace `this.element.addEventListener` usages

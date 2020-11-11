@@ -1,4 +1,7 @@
-<div {{on "click" this.smileyFaceClicked}}>
+<div
+  role="button"
+  {{on "click" this.smileyFaceClicked}}
+>
   {{#if (eq this.face.smile "happy")}}
     <SmileyFaceHappy />
   {{else if (eq this.face.smile "sad")}}

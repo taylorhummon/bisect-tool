@@ -4,7 +4,7 @@
   {{#each this.grouping.faces as |face|}}
     <SmileyFace
       @face={{face}}
-      @onSmileyClick={{action "smileyFaceClicked"}}
+      @onSmileyClick={{this.smileyFaceClicked}}
     />
   {{/each}}
   <div class="number">

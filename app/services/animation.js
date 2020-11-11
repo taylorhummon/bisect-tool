@@ -194,7 +194,7 @@ export default Service.extend({
       faces: [
         EmberObject.create({
           id: this.utils.generateUuid(),
-          type: 'face',
+          type: 'face',
           smile: 'happy',
           opacity: 'opaque',
           position: 'center',
