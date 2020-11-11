@@ -5,6 +5,8 @@ import { readOnly } from '@ember/object/computed';
 export default Component.extend({
   animation: service(),
 
+  classNames: ['animation-canvas'],
+
   init() {
     this._super(...arguments);
     this.animation.animateSetup(); // not awaiting
