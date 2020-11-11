@@ -7,7 +7,7 @@
     {{/each}}
   </div>
 {{/if}}
-<div class="block-happy">
+<div class="row-happy">
   <SmileyFaceHappy />
   <div class="input-happy">
     <label>
@@ -20,7 +20,7 @@
     />
   </div>
 </div>
-<div class="block-sad">
+<div class="row-sad">
   <SmileyFaceSad />
   <div class="input-sad">
     <label>
@@ -35,5 +35,6 @@
 </div>
 <button
   type="button"
+  class="begin-button"
   {{on "click" this.onBeginClick}}
 >Begin</button>

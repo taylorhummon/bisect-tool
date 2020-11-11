@@ -29,7 +29,9 @@ export default Component.extend({
     const sadValueInteger = this.utils.integerFromString(this.sadValueString);
     if (happyValueInteger === null) this.errors.pushObject(MISSING_HAPPY_NUMBER);
     if (sadValueInteger === null) this.errors.pushObject(MISSING_SAD_NUMBER);
-    if (happyValueInteger === sadValueInteger) this.errors.pushObject(EQUAL_NUMBERS);
+    if (happyValueInteger === sadValueInteger && happyValueInteger !== null) {
+      this.errors.pushObject(EQUAL_NUMBERS);
+    }
     if (this.errors.length > 0) return;
     this.begin(happyValueInteger, sadValueInteger);
   },

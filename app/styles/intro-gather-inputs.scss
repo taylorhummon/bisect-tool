@@ -1,6 +1,22 @@
 .intro-gather-inputs {
+  .row-happy,
+  .row-sad {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px 0;
+  }
+
   .input-happy,
   .input-sad {
-    display: inline-block;
+    padding-left: 8px;
+  }
+
+  .begin-button {
+    margin: 5px 0;
+  }
+
+  .errors {
+    color: red;
   }
 }
