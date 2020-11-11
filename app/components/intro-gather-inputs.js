@@ -9,6 +9,8 @@ const EQUAL_NUMBERS = 'Please enter different numbers for when things were good 
 export default Component.extend({
   utils: service(),
 
+  classNames: ['intro-gather-inputs'],
+
   begin: null, // closure action parameter
 
   errors: null, // initialized in init

@@ -8,6 +8,9 @@ export default Component.extend({
   componentRegistry: service(),
   animation: service(),
 
+  classNames: ['smiley-grouping'],
+  classNameBindings: ['opacity', 'position'],
+
   grouping: null,
   onSmileyClick: null,
 
@@ -15,9 +18,6 @@ export default Component.extend({
     if (this.grouping.position !== 'center') return;
     this.animation.animateDecision(decision); // not awaiting
   },
-
-  classNames: ['smiley-grouping'],
-  classNameBindings: ['opacity', 'position'],
 
   didInsertElement() {
     this.componentRegistry.registerComponent('grouping', this.grouping.id, this);

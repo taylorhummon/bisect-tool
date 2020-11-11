@@ -1,29 +1,27 @@
-<div class="intro-gather-inputs">
-  {{#if (gt this.errors.length 0)}}
-    <div class="errors">
-      {{#each this.errors as |error|}}
-        <div class="error">
-          {{error}}
-        </div>
-      {{/each}}
-    </div>
-  {{/if}}
-  <div>
-    <SmileyFaceHappy />
-    <Input
-      class="numerical-input"
-      @value={{this.happyValueString}}
-    />
+{{#if (gt this.errors.length 0)}}
+  <div class="errors">
+    {{#each this.errors as |error|}}
+      <div class="error">
+        {{error}}
+      </div>
+    {{/each}}
   </div>
-  <div>
-    <SmileyFaceSad />
-    <Input
-      class="numerical-input"
-      @value={{this.sadValueString}}
-    />
-  </div>
-  <button
-    type="button"
-    {{on "click" this.beginClicked}}
-  >Begin</button>
+{{/if}}
+<div>
+  <SmileyFaceHappy />
+  <Input
+    class="numerical-input"
+    @value={{this.happyValueString}}
+  />
 </div>
+<div>
+  <SmileyFaceSad />
+  <Input
+    class="numerical-input"
+    @value={{this.sadValueString}}
+  />
+</div>
+<button
+  type="button"
+  {{on "click" this.beginClicked}}
+>Begin</button>
