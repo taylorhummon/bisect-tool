@@ -7,19 +7,31 @@
     {{/each}}
   </div>
 {{/if}}
-<div>
+<div class="block-happy">
   <SmileyFaceHappy />
-  <Input
-    class="numerical-input"
-    @value={{this.happyValueString}}
-  />
+  <div class="input-happy">
+    <label>
+      When things were good:<br />
+    </label>
+    <Input
+      class="numerical-input"
+      placeholder="e.g. 0"
+      @value={{this.happyValueString}}
+    />
+  </div>
 </div>
-<div>
+<div class="block-sad">
   <SmileyFaceSad />
-  <Input
-    class="numerical-input"
-    @value={{this.sadValueString}}
-  />
+  <div class="input-sad">
+    <label>
+      When things were bad:<br />
+    </label>
+    <Input
+      placeholder="e.g. 10"
+      class="numerical-input"
+      @value={{this.sadValueString}}
+    />
+  </div>
 </div>
 <button
   type="button"
