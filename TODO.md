@@ -1,19 +1,20 @@
 Now
 
+* Turn on linter
+
 
 Sooner
 
 * Tests
-* Turn on linter
+* Update README
+* Something that better tells the user what she needs to be doing
+* Better "Done!" grouping
 
 
 Later
 
 * Reduce number of wrapping divs and add actions to components in consistent way
-* Better "Done!" grouping
 * Consider coloring smiley on mouse hover
-* Something that better tells the user what she needs to be doing
 * Better styling
-* Update README
 * Use Ember octane techniques to replace computed properties
 * Use JS classes
