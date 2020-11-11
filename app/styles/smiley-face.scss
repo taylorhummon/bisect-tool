@@ -1,3 +1,5 @@
+@use 'mixins';
+
 .smiley-face {
   $width: 48px;
   $height: 48px;
@@ -31,7 +33,7 @@
   }
 
   &.opacity-from-opaque-to-transparent {
-    @include ease-animation;
+    @include mixins.ease-animation;
     animation-duration: $fading-duration;
     animation-name: opacity-from-opaque-to-transparent;
   }
@@ -59,7 +61,7 @@
   }
 
   &.position-from-left-to-center {
-    @include ease-animation;
+    @include mixins.ease-animation;
     animation-duration: $movement-duration;
     animation-name: position-from-left-to-center;
   }
@@ -75,7 +77,7 @@
   }
 
   &.position-from-right-to-center {
-    @include ease-animation;
+    @include mixins.ease-animation;
     animation-duration: $movement-duration;
     animation-name: position-from-right-to-center;
   }

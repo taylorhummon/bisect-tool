@@ -1,3 +1,5 @@
+@use 'mixins';
+
 .smiley-grouping {
   $width: 48px;
   $height: 80px;
@@ -36,7 +38,7 @@
   }
 
   &.opacity-from-transparent-to-opaque {
-    @include ease-animation;
+    @include mixins.ease-animation;
     animation-duration: $fading-duration;
     animation-name: opacity-from-transparent-to-opaque;
   }
@@ -72,7 +74,7 @@
   }
 
   &.position-from-right-to-far-right {
-    @include ease-animation;
+    @include mixins.ease-animation;
     animation-duration: $movement-duration;
     animation-name: position-from-right-to-far-right;
   }
@@ -88,7 +90,7 @@
   }
 
   &.position-from-center-to-right {
-    @include ease-animation;
+    @include mixins.ease-animation;
     animation-duration: $movement-duration;
     animation-name: position-from-center-to-right;
   }
@@ -104,7 +106,7 @@
   }
 
   &.position-from-center-to-left {
-    @include ease-animation;
+    @include mixins.ease-animation;
     animation-duration: $movement-duration;
     animation-name: position-from-center-to-left;
   }
@@ -120,7 +122,7 @@
   }
 
   &.position-from-left-to-far-left {
-    @include ease-animation;
+    @include mixins.ease-animation;
     animation-duration: $movement-duration;
     animation-name: position-from-left-to-far-left;
   }
