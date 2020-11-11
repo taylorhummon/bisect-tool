@@ -7,11 +7,11 @@
   {{/if}}
 </p>
 {{#if inIntro}}
-  {{intro-gather-inputs
-    begin=(action "begin")
-  }}
+  <IntroGatherInputs
+    @begin={{action "begin"}}
+  />
 {{else}}
-  {{animated-canvas}}
+  <AnimatedCanvas />
   {{#if isDone}}
     <button
       type="button"

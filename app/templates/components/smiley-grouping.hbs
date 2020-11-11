@@ -2,10 +2,10 @@
   Done!
 {{else}}
   {{#each grouping.faces as |face|}}
-    {{smiley-face
-      face=face
-      onSmileyClick=(action "smileyFaceClicked")
-    }}
+    <SmileyFace
+      @face={{face}}
+      @onSmileyClick={{action "smileyFaceClicked"}}
+    />
   {{/each}}
   <div class="number">
     {{grouping.integer}}

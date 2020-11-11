@@ -1,8 +1,8 @@
 <div class="animation-canvas">
   {{#each groupings as |grouping|}}
-    {{smiley-grouping
-      grouping=grouping
-      onSmileyClick=onSmileyClick
-    }}
+    <SmileyGrouping
+      @grouping={{grouping}}
+      @onSmileyClick={{@onSmileyClick}}
+    />
   {{/each}}
 </div>
