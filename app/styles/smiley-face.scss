@@ -8,23 +8,18 @@
   $opacity-full: 100%;
   $opacity-none: 0%;
   $fading-duration: 600ms;
-
   width: $width;
   height: $height;
   position: absolute;
   left: 50%;
   margin-left: - $width / 2;
 
-  &.fill-yellow {
-    .face-circle {
-      fill: #ffc500 !important;
-    }
+  &.fill-yellow .face-circle {
+    fill: #ffc500 !important;
   }
 
-  &.fill-none {
-    .face-circle {
-      fill: none !important;
-    }
+  &.fill-none .face-circle {
+    fill: none !important;
   }
 
   &.opacity-opaque {
@@ -36,10 +31,9 @@
   }
 
   &.opacity-from-opaque-to-transparent {
+    @include ease-animation;
     animation-duration: $fading-duration;
     animation-name: opacity-from-opaque-to-transparent;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
   }
 
   @keyframes opacity-from-opaque-to-transparent {
@@ -65,10 +59,9 @@
   }
 
   &.position-from-left-to-center {
+    @include ease-animation;
     animation-duration: $movement-duration;
     animation-name: position-from-left-to-center;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
   }
 
   @keyframes position-from-left-to-center {
@@ -82,10 +75,9 @@
   }
 
   &.position-from-right-to-center {
+    @include ease-animation;
     animation-duration: $movement-duration;
     animation-name: position-from-right-to-center;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
   }
 
   @keyframes position-from-right-to-center {

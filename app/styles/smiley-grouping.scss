@@ -10,7 +10,6 @@
   $opacity-full: 100%;
   $opacity-none: 0%;
   $fading-duration: 600ms;
-
   width: $width;
   height: $height;
   position: absolute;
@@ -20,7 +19,6 @@
 
   .number {
     $width: 100px;
-
     width: $width;
     position: absolute;
     top: 50px;
@@ -38,10 +36,9 @@
   }
 
   &.opacity-from-transparent-to-opaque {
+    @include ease-animation;
     animation-duration: $fading-duration;
     animation-name: opacity-from-transparent-to-opaque;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
   }
 
   @keyframes opacity-from-transparent-to-opaque {
@@ -75,10 +72,9 @@
   }
 
   &.position-from-right-to-far-right {
+    @include ease-animation;
     animation-duration: $movement-duration;
     animation-name: position-from-right-to-far-right;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
   }
 
   @keyframes position-from-right-to-far-right {
@@ -92,10 +88,9 @@
   }
 
   &.position-from-center-to-right {
+    @include ease-animation;
     animation-duration: $movement-duration;
     animation-name: position-from-center-to-right;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
   }
 
   @keyframes position-from-center-to-right {
@@ -109,10 +104,9 @@
   }
 
   &.position-from-center-to-left {
+    @include ease-animation;
     animation-duration: $movement-duration;
     animation-name: position-from-center-to-left;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
   }
 
   @keyframes position-from-center-to-left {
@@ -126,10 +120,9 @@
   }
 
   &.position-from-left-to-far-left {
+    @include ease-animation;
     animation-duration: $movement-duration;
     animation-name: position-from-left-to-far-left;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
   }
 
   @keyframes position-from-left-to-far-left {

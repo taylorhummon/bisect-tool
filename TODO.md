@@ -1,7 +1,5 @@
 Now
 
-* Better staggered animations
-* Consider controling animation duration from JS
 
 
 Sooner
