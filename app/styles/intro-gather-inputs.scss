@@ -1,18 +1,18 @@
 .intro-gather-inputs {
-  .row-happy,
-  .row-sad {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  .pure-control-group {
     margin: 10px 0;
   }
 
-  .input-happy,
-  .input-sad {
-    padding-left: 8px;
+  .pure-controls {
+    margin: 14px 0;
+  }
+
+  label {
+    font-size: 14px;
   }
 
   .errors {
     color: red;
+    font-size: 14px;
   }
 }

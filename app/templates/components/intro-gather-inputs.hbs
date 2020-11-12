@@ -7,34 +7,33 @@
     {{/each}}
   </div>
 {{/if}}
-<div class="row-happy">
-  <SmileyFaceHappy />
-  <div class="input-happy">
-    <label>
-      When things were good:<br />
-    </label>
-    <Input
-      class="numerical-input"
-      placeholder="e.g. 0"
-      @value={{this.happyValueString}}
-    />
-  </div>
-</div>
-<div class="row-sad">
-  <SmileyFaceSad />
-  <div class="input-sad">
-    <label>
-      When things were bad:<br />
-    </label>
-    <Input
-      placeholder="e.g. 10"
-      class="numerical-input"
-      @value={{this.sadValueString}}
-    />
-  </div>
-</div>
-<button
-  type="button"
-  class="pure-button"
-  {{on "click" this.onBeginClick}}
->Begin</button>
+<form class="pure-form pure-form-stacked">
+  <fieldset>
+    <div class="pure-control-group">
+      <label for="happy-input">When things were good:</label>
+      <Input
+        type="text"
+        id="happy-input"
+        class="numerical-input"
+        placeholder="e.g. 0"
+        @value={{this.happyValueString}}
+      />
+    </div>
+    <div class="pure-control-group">
+      <label for="sad-input">When things were bad:</label>
+      <Input
+        placeholder="e.g. 30"
+        id="sad-input"
+        class="numerical-input"
+        @value={{this.sadValueString}}
+      />
+    </div>
+    <div class="pure-controls">
+      <button
+        type="button"
+        class="pure-button pure-button-primary"
+        {{on "click" this.onBeginClick}}
+      >Begin</button>
+    </div>
+  </fieldset>
+</form>
