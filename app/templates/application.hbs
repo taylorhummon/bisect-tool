@@ -1,21 +1,20 @@
-<h1>The bisect tool</h1>
-<p>
-  Welcome to the bisect tool!
-  This tool will help you track down when things went from good to bad.
-  {{#unless this.isIntroDone}}
-    Get started by entering a number when things were good and entering another number when things were bad.
-  {{/unless}}
-</p>
-{{#if this.isIntroDone}}
-  <AnimationCanvas />
-  {{#if this.isBisectingDone}}
-    <button
-      type="button"
-      {{on "click" this.startOverClicked}}
-    >Start over</button>
+<div class="page">
+  <h1>The Bisect Tool</h1>
+  <p>
+    This tool will help you track down when things went from good to bad.
+  </p>
+  {{#if this.isIntroDone}}
+    <AnimationCanvas />
+    {{#if this.isBisectingDone}}
+      <button
+        type="button"
+        class="pure-button"
+        {{on "click" this.startOverClicked}}
+      >Start over</button>
+    {{/if}}
+  {{else}}
+    <IntroGatherInputs
+      @begin={{this.begin}}
+    />
   {{/if}}
-{{else}}
-  <IntroGatherInputs
-    @begin={{this.begin}}
-  />
-{{/if}}
+</div>
