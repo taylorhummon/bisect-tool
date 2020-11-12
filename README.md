@@ -1,7 +1,10 @@
 # bisect-tool
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+This tool is a web app that does the note-taking and arithemtic involved in bisecting a problem.
+
+Here's the idea: maybe I know that there's a bug in the current commit of a code base and I know the bug wasn't there 30 commits back. I'd like to figure out which commit the bug was introduced in, and I don't want to waste a bunch of time checking each commit. I should probably start splitting the difference by checking for the bug 15 commits back. And then repeat. While I code do this arithemtic by hand, why not let a machine do it for me?
+
+I created this small hobby project as a way to explore working with CSS animations in Ember. I wanted to see how state-transition diagrams of animations could fit into the Ember's component architecture.
 
 ## Prerequisites
 
@@ -24,10 +27,6 @@ You will need the following things properly installed on your computer.
 * Visit your app at [http://localhost:4200](http://localhost:4200).
 * Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
 
-### Code Generators
-
-Make use of the many generators for code, try `ember help generate` for more details
-
 ### Running Tests
 
 * `ember test`
@@ -43,10 +42,6 @@ Make use of the many generators for code, try `ember help generate` for more det
 
 * `ember build` (development)
 * `ember build --environment production` (production)
-
-### Deploying
-
-Specify what it takes to deploy your app.
 
 ## Further Reading / Useful Links
 

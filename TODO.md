@@ -1,15 +1,13 @@
 Now
 
-* Add labels to input form
+* Better styling
 
 
 Sooner
 
 * Tests
-* Update README
 * Something that better tells the user what she needs to be doing
 * Better "Done!" grouping
-* Better styling
 
 
 Later
