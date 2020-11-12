@@ -19,6 +19,16 @@
   left: 50%;
   margin-left: - $width / 2;
 
+  .done {
+    $width: 100px;
+    width: $width;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    margin-left: - $width / 2;
+    text-align: center;
+  }
+
   .number {
     $width: 100px;
     width: $width;

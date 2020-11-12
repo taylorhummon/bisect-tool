@@ -1,5 +1,7 @@
 {{#if (eq this.grouping.faces.length 0)}}
-  Done!
+  <div class="done">
+    Found it!
+  </div>
 {{else}}
   {{#each this.grouping.faces as |face|}}
     <SmileyFace
