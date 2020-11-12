@@ -1,0 +1,47 @@
+@use 'mixins';
+
+.question {
+  $opacity-full: 100%;
+  $opacity-none: 0%;
+  $fading-duration: 600ms;
+
+  &.opacity-opaque {
+    opacity: $opacity-full;
+  }
+
+  &.opacity-transparent {
+    opacity: $opacity-none;
+  }
+
+  &.opacity-from-opaque-to-transparent {
+    @include mixins.ease-animation;
+    animation-duration: $fading-duration;
+    animation-name: opacity-from-opaque-to-transparent;
+  }
+
+  @keyframes opacity-from-opaque-to-transparent {
+    from {
+      opacity: $opacity-full;
+    }
+
+    to {
+      opacity: $opacity-none;
+    }
+  }
+
+  &.opacity-from-transparent-to-opaque {
+    @include mixins.ease-animation;
+    animation-duration: $fading-duration;
+    animation-name: opacity-from-transparent-to-opaque;
+  }
+
+  @keyframes opacity-from-transparent-to-opaque {
+    from {
+      opacity: $opacity-none;
+    }
+
+    to {
+      opacity: $opacity-full;
+    }
+  }
+}
