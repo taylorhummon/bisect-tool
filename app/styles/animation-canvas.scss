@@ -1,6 +1,7 @@
 .animation-canvas {
-  height: 80px;
+  height: 70px;
   width: 500px;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  margin: 30px 0;
 }

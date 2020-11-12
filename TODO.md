@@ -1,13 +1,11 @@
 Now
 
-* Better styling
-
-
-Sooner
-
 * Tests
 * Something that better tells the user what she needs to be doing
 * Better "Done!" grouping
+
+
+Sooner
 
 
 Later
