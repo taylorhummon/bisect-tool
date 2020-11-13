@@ -2,6 +2,7 @@ import Service from '@ember/service';
 import EmberObject from '@ember/object';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
+import { task, didCancel } from 'ember-concurrency';
 import RSVP from 'rsvp';
 
 export default Service.extend({
@@ -28,27 +29,30 @@ export default Service.extend({
     this.set('done', null);
   },
 
-  _areAnimationsActive: false, // !!! use ember concurrency instead
-
-  animateSetup() {
-    if (this._areAnimationsActive) return;
-    this.set('_areAnimationsActive', true);
-    return RSVP.resolve().then(() => {
-      return this._animateSetup();
-    }).finally(() => {
-      this.set('_areAnimationsActive', false);
-    });
+  async animateSetup() {
+    try {
+      await this._animateTask.perform('setup');
+    } catch (error) {
+      if (! didCancel(error)) throw error;
+    }
   },
 
-  animateDecision(decision) {
-    if (this._areAnimationsActive) return;
-    this.set('_areAnimationsActive', true);
-    return RSVP.resolve().then(() => {
-      return this._animateDecision(decision);
-    }).finally(() => {
-      this.set('_areAnimationsActive', false);
-    });
+  async animateDecision(decision) {
+    try {
+      await this._animateTask.perform('decision', decision);
+    } catch (error) {
+      if (! didCancel(error)) throw error;
+    }
   },
+
+  _animateTask: task(function * (kind, decision) {
+    if (kind === 'setup') {
+      yield this._animateSetup();
+    }
+    if (kind === 'decision') {
+      yield this._animateDecision(decision);
+    }
+  }).drop(), // using 'drop' task modifier to cancel unwanted simultaneous animations
 
   utils: service(),
 
@@ -111,7 +115,6 @@ export default Service.extend({
   async _animateAdvanceBisecting() {
     this._advanceBisecting();
     if (this.isBisectingDone) {
-      console.log('BISECTING IS DONE');
       this._addDone();
       await this.utils.domRenderPromise();
       await this.registry.componentFor(this.done).fadeFromTransparentToOpaque();

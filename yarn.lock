@@ -4895,6 +4895,15 @@ ember-compatibility-helpers@^1.1.1, ember-compatibility-helpers@^1.1.2, ember-co
     ember-cli-version-checker "^2.1.1"
     semver "^5.4.1"
 
+ember-concurrency@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/ember-concurrency/-/ember-concurrency-1.3.0.tgz#66f90fb792687470bcee1172adc0ebf33f5e8b9c"
+  integrity sha512-DwGlfWFpYyAkTwsedlEtK4t1DznJSculAW6Vq5S1C0shVPc5b6tTpHB2FFYisannSYkm+wpm1f1Pd40qiNPtOQ==
+  dependencies:
+    ember-cli-babel "^7.7.3"
+    ember-compatibility-helpers "^1.2.0"
+    ember-maybe-import-regenerator "^0.1.6"
+
 ember-data@~3.22.0:
   version "3.22.0"
   resolved "https://registry.yarnpkg.com/ember-data/-/ember-data-3.22.0.tgz#3cce46e5d4d660b022e047592f1dd1cf2270d1a4"
