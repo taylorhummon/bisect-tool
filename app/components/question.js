@@ -1,15 +1,28 @@
 import Component from '@ember/component';
+import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { computed } from '@ember/object';
-import { inject as service } from '@ember/service';
+import { readOnly } from '@ember/object/computed';
 import RSVP from 'rsvp';
 
 export default Component.extend({
+  animation: service(),
+  componentRegistry: service(),
+
   classNames: ['question'],
   classNameBindings: ['opacity'],
 
-  opacity: 'opacity-opaque',
-  integer: null,
+  didInsertElement() {
+    this.componentRegistry.registerComponent('question', 'the-only-question', this);
+  },
+
+  willDestroyElement() {
+    this.componentRegistry.unregisterComponent('question', 'the-only-question');
+  },
+
+  opacity: 'opacity-transparent',
+
+  integralMidpoint: readOnly('animation.integralMidpoint'),
 
   async fadeFromOpaqueToTransparent() {
     await this._animate('opacity', 'opaque', 'transparent');
@@ -21,17 +34,17 @@ export default Component.extend({
 
   _animate(attribute, from, to) {
     return new RSVP.Promise((resolve, reject) => {
-      if (this.face[attribute] !== from) {
-        reject(`Question must have ${attribute} be equal to ${from} in order to transition to ${to}`);
+      if (this.opacity !== `opacity-${from}`) { // !!!!
+        reject(`Question must have ${attribute} be equal to ${from} in order to transition to ${to}`); // !!!!
         return;
       }
       const onAnimationEnd = () => {
         this.element.removeEventListener('animationend', onAnimationEnd);
-        this.face.set(attribute, to);
+        this.set(attribute, `opacity-${to}`);
         resolve();
       };
       this.element.addEventListener('animationend', onAnimationEnd);
-      this.face.set(attribute, `from-${from}-to-${to}`);
+      this.set(attribute, `opacity-from-${from}-to-${to}`);
     });
   },
 });

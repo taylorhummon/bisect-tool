@@ -3,8 +3,8 @@
 .smiley-grouping {
   $width: 48px;
   $height: 80px;
-  $position-far-right: 300px;
-  $position-right: 150px;
+  $position-far-right: 360px;
+  $position-right: 180px;
   $position-center: 0px;
   $position-left: - $position-right;
   $position-far-left: - $position-far-right;
@@ -15,7 +15,7 @@
   width: $width;
   height: $height;
   position: absolute;
-  top: 0;
+  top: 38px;
   left: 50%;
   margin-left: - $width / 2;
 
@@ -27,6 +27,7 @@
     left: 50%;
     margin-left: - $width / 2;
     text-align: center;
+    font-style: italic;
   }
 
   .number {

@@ -1,6 +1,6 @@
 import Component from '@ember/component';
-import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 
 const MISSING_HAPPY_NUMBER = 'Please enter a number for when things were good.';
 const MISSING_SAD_NUMBER = 'Please enter a number for when things were bad.';

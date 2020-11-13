@@ -5,13 +5,11 @@
   </p>
   {{#if this.isIntroDone}}
     <AnimationCanvas />
-    {{#if this.isBisectingDone}}
-      <button
-        type="button"
-        class="pure-button"
-        {{on "click" this.startOverClicked}}
-      >Start over</button>
-    {{/if}}
+    <button
+      type="button"
+      class="pure-button"
+      {{on "click" this.startOverClicked}}
+    >Start over</button>
   {{else}}
     <IntroGatherInputs
       @begin={{this.begin}}

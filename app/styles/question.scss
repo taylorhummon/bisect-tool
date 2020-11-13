@@ -5,6 +5,9 @@
   $opacity-none: 0%;
   $fading-duration: 600ms;
 
+  text-align: center;
+  font-style: italic;
+
   &.opacity-opaque {
     opacity: $opacity-full;
   }

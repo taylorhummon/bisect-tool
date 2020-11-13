@@ -1,13 +1,12 @@
 import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
-import { inject as service } from '@ember/service';
 
 export default Controller.extend({
   animation: service(),
 
   isIntroDone: false,
-  isBisectingDone: readOnly('animation.isBisectingDone'),
 
   @action begin(initialHappyInteger, initialSadInteger) {
     this.animation.set('initialSadInteger', initialSadInteger);
