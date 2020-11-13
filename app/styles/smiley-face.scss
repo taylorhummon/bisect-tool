@@ -48,32 +48,16 @@
     }
   }
 
-  &.position-left {
-    transform: translateX($position-left);
+  &.position-right {
+    transform: translateX($position-right);
   }
 
   &.position-center {
     transform: translateX($position-center);
   }
 
-  &.position-right {
-    transform: translateX($position-right);
-  }
-
-  &.position-from-left-to-center {
-    @include mixins.ease-animation;
-    animation-duration: $movement-duration;
-    animation-name: position-from-left-to-center;
-  }
-
-  @keyframes position-from-left-to-center {
-    from {
-      transform: translateX($position-left);
-    }
-
-    to {
-      transform: translateX($position-center);
-    }
+  &.position-left {
+    transform: translateX($position-left);
   }
 
   &.position-from-right-to-center {
@@ -85,6 +69,22 @@
   @keyframes position-from-right-to-center {
     from {
       transform: translateX($position-right);
+    }
+
+    to {
+      transform: translateX($position-center);
+    }
+  }
+
+  &.position-from-left-to-center {
+    @include mixins.ease-animation;
+    animation-duration: $movement-duration;
+    animation-name: position-from-left-to-center;
+  }
+
+  @keyframes position-from-left-to-center {
+    from {
+      transform: translateX($position-left);
     }
 
     to {

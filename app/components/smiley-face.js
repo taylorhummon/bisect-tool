@@ -46,8 +46,8 @@ export default Component.extend(AnimatedComponentMixin, {
 
   onSmileyFaceClickPrime: null,
 
-  @action onSmileyFaceClick() {
+  @action async onSmileyFaceClick() {
     if (! this.onSmileyFaceClickPrime) return;
-    this.onSmileyFaceClickPrime(this.face.position);
+    await this.onSmileyFaceClickPrime(this.face.position);
   },
 });

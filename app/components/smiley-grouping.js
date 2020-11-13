@@ -47,8 +47,8 @@ export default Component.extend(AnimatedComponentMixin, {
 
   animation: service(),
 
-  @action onSmileyFaceClickPrime(decision) {
+  @action async onSmileyFaceClickPrime(decision) {
     if (this.grouping.position !== 'center') return;
-    this.animation.animateDecision(decision); // not awaiting
+    await this.animation.animateDecision(decision);
   },
 });

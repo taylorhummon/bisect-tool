@@ -7,13 +7,9 @@ const MISSING_SAD_NUMBER = 'Please enter a number for when things were bad.';
 const EQUAL_NUMBERS = 'Please enter different numbers for when things were good and bad.';
 
 export default Component.extend({
-  utils: service(),
-
   classNames: ['intro-gather-inputs'],
 
-  begin: null, // closure action parameter
-
-  errors: null, // initialized in init
+  errors: null,
 
   init() {
     this._super(...arguments);
@@ -22,6 +18,9 @@ export default Component.extend({
 
   happyValueString: null,
   sadValueString: null,
+  begin: null,
+
+  utils: service(),
 
   @action onBeginClick() {
     this._resetErrors();
