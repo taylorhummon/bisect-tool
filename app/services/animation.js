@@ -16,6 +16,7 @@ export default Service.extend({
   integralMidpoint: null,
   question: null,
   groupings: null,
+  done: null,
 
   reset() {
     this.set('initialSadInteger', null);
@@ -24,9 +25,10 @@ export default Service.extend({
     this.set('integralMidpoint', null);
     this.set('question', null);
     this.set('groupings', []);
+    this.set('done', null);
   },
 
-  _areAnimationsActive: false,
+  _areAnimationsActive: false, // !!! use ember concurrency instead
 
   animateSetup() {
     if (this._areAnimationsActive) return;
@@ -54,45 +56,19 @@ export default Service.extend({
     this._addQuestion();
     this._addSadGrouping();
     this._addHappyGrouping();
-    await this.utils.domRenderPromise();
     await this.utils.delayPromise(300);
-    this._advanceBisecting();
-    await this._animateAdvancement();
+    await this._animateAdvanceBisecting();
   },
 
   async _animateDecision(decision) {
-    if (decision === 'left')  await this._animateLeft();
-    if (decision === 'right') await this._animateRight();
-    this._advanceBisecting();
-    await this._animateAdvancement();
-  },
-
-  _advanceBisecting() {
-    const integerA = this._leftGrouping().integer;
-    const integerB = this._rightGrouping().integer;
-    const isBisectingDone = this.utils.amDone(integerA, integerB); // !!! this util is gross
-    this.set('isBisectingDone', isBisectingDone);
-    const integralMidpoint = this.utils.chooseIntegralMidpoint(integerA, integerB);
-    this.set('integralMidpoint', integralMidpoint); // !!! is this necessary?
-    this.question.set('integer', integralMidpoint);
+    if (decision === 'left')  await this._animateDecisionLeft();
+    if (decision === 'right') await this._animateDecisionRight();
+    await this._animateAdvanceBisecting();
   },
 
   registry: service(),
 
-  async _animateAdvancement() {
-    const centerGrouping = this._addCenterGrouping();
-    await this.utils.domRenderPromise();
-    if (this.isBisectingDone) {
-      await this.registry.componentFor(centerGrouping).fadeFromTransparentToOpaque(); // !!! should this even be a center grouping?
-    } else {
-      await RSVP.all([
-        this.registry.componentFor(centerGrouping).fadeFromTransparentToOpaque(),
-        this.registry.componentFor(this.question).fadeFromTransparentToOpaque(),
-      ]);
-    }
-  },
-
-  async _animateLeft() {
+  async _animateDecisionLeft() {
     const leftChoice = this._leftChoice();
     const rightChoice = this._rightChoice();
     const leftGrouping = this._leftGrouping();
@@ -101,7 +77,7 @@ export default Service.extend({
     await RSVP.all([
       this.registry.componentFor(this.question).fadeFromOpaqueToTransparent(),
       this.registry.componentFor(rightChoice).fadeFromOpaqueToTransparent(),
-      this.utils.delayPromise(200).then(() => this.registry.componentFor(leftChoice).moveFromLeftToCenter())
+      this.utils.delayPromise(200).then(() => this.registry.componentFor(leftChoice).moveFromLeftToCenter()),
     ]);
     await this.utils.domRenderPromise();
     await RSVP.all([
@@ -112,7 +88,7 @@ export default Service.extend({
     this._removeGrouping(leftGrouping);
   },
 
-  async _animateRight() {
+  async _animateDecisionRight() {
     const leftChoice = this._leftChoice();
     const rightChoice = this._rightChoice();
     const rightGrouping = this._rightGrouping();
@@ -121,15 +97,42 @@ export default Service.extend({
     await RSVP.all([
       this.registry.componentFor(this.question).fadeFromOpaqueToTransparent(),
       this.registry.componentFor(leftChoice).fadeFromOpaqueToTransparent(),
-      this.utils.delayPromise(200).then(() => this.registry.componentFor(rightChoice).moveFromRightToCenter())
+      this.utils.delayPromise(200).then(() => this.registry.componentFor(rightChoice).moveFromRightToCenter()),
     ]);
     await this.utils.domRenderPromise();
     await RSVP.all([
       this.registry.componentFor(rightGrouping).moveFromRightToFarRight(),
-      this.registry.componentFor(centerGrouping).moveFromCenterToRight()
+      this.registry.componentFor(centerGrouping).moveFromCenterToRight(),
     ]);
     this._removeFace(centerGrouping, leftChoice);
     this._removeGrouping(rightGrouping);
+  },
+
+  async _animateAdvanceBisecting() {
+    this._advanceBisecting();
+    if (this.isBisectingDone) {
+      console.log('BISECTING IS DONE');
+      this._addDone();
+      await this.utils.domRenderPromise();
+      await this.registry.componentFor(this.done).fadeFromTransparentToOpaque();
+    } else {
+      const centerGrouping = this._addCenterGrouping();
+      await this.utils.domRenderPromise();
+      await RSVP.all([
+        this.registry.componentFor(centerGrouping).fadeFromTransparentToOpaque(),
+        this.registry.componentFor(this.question).fadeFromTransparentToOpaque(),
+      ]);
+    }
+  },
+
+  _advanceBisecting() {
+    const integerA = this._leftGrouping().integer;
+    const integerB = this._rightGrouping().integer;
+    const isBisectingDone = Math.abs(integerA - integerB) <= 1;
+    this.set('isBisectingDone', isBisectingDone);
+    const integralMidpoint = this.utils.chooseIntegralMidpoint(integerA, integerB);
+    this.set('integralMidpoint', integralMidpoint);
+    this.question.set('integer', integralMidpoint);
   },
 
   // ### FINDERS ###
@@ -222,26 +225,6 @@ export default Service.extend({
   },
 
   _addCenterGrouping() {
-    if (this.isBisectingDone) {
-      return this._addDoneCenterGrouping();
-    } else {
-      return this._addChoiceCenterGrouping();
-    }
-  },
-
-  _addDoneCenterGrouping() {
-    const grouping = EmberObject.create({
-      id: this.utils.generateUuid(),
-      type: 'grouping',
-      opacity: 'transparent',
-      position: 'center',
-      faces: []
-    });
-    this.groupings.pushObject(grouping);
-    return grouping;
-  },
-
-  _addChoiceCenterGrouping() {
     const grouping = EmberObject.create({
       id: this.utils.generateUuid(),
       type: 'grouping',
@@ -269,6 +252,16 @@ export default Service.extend({
     });
     this.groupings.pushObject(grouping);
     return grouping;
+  },
+
+  _addDone() {
+    const done = EmberObject.create({
+      id: this.utils.generateUuid(),
+      type: 'done',
+      opacity: 'transparent'
+    });
+    this.set('done', done);
+    return done;
   },
 
   // ### REMOVERS ###

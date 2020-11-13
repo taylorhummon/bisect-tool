@@ -1,15 +1,9 @@
-{{#if (eq this.grouping.faces.length 0)}}
-  <div class="done">
-    Found it!
-  </div>
-{{else}}
-  {{#each this.grouping.faces as |face|}}
-    <SmileyFace
-      @face={{face}}
-      @onSmileyFaceClickPrime={{this.onSmileyFaceClickPrime}}
-    />
-  {{/each}}
-  <div class="number">
-    {{this.grouping.integer}}
-  </div>
-{{/if}}
+{{#each this.grouping.faces as |face|}}
+  <SmileyFace
+    @face={{face}}
+    @onSmileyFaceClickPrime={{this.onSmileyFaceClickPrime}}
+  />
+{{/each}}
+<div class="number">
+  {{this.grouping.integer}}
+</div>

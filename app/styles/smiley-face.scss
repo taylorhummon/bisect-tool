@@ -7,8 +7,8 @@
   $position-center: 0px;
   $position-left: - $position-right;
   $movement-duration: 600ms;
-  $opacity-full: 100%;
-  $opacity-none: 0%;
+  $opacity-transparent: 0%;
+  $opacity-opaque: 100%;
   $fading-duration: 600ms;
   width: $width;
   height: $height;
@@ -24,12 +24,12 @@
     fill: none !important;
   }
 
-  &.opacity-opaque {
-    opacity: $opacity-full;
+  &.opacity-transparent {
+    opacity: $opacity-transparent;
   }
 
-  &.opacity-transparent {
-    opacity: $opacity-none;
+  &.opacity-opaque {
+    opacity: $opacity-opaque;
   }
 
   &.opacity-from-opaque-to-transparent {
@@ -40,11 +40,11 @@
 
   @keyframes opacity-from-opaque-to-transparent {
     from {
-      opacity: $opacity-full;
+      opacity: $opacity-opaque;
     }
 
     to {
-      opacity: $opacity-none;
+      opacity: $opacity-transparent;
     }
   }
 

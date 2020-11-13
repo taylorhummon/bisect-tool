@@ -28,10 +28,6 @@ export default Service.extend({
     return Math.floor(2 * Math.random()) === 0;
   },
 
-  amDone(integerA, integerB) {
-    return Math.abs(integerA - integerB) <= 1;
-  },
-
   isNullOrUndefined(a) {
     return a === null || typeof a === 'undefined';
   },

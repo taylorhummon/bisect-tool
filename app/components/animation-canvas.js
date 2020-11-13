@@ -14,4 +14,5 @@ export default Component.extend({
 
   question: readOnly('animation.question'),
   groupings: readOnly('animation.groupings'),
+  done: readOnly('animation.done'),
 });

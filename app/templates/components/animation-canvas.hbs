@@ -4,3 +4,6 @@
 {{#each this.groupings as |grouping|}}
   <SmileyGrouping @grouping={{grouping}} />
 {{/each}}
+{{#if this.done}}
+  <Done @done={{this.done}} />
+{{/if}}

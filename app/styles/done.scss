@@ -1,10 +1,15 @@
 @use 'mixins';
 
-.question {
+.done {
+  $width: 150px;
   $opacity-transparent: 0%;
   $opacity-opaque: 100%;
   $fading-duration: 600ms;
-
+  width: $width;
+  position: absolute;
+  top: 56px;
+  left: 50%;
+  margin-left: - $width / 2;
   text-align: center;
   font-style: italic;
 
@@ -29,22 +34,6 @@
 
     to {
       opacity: $opacity-opaque;
-    }
-  }
-
-  &.opacity-from-opaque-to-transparent {
-    @include mixins.ease-animation;
-    animation-duration: $fading-duration;
-    animation-name: opacity-from-opaque-to-transparent;
-  }
-
-  @keyframes opacity-from-opaque-to-transparent {
-    from {
-      opacity: $opacity-opaque;
-    }
-
-    to {
-      opacity: $opacity-transparent;
     }
   }
 }

@@ -7,9 +7,9 @@ const AnimatedComponentMixin = Mixin.create({
 
   didInsertElement() {
     const objectName = this.objectName;
-    if (! objectName) 'Animated component must have an objectName attribute';
+    if (! objectName) throw 'Animated component must have an objectName attribute';
     const object = this[objectName];
-    if (! object) `Animated component must have an ${objectName} attribute`;
+    if (! object) throw `Animated component must have an ${objectName} attribute`;
     this.registry.registerComponent(objectName, object.id, this);
   },
 
@@ -22,7 +22,10 @@ const AnimatedComponentMixin = Mixin.create({
   _animate(attributeName, from, to) {
     return new RSVP.Promise((resolve, reject) => {
       const objectName = this.objectName;
-      if (! objectName) 'Animated component must have an objectName attribute';
+      if (! objectName) {
+        reject('Animated component must have an objectName attribute');
+        return;
+      }
       const object = this[objectName];
       if (! object) {
         reject(`Could not find object ${objectName}`);
