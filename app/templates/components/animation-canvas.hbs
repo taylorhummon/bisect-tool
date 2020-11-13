@@ -1,6 +1,6 @@
-<Question />
+{{#if this.question}}
+  <Question @question={{this.question}} />
+{{/if}}
 {{#each this.groupings as |grouping|}}
-  <SmileyGrouping
-    @grouping={{grouping}}
-  />
+  <SmileyGrouping @grouping={{grouping}} />
 {{/each}}

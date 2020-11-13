@@ -1,28 +1,22 @@
 import Component from '@ember/component';
-import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
 import { computed } from '@ember/object';
-import { readOnly } from '@ember/object/computed';
-import RSVP from 'rsvp';
+import AnimatedComponentMixin from 'bisect-tool/mixins/animated-component';
 
-export default Component.extend({
-  animation: service(),
-  registry: service(),
-
+export default Component.extend(AnimatedComponentMixin, {
   classNames: ['question'],
   classNameBindings: ['opacity'],
 
-  didInsertElement() {
-    this.registry.registerComponent('question', 'the-only-question', this);
-  },
+  objectName: 'question',
+  question: null,
 
-  willDestroyElement() {
-    this.registry.unregisterComponent('question', 'the-only-question');
-  },
-
-  opacity: 'opacity-transparent',
-
-  integralMidpoint: readOnly('animation.integralMidpoint'),
+  opacity: computed(
+    'isReady',
+    'question.opacity',
+    function () {
+      if (! this.isReady) return 'opacity-transparent';
+      return `opacity-${this.question.opacity}`;
+    }
+  ),
 
   async fadeFromOpaqueToTransparent() {
     await this._animate('opacity', 'opaque', 'transparent');
@@ -32,19 +26,13 @@ export default Component.extend({
     await this._animate('opacity', 'transparent', 'opaque');
   },
 
-  _animate(attribute, from, to) {
-    return new RSVP.Promise((resolve, reject) => {
-      if (this.opacity !== `opacity-${from}`) { // !!!!
-        reject(`Question must have ${attribute} be equal to ${from} in order to transition to ${to}`); // !!!!
-        return;
-      }
-      const onAnimationEnd = () => {
-        this.element.removeEventListener('animationend', onAnimationEnd);
-        this.set(attribute, `opacity-${to}`);
-        resolve();
-      };
-      this.element.addEventListener('animationend', onAnimationEnd);
-      this.set(attribute, `opacity-from-${from}-to-${to}`);
-    });
-  },
+  isReady: computed(
+    'question.{integer,opacity}',
+    function () {
+      if (! this.question) return false;
+      if (! this.question.opacity) return false;
+      if (typeof this.question.integer !== 'number') return false;
+      return true;
+    }
+  ),
 });

@@ -2,13 +2,9 @@ import Service from '@ember/service';
 import EmberObject from '@ember/object';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
-import { readOnly } from '@ember/object/computed';
 import RSVP from 'rsvp';
 
 export default Service.extend({
-  registry: service(),
-  utils: service(),
-
   init() {
     this._super(...arguments);
     this.reset();
@@ -18,6 +14,7 @@ export default Service.extend({
   initialHappyInteger: null,
   isBisectingDone: null,
   integralMidpoint: null,
+  question: null,
   groupings: null,
 
   reset() {
@@ -25,32 +22,14 @@ export default Service.extend({
     this.set('initialHappyInteger', null);
     this.set('isBisectingDone', false);
     this.set('integralMidpoint', null);
+    this.set('question', null);
     this.set('groupings', []);
   },
-
-  sadSide: computed(
-    'initialSadInteger',
-    'initialHappyInteger',
-    function () {
-      if (this.initialSadInteger > this.initialHappyInteger) return 'right';
-      if (this.initialSadInteger < this.initialHappyInteger) return 'left';
-      throw 'could not compute sad side';
-    }
-  ),
-  happySide: computed(
-    'initialHappyInteger',
-    'initialSadInteger',
-    function () {
-      if (this.initialHappyInteger > this.initialSadInteger) return 'right';
-      if (this.initialHappyInteger < this.initialSadInteger) return 'left';
-      throw 'could not compute happy side';
-    }
-  ),
 
   _areAnimationsActive: false,
 
   animateSetup() {
-    if (this.areAnimationsActive) return;
+    if (this._areAnimationsActive) return;
     this.set('_areAnimationsActive', true);
     return RSVP.resolve().then(() => {
       return this._animateSetup();
@@ -60,7 +39,7 @@ export default Service.extend({
   },
 
   animateDecision(decision) {
-    if (this.areAnimationsActive) return;
+    if (this._areAnimationsActive) return;
     this.set('_areAnimationsActive', true);
     return RSVP.resolve().then(() => {
       return this._animateDecision(decision);
@@ -69,7 +48,10 @@ export default Service.extend({
     });
   },
 
+  utils: service(),
+
   async _animateSetup() {
+    this._addQuestion();
     this._addSadGrouping();
     this._addHappyGrouping();
     await this.utils.domRenderPromise();
@@ -91,8 +73,11 @@ export default Service.extend({
     const isBisectingDone = this.utils.amDone(integerA, integerB); // !!! this util is gross
     this.set('isBisectingDone', isBisectingDone);
     const integralMidpoint = this.utils.chooseIntegralMidpoint(integerA, integerB);
-    this.set('integralMidpoint', integralMidpoint);
+    this.set('integralMidpoint', integralMidpoint); // !!! is this necessary?
+    this.question.set('integer', integralMidpoint);
   },
+
+  registry: service(),
 
   async _animateAdvancement() {
     const centerGrouping = this._addCenterGrouping();
@@ -102,7 +87,7 @@ export default Service.extend({
     } else {
       await RSVP.all([
         this.registry.componentFor(centerGrouping).fadeFromTransparentToOpaque(),
-        this.registry.componentFor({ type: 'question', id: 'the-only-question' }).fadeFromTransparentToOpaque(),
+        this.registry.componentFor(this.question).fadeFromTransparentToOpaque(),
       ]);
     }
   },
@@ -114,7 +99,7 @@ export default Service.extend({
     const centerGrouping = this._centerGrouping();
     leftChoice.set('fill', 'yellow');
     await RSVP.all([
-      this.registry.componentFor({ type: 'question', id: 'the-only-question' }).fadeFromOpaqueToTransparent(),
+      this.registry.componentFor(this.question).fadeFromOpaqueToTransparent(),
       this.registry.componentFor(rightChoice).fadeFromOpaqueToTransparent(),
       this.utils.delayPromise(200).then(() => this.registry.componentFor(leftChoice).moveFromLeftToCenter())
     ]);
@@ -134,7 +119,7 @@ export default Service.extend({
     const centerGrouping = this._centerGrouping();
     rightChoice.set('fill', 'yellow');
     await RSVP.all([
-      this.registry.componentFor({ type: 'question', id: 'the-only-question' }).fadeFromOpaqueToTransparent(),
+      this.registry.componentFor(this.question).fadeFromOpaqueToTransparent(),
       this.registry.componentFor(leftChoice).fadeFromOpaqueToTransparent(),
       this.utils.delayPromise(200).then(() => this.registry.componentFor(rightChoice).moveFromRightToCenter())
     ]);
@@ -149,15 +134,15 @@ export default Service.extend({
 
   // ### FINDERS ###
 
-  _leftGrouping() {
-    return this.groupings.find(
-      grouping => grouping.position === 'left'
-    );
-  },
-
   _rightGrouping() {
     return this.groupings.find(
       grouping => grouping.position === 'right'
+    );
+  },
+
+  _leftGrouping() {
+    return this.groupings.find(
+      grouping => grouping.position === 'left'
     );
   },
 
@@ -167,19 +152,30 @@ export default Service.extend({
     );
   },
 
-  _leftChoice() {
-    return this._centerGrouping().faces.find(
-      face => face.position === 'left'
-    );
-  },
-
   _rightChoice() {
     return this._centerGrouping().faces.find(
       face => face.position === 'right'
     );
   },
 
+  _leftChoice() {
+    return this._centerGrouping().faces.find(
+      face => face.position === 'left'
+    );
+  },
+
   // ### ADDERS ###
+
+  _addQuestion() {
+    const question = EmberObject.create({
+      id: this.utils.generateUuid(),
+      type: 'question',
+      integer: null,
+      opacity: 'transparent'
+    });
+    this.set('question', question);
+    return question;
+  },
 
   _addSadGrouping() {
     const grouping = EmberObject.create({
@@ -290,4 +286,25 @@ export default Service.extend({
       element => element.id === grouping.id
     );
   },
+
+  // ### SIDES ###
+
+  sadSide: computed(
+    'initialSadInteger',
+    'initialHappyInteger',
+    function () {
+      if (this.initialSadInteger > this.initialHappyInteger) return 'right';
+      if (this.initialSadInteger < this.initialHappyInteger) return 'left';
+      throw 'could not compute sad side';
+    }
+  ),
+  happySide: computed(
+    'initialHappyInteger',
+    'initialSadInteger',
+    function () {
+      if (this.initialHappyInteger > this.initialSadInteger) return 'right';
+      if (this.initialHappyInteger < this.initialSadInteger) return 'left';
+      throw 'could not compute happy side';
+    }
+  ),
 });

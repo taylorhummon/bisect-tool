@@ -12,5 +12,6 @@ export default Component.extend({
     this.animation.animateSetup(); // not awaiting
   },
 
+  question: readOnly('animation.question'),
   groupings: readOnly('animation.groupings'),
 });

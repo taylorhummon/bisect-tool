@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { computed } from '@ember/object';
-import AnimatedComponentMixin from 'bisect-tool/mixins/animated-component'
+import AnimatedComponentMixin from 'bisect-tool/mixins/animated-component';
 
 export default Component.extend(AnimatedComponentMixin, {
   classNames: ['smiley-grouping'],
