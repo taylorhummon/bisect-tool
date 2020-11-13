@@ -1,4 +1,5 @@
 import Service from '@ember/service';
+import { inject as service } from '@ember/service';
 import { later, next } from '@ember/runloop';
 import RSVP from 'rsvp';
 
@@ -10,10 +11,12 @@ export default Service.extend({
     return parsed;
   },
 
+  random: service(),
+
   chooseIntegralMidpoint(integerA, integerB) {
     const total = integerA + integerB;
     if (this._isEven(total)) return total / 2;
-    if (this._flipCoin()) {
+    if (this.random.flipCoin()) {
       return (total + 1) / 2;
     } else {
       return (total - 1) / 2;
@@ -24,10 +27,6 @@ export default Service.extend({
     return integer % 2 === 0;
   },
 
-  _flipCoin() {
-    return Math.floor(2 * Math.random()) === 0;
-  },
-
   isNullOrUndefined(a) {
     return a === null || typeof a === 'undefined';
   },
@@ -36,13 +35,9 @@ export default Service.extend({
     const template = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
     const chars = template.split('');
     const digits = chars.map(
-      char => char === '-' ? '-' : this._randomHexDigit()
+      char => char === '-' ? '-' : this.random.hexDigit()
     );
     return digits.join('');
-  },
-
-  _randomHexDigit() {
-    return Math.floor(Math.random() * 16).toString(16).toUpperCase();
   },
 
   delayPromise(waitTime) {
