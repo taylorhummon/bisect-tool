@@ -2,10 +2,10 @@ import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import Service from '@ember/service';
 
-module('Unit | Service | utils', function(hooks) {
+module('Unit | Service | utils', function (hooks) {
   setupTest(hooks);
 
-  test('integerFromString()', function(assert) {
+  test('integerFromString()', function (assert) {
     const utils = this.owner.lookup('service:utils');
     assert.equal(
       utils.integerFromString('12'),
