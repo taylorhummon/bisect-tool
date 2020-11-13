@@ -13,15 +13,30 @@ export default Service.extend({
   },
 
   registerComponent(type, id, component) {
-    if (type === 'grouping')  this._groupingComponents.set(id, component);
-    if (type === 'face')      this._faceComponents.set(id, component);
-    if (type === 'question')  this._questionComponents.set(id, component);
+    if (! id) throw 'Missing id';
+    if (! component) throw 'Missing component';
+    if (type === 'grouping') {
+      this._groupingComponents.set(id, component);
+    } else if (type === 'face') {
+      this._faceComponents.set(id, component);
+    } else if (type === 'question') {
+      this._questionComponents.set(id, component);
+    } else {
+      throw `Unknown type: ${type}`;
+    }
   },
 
   unregisterComponent(type, id) {
-    if (type === 'grouping')  this._groupingComponents.delete(id);
-    if (type === 'face')      this._faceComponents.delete(id);
-    if (type === 'question')  this._questionComponents.delete(id);
+    if (! id) throw 'Missing id';
+    if (type === 'grouping') {
+      this._groupingComponents.delete(id);
+    } else if (type === 'face') {
+      this._faceComponents.delete(id);
+    } else if (type === 'question') {
+      this._questionComponents.delete(id);
+    } else {
+      throw `Unknown type: ${type}`;
+    }
   },
 
   componentFor(object) {
@@ -37,6 +52,6 @@ export default Service.extend({
       const found = this._questionComponents.get(object.id);
       if (found) return found;
     }
-    throw `could not find component for object ${object}`;
+    throw `Could not find component for object ${object}`;
   },
 });

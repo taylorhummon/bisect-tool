@@ -6,7 +6,7 @@ import { readOnly } from '@ember/object/computed';
 import RSVP from 'rsvp';
 
 export default Service.extend({
-  componentRegistry: service(),
+  registry: service(),
   utils: service(),
 
   init() {
@@ -98,11 +98,11 @@ export default Service.extend({
     const centerGrouping = this._addCenterGrouping();
     await this.utils.domRenderPromise();
     if (this.isBisectingDone) {
-      await this.componentRegistry.componentFor(centerGrouping).fadeFromTransparentToOpaque(); // !!! should this even be a center grouping?
+      await this.registry.componentFor(centerGrouping).fadeFromTransparentToOpaque(); // !!! should this even be a center grouping?
     } else {
       await RSVP.all([
-        this.componentRegistry.componentFor(centerGrouping).fadeFromTransparentToOpaque(),
-        this.componentRegistry.componentFor({ type: 'question', id: 'the-only-question' }).fadeFromTransparentToOpaque(),
+        this.registry.componentFor(centerGrouping).fadeFromTransparentToOpaque(),
+        this.registry.componentFor({ type: 'question', id: 'the-only-question' }).fadeFromTransparentToOpaque(),
       ]);
     }
   },
@@ -114,14 +114,14 @@ export default Service.extend({
     const centerGrouping = this._centerGrouping();
     leftChoice.set('fill', 'yellow');
     await RSVP.all([
-      this.componentRegistry.componentFor({ type: 'question', id: 'the-only-question' }).fadeFromOpaqueToTransparent(),
-      this.componentRegistry.componentFor(rightChoice).fadeFromOpaqueToTransparent(),
-      this.utils.delayPromise(200).then(() => this.componentRegistry.componentFor(leftChoice).moveFromLeftToCenter())
+      this.registry.componentFor({ type: 'question', id: 'the-only-question' }).fadeFromOpaqueToTransparent(),
+      this.registry.componentFor(rightChoice).fadeFromOpaqueToTransparent(),
+      this.utils.delayPromise(200).then(() => this.registry.componentFor(leftChoice).moveFromLeftToCenter())
     ]);
     await this.utils.domRenderPromise();
     await RSVP.all([
-      this.componentRegistry.componentFor(leftGrouping).moveFromLeftToFarLeft(),
-      this.componentRegistry.componentFor(centerGrouping).moveFromCenterToLeft(),
+      this.registry.componentFor(leftGrouping).moveFromLeftToFarLeft(),
+      this.registry.componentFor(centerGrouping).moveFromCenterToLeft(),
     ]);
     this._removeFace(centerGrouping, rightChoice);
     this._removeGrouping(leftGrouping);
@@ -134,14 +134,14 @@ export default Service.extend({
     const centerGrouping = this._centerGrouping();
     rightChoice.set('fill', 'yellow');
     await RSVP.all([
-      this.componentRegistry.componentFor({ type: 'question', id: 'the-only-question' }).fadeFromOpaqueToTransparent(),
-      this.componentRegistry.componentFor(leftChoice).fadeFromOpaqueToTransparent(),
-      this.utils.delayPromise(200).then(() => this.componentRegistry.componentFor(rightChoice).moveFromRightToCenter())
+      this.registry.componentFor({ type: 'question', id: 'the-only-question' }).fadeFromOpaqueToTransparent(),
+      this.registry.componentFor(leftChoice).fadeFromOpaqueToTransparent(),
+      this.utils.delayPromise(200).then(() => this.registry.componentFor(rightChoice).moveFromRightToCenter())
     ]);
     await this.utils.domRenderPromise();
     await RSVP.all([
-      this.componentRegistry.componentFor(rightGrouping).moveFromRightToFarRight(),
-      this.componentRegistry.componentFor(centerGrouping).moveFromCenterToRight()
+      this.registry.componentFor(rightGrouping).moveFromRightToFarRight(),
+      this.registry.componentFor(centerGrouping).moveFromCenterToRight()
     ]);
     this._removeFace(centerGrouping, leftChoice);
     this._removeGrouping(rightGrouping);

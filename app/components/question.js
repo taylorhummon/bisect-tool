@@ -7,17 +7,17 @@ import RSVP from 'rsvp';
 
 export default Component.extend({
   animation: service(),
-  componentRegistry: service(),
+  registry: service(),
 
   classNames: ['question'],
   classNameBindings: ['opacity'],
 
   didInsertElement() {
-    this.componentRegistry.registerComponent('question', 'the-only-question', this);
+    this.registry.registerComponent('question', 'the-only-question', this);
   },
 
   willDestroyElement() {
-    this.componentRegistry.unregisterComponent('question', 'the-only-question');
+    this.registry.unregisterComponent('question', 'the-only-question');
   },
 
   opacity: 'opacity-transparent',

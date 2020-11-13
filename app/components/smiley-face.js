@@ -2,29 +2,14 @@ import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { computed } from '@ember/object';
-import RSVP from 'rsvp';
+import AnimatedComponentMixin from 'bisect-tool/mixins/animated-component'
 
-export default Component.extend({
-  componentRegistry: service(),
-
+export default Component.extend(AnimatedComponentMixin, {
   classNames: ['smiley-face'],
   classNameBindings: ['fill', 'opacity', 'position'],
 
-  @action onSmileyFaceClick() {
-    if (! this.onSmileyFaceClickPrime) return;
-    this.onSmileyFaceClickPrime(this.face.position);
-  },
-
-  didInsertElement() {
-    this.componentRegistry.registerComponent('face', this.face.id, this);
-  },
-
-  willDestroyElement() {
-    this.componentRegistry.unregisterComponent('face', this.face.id);
-  },
-
+  objectName: 'face',
   face: null,
-  onSmileyFaceClickPrime: null,
 
   fill: computed(
     'face.fill',
@@ -51,27 +36,18 @@ export default Component.extend({
     }
   ),
 
-  async moveFromLeftToCenter() {
-    await this._animate('position', 'left', 'center');
-  },
-
   async moveFromRightToCenter() {
     await this._animate('position', 'right', 'center');
   },
 
-  _animate(attribute, from, to) {
-    return new RSVP.Promise((resolve, reject) => {
-      if (this.face[attribute] !== from) {
-        reject(`SmileyFace must have ${attribute} be equal to ${from} in order to transition to ${to}`);
-        return;
-      }
-      const onAnimationEnd = () => {
-        this.element.removeEventListener('animationend', onAnimationEnd);
-        this.face.set(attribute, to);
-        resolve();
-      };
-      this.element.addEventListener('animationend', onAnimationEnd);
-      this.face.set(attribute, `from-${from}-to-${to}`);
-    });
+  async moveFromLeftToCenter() {
+    await this._animate('position', 'left', 'center');
+  },
+
+  onSmileyFaceClickPrime: null,
+
+  @action onSmileyFaceClick() {
+    if (! this.onSmileyFaceClickPrime) return;
+    this.onSmileyFaceClickPrime(this.face.position);
   },
 });
