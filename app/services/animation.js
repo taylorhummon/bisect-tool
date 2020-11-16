@@ -172,9 +172,11 @@ export default Service.extend({
 
   // ### ADDERS ###
 
+  uuid: service(),
+
   _addQuestion() {
     const question = EmberObject.create({
-      id: this.utils.generateUuid(),
+      id: this.uuid.generateUuid(),
       type: 'question',
       integer: null,
       opacity: 'transparent'
@@ -185,14 +187,14 @@ export default Service.extend({
 
   _addSadGrouping() {
     const grouping = EmberObject.create({
-      id: this.utils.generateUuid(),
+      id: this.uuid.generateUuid(),
       type: 'grouping',
       integer: this.initialSadInteger,
       opacity: 'opaque',
       position: this.sadSide,
       faces: [
         EmberObject.create({
-          id: this.utils.generateUuid(),
+          id: this.uuid.generateUuid(),
           type: 'face',
           smile: 'sad',
           opacity: 'opaque',
@@ -207,14 +209,14 @@ export default Service.extend({
 
   _addHappyGrouping() {
     const grouping = EmberObject.create({
-      id: this.utils.generateUuid(),
+      id: this.uuid.generateUuid(),
       type: 'grouping',
       integer: this.initialHappyInteger,
       opacity: 'opaque',
       position: this.happySide,
       faces: [
         EmberObject.create({
-          id: this.utils.generateUuid(),
+          id: this.uuid.generateUuid(),
           type: 'face',
           smile: 'happy',
           opacity: 'opaque',
@@ -229,14 +231,14 @@ export default Service.extend({
 
   _addCenterGrouping() {
     const grouping = EmberObject.create({
-      id: this.utils.generateUuid(),
+      id: this.uuid.generateUuid(),
       type: 'grouping',
       integer: this.integralMidpoint,
       opacity: 'transparent',
       position: 'center',
       faces: [
         EmberObject.create({
-          id: this.utils.generateUuid(),
+          id: this.uuid.generateUuid(),
           type: 'face',
           smile: 'sad',
           opacity: 'opaque',
@@ -244,7 +246,7 @@ export default Service.extend({
           fill: 'none'
         }),
         EmberObject.create({
-          id: this.utils.generateUuid(),
+          id: this.uuid.generateUuid(),
           type: 'face',
           smile: 'happy',
           opacity: 'opaque',
@@ -259,7 +261,7 @@ export default Service.extend({
 
   _addDone() {
     const done = EmberObject.create({
-      id: this.utils.generateUuid(),
+      id: this.uuid.generateUuid(),
       type: 'done',
       opacity: 'transparent'
     });

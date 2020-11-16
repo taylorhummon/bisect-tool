@@ -1,11 +1,12 @@
 <div class="page">
-  <h1>The Bisect Tool</h1>
-  <p>
+  <h1 data-test-app-title>The Bisect Tool</h1>
+  <p data-test-app-description>
     This tool will help you track down when things went from good to bad.
   </p>
   {{#if this.isIntroDone}}
     <AnimationCanvas />
     <button
+      data-test-start-over-button
       type="button"
       class="pure-button"
       {{on "click" this.startOverClicked}}

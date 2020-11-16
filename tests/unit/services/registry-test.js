@@ -1,6 +1,5 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import Service from '@ember/service';
 import EmberObject from '@ember/object';
 
 module('Unit | Service | registry', function (hooks) {

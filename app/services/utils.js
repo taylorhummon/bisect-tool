@@ -31,15 +31,6 @@ export default Service.extend({
     return a === null || typeof a === 'undefined';
   },
 
-  generateUuid() {
-    const template = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
-    const chars = template.split('');
-    const digits = chars.map(
-      char => char === '-' ? '-' : this.random.hexDigit()
-    );
-    return digits.join('');
-  },
-
   delayPromise(waitTime) {
     return new RSVP.Promise(resolve => {
       later(resolve, waitTime);

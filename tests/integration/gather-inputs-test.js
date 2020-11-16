@@ -3,10 +3,10 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render, click, fillIn } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | Component | gather-inputs', function(hooks) {
+module('Integration | Component | gather-inputs', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('parses the user inputs when entered correctly', async function(assert) {
+  test('parses the user inputs when entered correctly', async function (assert) {
     assert.expect(4);
     this.set('begin', (happyInteger, sadInteger) => {
       assert.equal(
@@ -36,7 +36,7 @@ module('Integration | Component | gather-inputs', function(hooks) {
     );
   });
 
-  test('shows errors if we dont enter anything', async function(assert) {
+  test('shows errors if we dont enter anything', async function (assert) {
     this.set('begin', () => {});
     await render(hbs`<GatherInputs @begin={{this.begin}} />`);
     assert.equal(
@@ -60,7 +60,7 @@ module('Integration | Component | gather-inputs', function(hooks) {
     );
   });
 
-  test('shows an error if we enter an invalid string', async function(assert) {
+  test('shows an error if we enter an invalid string', async function (assert) {
     this.set('begin', () => {});
     await render(hbs`<GatherInputs @begin={{this.begin}} />`);
     assert.equal(
@@ -82,7 +82,7 @@ module('Integration | Component | gather-inputs', function(hooks) {
     );
   });
 
-  test('shows an error if we enter the same number twice', async function(assert) {
+  test('shows an error if we enter the same number twice', async function (assert) {
     this.set('begin', () => {});
     await render(hbs`<GatherInputs @begin={{this.begin}} />`);
     assert.equal(

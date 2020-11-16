@@ -49,7 +49,7 @@ module('Unit | Service | utils', function (hooks) {
     );
   });
 
-  test('chooseIntegralMidpoint() when flipCoin() returns true', function(assert) {
+  test('chooseIntegralMidpoint() when flipCoin() returns true', function (assert) {
     const randomStub = Service.extend({
       flipCoin() {
         return true;
@@ -74,7 +74,7 @@ module('Unit | Service | utils', function (hooks) {
     );
   });
 
-  test('chooseIntegralMidpoint() when flipCoin() returns false', function(assert) {
+  test('chooseIntegralMidpoint() when flipCoin() returns false', function (assert) {
     const randomStub = Service.extend({
       flipCoin() {
         return false;
@@ -89,7 +89,7 @@ module('Unit | Service | utils', function (hooks) {
     );
   });
 
-  test('isNullOrUndefined()', function(assert) {
+  test('isNullOrUndefined()', function (assert) {
     const utils = this.owner.lookup('service:utils');
     assert.equal(
       utils.isNullOrUndefined(null),
@@ -113,43 +113,7 @@ module('Unit | Service | utils', function (hooks) {
     );
   });
 
-  test('generateUuid()', function(assert) {
-    const utils = this.owner.lookup('service:utils');
-    const uuidA = utils.generateUuid();
-    const uuidB = utils.generateUuid();
-    assert.ok(
-      uuidA !== uuidB,
-      'generating two uuids gives distinct results'
-    );
-    assert.ok(
-      uuidA.length,
-      36,
-      'has the correct length'
-    );
-    console.log('CHAR', uuidA.charAt(9));
-    assert.equal(
-      uuidA.charAt(8),
-      '-',
-      'has a dash at index 8'
-    );
-    assert.equal(
-      uuidA.charAt(13),
-      '-',
-      'has a dash at index 13'
-    );
-    assert.equal(
-      uuidA.charAt(18),
-      '-',
-      'has a dash at index 18'
-    );
-    assert.equal(
-      uuidA.charAt(23),
-      '-',
-      'has a dash at index 23'
-    );
-  });
-
-  test('removeMatching()', function(assert) {
+  test('removeMatching()', function (assert) {
     const utils = this.owner.lookup('service:utils');
     const arrayA = ['dog', 'cat', 'mouse'];
     utils.removeMatching(arrayA, () => false);
