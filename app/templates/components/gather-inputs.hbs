@@ -1,8 +1,8 @@
 {{#if (gt this.errors.length 0)}}
   <div class="errors">
     {{#each this.errors as |error|}}
-      <div class="error">
-        {{error}}
+      <div data-test-error data-test-error-name={{error.name}} class="error">
+        {{error.message}}
       </div>
     {{/each}}
   </div>
@@ -32,6 +32,7 @@
       <button
         type="button"
         class="pure-button pure-button-primary"
+        data-test-begin-button
         {{on "click" this.onBeginClick}}
       >Begin</button>
     </div>

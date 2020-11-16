@@ -2,9 +2,18 @@ import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 
-const MISSING_HAPPY_NUMBER = 'Please enter a number for when things were good.';
-const MISSING_SAD_NUMBER = 'Please enter a number for when things were bad.';
-const EQUAL_NUMBERS = 'Please enter different numbers for when things were good and bad.';
+const MISSING_HAPPY_NUMBER = {
+  name: 'missing-happy-number',
+  message: 'Please enter a number for when things were good.'
+};
+const MISSING_SAD_NUMBER = {
+  name: 'missing-sad-number',
+  message: 'Please enter a number for when things were bad.'
+};
+const EQUAL_NUMBERS = {
+  name: 'equal-numbers',
+  message: 'Please enter different numbers for when things were good and bad.'
+};
 
 export default Component.extend({
   classNames: ['intro-gather-inputs'],
