@@ -16,7 +16,7 @@ const EQUAL_NUMBERS = {
 };
 
 export default Component.extend({
-  classNames: ['intro-gather-inputs'],
+  classNames: ['gather-inputs'],
 
   errors: null,
 
